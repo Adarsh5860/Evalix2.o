@@ -1,0 +1,91 @@
+// styles/DataTable.scss
+.data-table-card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    .search-container {
+        width: 250px;
+    }
+
+    table {
+        margin-bottom: 0;
+
+        th {
+            position: relative;
+            padding-right: 20px;
+            cursor: pointer;
+            user-select: none;
+
+            &.active-sort {
+                color: #007bff;
+            }
+
+            .sort-icon {
+                position: absolute;
+                right: 6px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            &:hover {
+                background-color: #f8f9fa;
+            }
+        }
+
+        .verb-cell {
+            font-weight: 500;
+        }
+
+        // New styles for frequency column
+        .frequency-cell {
+            text-align: center;
+            width: 100px;
+        }
+
+        .frequency-badge {
+            min-width: 32px;
+            padding: 5px 8px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        .domain-badge {
+            font-size: 0.8rem;
+            font-weight: normal;
+            padding: 0.35em 0.65em;
+        }
+
+        .confidence-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+
+            .confidence-bar {
+                height: 100%;
+                transition: width 0.3s ease;
+            }
+
+            .confidence-text {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #333;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+        }
+    }
+}

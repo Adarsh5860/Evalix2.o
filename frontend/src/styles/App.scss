@@ -1,0 +1,87 @@
+// styles/App.scss
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background-color: #f8f9fa;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.sidebar-container {
+    background-color: white;
+    border-right: 1px solid #e9ecef;
+    min-height: calc(100vh - 60px);
+}
+
+.content-container {
+    padding: 20px;
+}
+
+.analysis-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-left-color: #09d;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        max-width: 300px;
+        height: 6px;
+        background: #e9ecef;
+        border-radius: 3px;
+        margin-top: 20px;
+        overflow: hidden;
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #09d, #87CEFA);
+            width: 70%;
+            animation: progress 1.5s ease infinite;
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}

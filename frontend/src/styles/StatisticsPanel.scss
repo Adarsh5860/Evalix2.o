@@ -1,0 +1,101 @@
+// styles/StatisticsPanel.scss
+.statistics-panel {
+    height: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    .main-stat {
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid #e9ecef;
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    }
+
+    .domain-stat {
+        position: relative;
+        padding: 15px;
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-right: 12px;
+
+            &.cognitive {
+                color: #007bff;
+            }
+
+            &.affective {
+                color: #dc3545;
+            }
+
+            &.psychomotor {
+                color: #20c997;
+            }
+
+            &.unclassified {
+                color: #6c757d;
+            }
+        }
+
+        .domain-stat-content {
+            flex: 1;
+        }
+
+        .domain-name {
+            font-weight: 500;
+            color: #343a40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .domain-count {
+                font-weight: 600;
+            }
+        }
+
+        .top-subdomain {
+            font-size: 0.8rem;
+            color: #6c757d;
+
+            .subdomain-name {
+                color: #495057;
+            }
+        }
+
+        .percentage-bar {
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+
+            .percentage-fill {
+                height: 100%;
+
+                &.cognitive {
+                    background-color: #007bff;
+                }
+
+                &.affective {
+                    background-color: #dc3545;
+                }
+
+                &.psychomotor {
+                    background-color: #20c997;
+                }
+
+                &.unclassified {
+                    background-color: #6c757d;
+                }
+            }
+        }
+    }
+}

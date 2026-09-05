@@ -1,0 +1,27 @@
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.App-header {
+    background-color: #282c34;
+    padding: 2rem 0;
+    color: white;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.analysis-results {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
