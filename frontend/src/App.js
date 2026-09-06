@@ -10,14 +10,8 @@ import AnalysisDashboard from './components/AnalysisDashboard';
 import VerbClassificationsPage from './components/VerbClassificationsPage';
 import RecommendationsDashboard from './components/RecommendationsDashboard';
 import ReportsList from './components/ReportsList';
-<<<<<<< HEAD
 import LandingPage from './components/LandingPage';
-// App.js - Update
-function App() {
-    const [analysisData, setAnalysisData] = useState(null);
-=======
 import AboutAnalysisPage from './components/AboutAnalysisPage';
->>>>>>> origin/main
 
 // Default realistic sample data for demo / instant preview
 const SAMPLE_ANALYSIS_DATA = {
@@ -111,7 +105,6 @@ const SAMPLE_ANALYSIS_DATA = {
 
 function App() {
     const [analysisData, setAnalysisData] = useState(() => {
-        // Try restoring from sessionStorage
         try {
             const saved = sessionStorage.getItem('evalix_analysis_data');
             if (saved) return JSON.parse(saved);
@@ -123,7 +116,6 @@ function App() {
 
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-    // Save to sessionStorage whenever analysisData changes
     const handleAnalysisComplete = (data) => {
         console.log('Evalix 2.0: Analysis complete with data:', data);
         setAnalysisData(data);
@@ -140,59 +132,11 @@ function App() {
 
     return (
         <Router>
-<<<<<<< HEAD
-            <Routes>
-                {/* Landing Page: Screen 1 */}
-                <Route path="/landing" element={<LandingPage />} />
-
-                {/* Main App Screens */}
-                <Route
-                    path="/*"
-                    element={
-                        <div className="app-wrapper">
-                            <Header />
-                            <div className="main-container">
-                                <div className="d-flex">
-                                    <div className="sidebar-container border-end">
-                                        <Sidebar />
-                                    </div>
-                                    <div className="content-container p-4 flex-grow-1">
-                                        <Routes>
-                                            <Route
-                                                path="/"
-                                                element={<FileUploadPanel onAnalysisComplete={handleAnalysisComplete} />}
-                                            />
-                                            <Route
-                                                path="/analysis"
-                                                element={<AnalysisDashboard data={analysisData} />}
-                                            />
-                                            <Route
-                                                path="/recommendations"
-                                                element={<RecommendationsDashboard
-                                                    recommendations={analysisData?.recommendations}
-                                                    report={analysisData?.report}
-                                                />}
-                                            />
-                                            <Route
-                                                path="/reports"
-                                                element={<ReportsList currentReport={analysisData?.report} />}
-                                            />
-                                        </Routes>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                />
-            </Routes>
-=======
             <div className="evalix-app-root evalix-grid-bg">
-                {/* Global Top Navbar */}
                 <Header />
 
-                {/* Mobile sidebar toggle bar on narrow screens */}
                 <div className="mobile-subbar d-lg-none">
-                    <button 
+                    <button
                         className="mobile-nav-toggle-btn"
                         onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
                     >
@@ -201,40 +145,36 @@ function App() {
                     <span className="mobile-brand-title">Evalix 2.0</span>
                 </div>
 
-                {/* Main Layout Container */}
                 <div className="evalix-main-layout">
-                    {/* Fixed/Sticky Dark Glass Sidebar */}
-                    <Sidebar 
+                    <Sidebar
                         isMobileOpen={isMobileSidebarOpen}
                         setIsMobileOpen={setIsMobileSidebarOpen}
                     />
 
-                    {/* Mobile backdrop overlay */}
                     {isMobileSidebarOpen && (
-                        <div 
+                        <div
                             className="sidebar-backdrop"
                             onClick={() => setIsMobileSidebarOpen(false)}
                         ></div>
                     )}
 
-                    {/* Scrollable Main Content Area */}
                     <main className="evalix-content-area">
                         <Routes>
-                            {/* Main Upload / Hero Dashboard */}
+                            <Route path="/landing" element={<LandingPage />} />
+
                             <Route
                                 path="/"
                                 element={
-                                    <FileUploadPanel 
-                                        onAnalysisComplete={handleAnalysisComplete} 
+                                    <FileUploadPanel
+                                        onAnalysisComplete={handleAnalysisComplete}
                                     />
                                 }
                             />
 
-                            {/* View Charts */}
                             <Route
                                 path="/charts"
                                 element={
-                                    <AnalysisDashboard 
+                                    <AnalysisDashboard
                                         data={analysisData}
                                         onLoadSample={handleLoadSample}
                                     />
@@ -245,18 +185,16 @@ function App() {
                                 element={<Navigate to="/charts" replace />}
                             />
 
-                            {/* Verb Classifications Table & Filter */}
                             <Route
                                 path="/classifications"
                                 element={
-                                    <VerbClassificationsPage 
+                                    <VerbClassificationsPage
                                         data={analysisData}
                                         onLoadSample={handleLoadSample}
                                     />
                                 }
                             />
 
-                            {/* Recommendations */}
                             <Route
                                 path="/recommendations"
                                 element={
@@ -268,29 +206,21 @@ function App() {
                                 }
                             />
 
-                            {/* Excel Reports */}
                             <Route
                                 path="/reports"
-                                element={
-                                    <ReportsList 
-                                        currentReport={analysisData?.report} 
-                                    />
-                                }
+                                element={<ReportsList currentReport={analysisData?.report} />}
                             />
 
-                            {/* About Analysis Page */}
                             <Route
                                 path="/about"
                                 element={<AboutAnalysisPage />}
                             />
 
-                            {/* Fallback route to home */}
                             <Route path="*" element={<Navigate to="/" replace />} />
                         </Routes>
                     </main>
                 </div>
             </div>
->>>>>>> origin/main
         </Router>
     );
 }

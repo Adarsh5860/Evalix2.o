@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  LuLayers, 
-  LuSparkles, 
-  LuArrowRight, 
-  LuLogIn, 
-  LuShieldCheck, 
-  LuCheckCircle2, 
-  LuSun, 
-  LuMoon, 
-  LuMenu, 
-  LuX, 
-  LuMail, 
-  LuLock 
+import {
+  LuLayers,
+  LuSparkles,
+  LuArrowRight,
+  LuLogIn,
+  LuShieldCheck,
+  LuCircleCheck,
+  LuSun,
+  LuMoon,
+  LuMenu,
+  LuX,
+  LuMail,
+  LuLock
 } from 'react-icons/lu';
 import '../styles/LandingPage.scss';
 
@@ -25,7 +24,6 @@ import '../styles/LandingPage.scss';
  * - Contains placeholder hooks for auth modals, OAuth, and app navigation
  */
 const LandingPage = () => {
-  const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -68,7 +66,7 @@ const LandingPage = () => {
      */
     alert(`Placeholder Action (${authModal.mode}): Authenticating user... Proceeding to dashboard.`);
     closeAuth();
-    
+
     // In future routing, navigate directly to document upload/evaluation:
     // navigate('/upload');
   };
@@ -87,7 +85,7 @@ const LandingPage = () => {
       <header className={`landing-nav ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container-xl px-4 mx-auto">
           <div className="d-flex align-items-center justify-content-between py-3">
-            
+
             {/* Left: Brand Logo / Wordmark */}
             <div className="d-flex align-items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="logo-icon">
@@ -97,7 +95,7 @@ const LandingPage = () => {
                 <span className="fw-bold fs-4 tracking-tight" style={{ letterSpacing: '-0.03em' }}>
                   Evalix
                 </span>
-                <span className="badge rounded-pill px-2 py-1 text-xs fw-semibold" style={{ 
+                <span className="badge rounded-pill px-2 py-1 text-xs fw-semibold" style={{
                   backgroundColor: isDarkMode ? '#1e1b4b' : '#e0e7ff',
                   color: isDarkMode ? '#a5b4fc' : '#4338ca',
                   border: isDarkMode ? '1px solid #3730a3' : '1px solid #c7d2fe'
@@ -110,8 +108,8 @@ const LandingPage = () => {
             {/* Right: Actions (Theme Toggle, Login, Sign Up) */}
             <div className="d-none d-md-flex align-items-center gap-3">
               {/* Dark/Light Mode Toggle */}
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={toggleTheme}
                 className="btn btn-link text-decoration-none p-2 rounded-3 text-secondary"
                 aria-label="Toggle color theme"
@@ -120,7 +118,7 @@ const LandingPage = () => {
               </button>
 
               {/* PLACEHOLDER: Trigger Login */}
-              <button 
+              <button
                 type="button"
                 onClick={() => openAuth('login')}
                 className="btn-secondary-ghost text-sm"
@@ -129,7 +127,7 @@ const LandingPage = () => {
               </button>
 
               {/* PLACEHOLDER: Trigger Sign Up */}
-              <button 
+              <button
                 type="button"
                 onClick={() => openAuth('signup')}
                 className="btn-primary-gradient text-sm"
@@ -143,8 +141,8 @@ const LandingPage = () => {
               <button type="button" onClick={toggleTheme} className="btn btn-link text-secondary p-1">
                 {isDarkMode ? <LuSun size={20} color="#f8fafc" /> : <LuMoon size={20} color="#334155" />}
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="btn btn-link text-secondary p-1"
               >
@@ -175,10 +173,10 @@ const LandingPage = () => {
       <main className="flex-grow-1 d-flex align-items-center justify-content-center py-5 position-relative">
         <div className="container-xl px-4">
           <div className="row align-items-center g-5">
-            
+
             {/* Left Column: Eyebrow, Headline, Subheading, CTAs */}
             <div className="col-12 col-lg-7 text-center text-lg-start">
-              
+
               {/* Eyebrow Tag */}
               <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-4" style={{
                 backgroundColor: isDarkMode ? 'rgba(30, 27, 75, 0.7)' : '#eef2ff',
@@ -207,11 +205,11 @@ const LandingPage = () => {
 
               {/* Action Buttons */}
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3 mb-4">
-                
+
                 {/* Primary CTA: Get Started */}
                 {/* PLACEHOLDER: Route to Onboarding / App */}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => openAuth('signup')}
                   className="btn-primary-gradient"
                 >
@@ -221,8 +219,8 @@ const LandingPage = () => {
 
                 {/* Secondary CTA: Login */}
                 {/* PLACEHOLDER: Route to Login Modal */}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => openAuth('login')}
                   className="btn-secondary-ghost"
                 >
@@ -234,15 +232,15 @@ const LandingPage = () => {
               {/* Feature Trust Pills */}
               <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-4 text-xs text-secondary mt-3">
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <LuCircleCheck size={16} color="#10b981" />
                   <span>Bloom's Taxonomy Framework</span>
                 </div>
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <LuCircleCheck size={16} color="#10b981" />
                   <span>Semantic Vector Embeddings</span>
                 </div>
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <LuCircleCheck size={16} color="#10b981" />
                   <span>Instant Excel Audit Reports</span>
                 </div>
               </div>
@@ -252,7 +250,7 @@ const LandingPage = () => {
             {/* Right Column: Supporting Visual (SaaS Dashboard Mockup Illustration) */}
             <div className="col-12 col-lg-5">
               <div className="mockup-card">
-                
+
                 {/* Mockup Header Dots */}
                 <div className="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom" style={{ borderColor: isDarkMode ? '#1e293b' : '#f1f5f9' }}>
                   <div className="d-flex align-items-center gap-1.5">
@@ -378,16 +376,16 @@ const LandingPage = () => {
       {/* 4. AUTH MODAL (Placeholder UI for Login & Sign Up)                    */}
       {/* ===================================================================== */}
       {authModal.isOpen && (
-        <div 
+        <div
           className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1050 }}
           onClick={closeAuth}
         >
-          <div 
+          <div
             className="p-4 p-sm-5 rounded-4 position-relative"
-            style={{ 
-              maxWidth: '440px', 
-              width: '100%', 
+            style={{
+              maxWidth: '440px',
+              width: '100%',
               backgroundColor: isDarkMode ? '#0f172a' : '#ffffff',
               border: isDarkMode ? '1px solid #1e293b' : '1px solid #e2e8f0',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)'
@@ -395,9 +393,9 @@ const LandingPage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
-            <button 
-              type="button" 
-              onClick={closeAuth} 
+            <button
+              type="button"
+              onClick={closeAuth}
               className="btn btn-link position-absolute top-0 end-0 p-3 text-secondary text-decoration-none"
             >
               <LuX size={20} />
@@ -421,10 +419,10 @@ const LandingPage = () => {
                   <span className="input-group-text bg-transparent border-end-0 text-secondary" style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}>
                     <LuMail size={16} />
                   </span>
-                  <input 
-                    type="email" 
-                    required 
-                    placeholder="you@institution.edu" 
+                  <input
+                    type="email"
+                    required
+                    placeholder="you@institution.edu"
                     className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
                     style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}
                   />
@@ -437,10 +435,10 @@ const LandingPage = () => {
                   <span className="input-group-text bg-transparent border-end-0 text-secondary" style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}>
                     <LuLock size={16} />
                   </span>
-                  <input 
-                    type="password" 
-                    required 
-                    placeholder="••••••••" 
+                  <input
+                    type="password"
+                    required
+                    placeholder="••••••••"
                     className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
                     style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}
                   />
@@ -452,7 +450,7 @@ const LandingPage = () => {
               </button>
             </form>
 
-            <div className="mt-4 p-2.5 rounded-3 text-center" style={{ 
+            <div className="mt-4 p-2.5 rounded-3 text-center" style={{
               backgroundColor: isDarkMode ? 'rgba(30, 27, 75, 0.4)' : '#eef2ff',
               border: isDarkMode ? '1px solid rgba(99, 102, 241, 0.2)' : '1px solid #c7d2fe',
               fontSize: '0.75rem',
