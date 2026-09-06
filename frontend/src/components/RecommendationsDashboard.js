@@ -1,133 +1,164 @@
 // components/RecommendationsDashboard.js
 import React from 'react';
-import { Card, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import {
-    FiBookOpen, FiHeart, FiActivity, FiDownload,
-    FiCheckCircle, FiAlertCircle
+    FiBookOpen, 
+    FiHeart, 
+    FiActivity, 
+    FiDownload,
+    FiCheckCircle, 
+    FiAlertCircle,
+    FiUpload,
+    FiTrendingUp
 } from 'react-icons/fi';
+import '../styles/RecommendationsDashboard.scss';
 
-const RecommendationsDashboard = ({ recommendations, report }) => {
+const RecommendationsDashboard = ({ recommendations, report, onLoadSample }) => {
+    const navigate = useNavigate();
+
     if (!recommendations) {
         return (
-            <Card className="shadow-sm mb-4">
-                <Card.Body className="text-center py-5">
-                    <FiAlertCircle size={40} className="text-muted mb-3" />
-                    <h4>No Recommendations Available</h4>
-                    <p className="text-muted">Upload and analyze a document to see recommendations.</p>
-                </Card.Body>
-            </Card>
+            <div className="evalix-dashboard-page">
+                <div className="empty-analysis-card glass-panel text-center py-5 px-4">
+                    <div className="empty-icon-wrap">
+                        <FiAlertCircle className="empty-icon" />
+                    </div>
+                    <h2 className="empty-title">No Recommendations Available</h2>
+                    <p className="empty-desc">
+                        Upload and analyze a research paper or syllabus to receive AI-powered educational recommendations and Bloom's Taxonomy gap analyses.
+                    </p>
+                    <div className="empty-actions-row">
+                        <button className="btn-evalix-primary" onClick={() => navigate('/')}>
+                            <FiUpload className="me-2" />
+                            Upload Document
+                        </button>
+                        {onLoadSample && (
+                            <button className="btn-evalix-secondary" onClick={onLoadSample}>
+                                <FiTrendingUp className="me-2" />
+                                Load Sample Analysis
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
         );
     }
 
-    const renderDomainCard = (title, icon, content, color, borderColor) => (
-        <Card className={`shadow-sm mb-4 border-${borderColor}`}>
-            <Card.Header className={`bg-${color} text-white d-flex align-items-center`}>
-                {icon}
-                <h5 className="mb-0 ms-2">{title}</h5>
-            </Card.Header>
-            <Card.Body>
-                <p>{content}</p>
-            </Card.Body>
-        </Card>
-    );
-
     return (
-        <>
-            <Card className="shadow mb-4 border-primary">
-                <Card.Header className="bg-primary bg-gradient text-white">
-                    <h4 className="mb-0">Educational Focus Assessment</h4>
-                </Card.Header>
-                <Card.Body>
-                    <p className="lead">{recommendations.main}</p>
-                    {report && (
-                        <div className="text-end mt-3">
-                            <Button
-                                variant="outline-primary"
-                                href={report.url}
-                                className="d-inline-flex align-items-center"
-                            >
-                                <FiDownload className="me-2" />
-                                Download Full Excel Report
-                            </Button>
-                            
+        <div className="evalix-dashboard-page recommendations-page">
+            {/* Main Assessment Header Card */}
+            <div className="assessment-hero-card glass-panel mb-4">
+                <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div>
+                        <div className="header-badge mb-2">
+                            <span className="badge-sparkle">✦</span>
+                            <span>Curriculum Optimization</span>
                         </div>
-                    )}
-                </Card.Body>
-            </Card>
+                        <h2 className="assessment-title">Educational Focus Assessment</h2>
+                        <p className="assessment-lead-text">{recommendations.main}</p>
+                    </div>
 
-            <Row>
-                <Col lg={4}>
-                    {renderDomainCard(
-                        "Cognitive Domain",
-                        <FiBookOpen size={20} />,
-                        recommendations.cognitive,
-                        "primary",
-                        "primary"
+                    {report && (
+                        <a
+                            href={report.url}
+                            className="btn-evalix-primary"
+                            download={report.filename}
+                        >
+                            <FiDownload className="me-2" />
+                            Download Excel Report
+                        </a>
                     )}
-                </Col>
-                <Col lg={4}>
-                    {renderDomainCard(
-                        "Affective Domain",
-                        <FiHeart size={20} />,
-                        recommendations.affective,
-                        "danger",
-                        "danger"
-                    )}
-                </Col>
-                <Col lg={4}>
-                    {renderDomainCard(
-                        "Psychomotor Domain",
-                        <FiActivity size={20} />,
-                        recommendations.psychomotor,
-                        "success",
-                        "success"
-                    )}
-                </Col>
-            </Row>
+                </div>
+            </div>
 
-            <Card className="shadow-sm mt-3">
-                <Card.Header className="bg-light">
-                    <h5 className="mb-0">Implementation Strategies</h5>
-                </Card.Header>
-                <Card.Body>
-                    <Row>
-                        <Col md={4} className="mb-3">
-                            <h6 className="d-flex align-items-center text-primary">
-                                <FiCheckCircle className="me-2" /> For Cognitive Improvement
-                            </h6>
-                            <ul className="small">
-                                <li>Balance lower and higher order thinking activities</li>
-                                <li>Use more analysis and evaluation verbs</li>
-                                <li>Create progressive cognitive development paths</li>
-                                <li>Include synthesis activities alongside recall tasks</li>
-                            </ul>
-                        </Col>
-                        <Col md={4} className="mb-3">
-                            <h6 className="d-flex align-items-center text-danger">
-                                <FiCheckCircle className="me-2" /> For Affective Improvement
-                            </h6>
-                            <ul className="small">
-                                <li>Incorporate more emotional engagement</li>
-                                <li>Include activities that develop values</li>
-                                <li>Balance reception with internalization</li>
-                                <li>Address motivational aspects of learning</li>
-                            </ul>
-                        </Col>
-                        <Col md={4} className="mb-3">
-                            <h6 className="d-flex align-items-center text-success">
-                                <FiCheckCircle className="me-2" /> For Psychomotor Improvement
-                            </h6>
-                            <ul className="small">
-                                <li>Increase action-oriented learning tasks</li>
-                                <li>Create physical skill progression ladders</li>
-                                <li>Balance theory with hands-on activities</li>
-                                <li>Include guided practice opportunities</li>
-                            </ul>
-                        </Col>
-                    </Row>
-                </Card.Body>
-            </Card>
-        </>
+            {/* 3 Domain Specific Cards */}
+            <div className="recommendations-domain-grid mb-4">
+                {/* Cognitive */}
+                <div className="domain-rec-card glass-panel border-purple">
+                    <div className="card-rec-header">
+                        <div className="rec-icon-box purple">
+                            <FiBookOpen />
+                        </div>
+                        <h4 className="rec-title">Cognitive Domain</h4>
+                    </div>
+                    <p className="rec-body-text">{recommendations.cognitive}</p>
+                </div>
+
+                {/* Affective */}
+                <div className="domain-rec-card glass-panel border-magenta">
+                    <div className="card-rec-header">
+                        <div className="rec-icon-box magenta">
+                            <FiHeart />
+                        </div>
+                        <h4 className="rec-title">Affective Domain</h4>
+                    </div>
+                    <p className="rec-body-text">{recommendations.affective}</p>
+                </div>
+
+                {/* Psychomotor */}
+                <div className="domain-rec-card glass-panel border-cyan">
+                    <div className="card-rec-header">
+                        <div className="rec-icon-box cyan">
+                            <FiActivity />
+                        </div>
+                        <h4 className="rec-title">Psychomotor Domain</h4>
+                    </div>
+                    <p className="rec-body-text">{recommendations.psychomotor}</p>
+                </div>
+            </div>
+
+            {/* Implementation Strategies Card */}
+            <div className="implementation-card glass-panel">
+                <div className="impl-header mb-4">
+                    <h3 className="impl-title">Recommended Implementation Strategies</h3>
+                    <p className="impl-sub">Concrete pedagogical adjustments based on taxonomy findings</p>
+                </div>
+
+                <div className="strategies-grid">
+                    {/* Cognitive Strategies */}
+                    <div className="strategy-col">
+                        <div className="strategy-header purple-text">
+                            <FiCheckCircle className="strategy-check" />
+                            <span>For Cognitive Balance</span>
+                        </div>
+                        <ul className="strategy-list">
+                            <li>Balance lower-order and higher-order thinking tasks.</li>
+                            <li>Introduce explicit analysis and evaluation inquiry verbs.</li>
+                            <li>Structure progressive cognitive development trajectories.</li>
+                            <li>Pair synthesis activities with foundational recall tasks.</li>
+                        </ul>
+                    </div>
+
+                    {/* Affective Strategies */}
+                    <div className="strategy-col">
+                        <div className="strategy-header magenta-text">
+                            <FiCheckCircle className="strategy-check" />
+                            <span>For Affective Engagement</span>
+                        </div>
+                        <ul className="strategy-list">
+                            <li>Incorporate reflective and value-driven learning tasks.</li>
+                            <li>Foster collaborative discussions that develop personal attitudes.</li>
+                            <li>Balance reception of content with ethical internalization.</li>
+                            <li>Address motivation, ownership, and student agency.</li>
+                        </ul>
+                    </div>
+
+                    {/* Psychomotor Strategies */}
+                    <div className="strategy-col">
+                        <div className="strategy-header cyan-text">
+                            <FiCheckCircle className="strategy-check" />
+                            <span>For Psychomotor Action</span>
+                        </div>
+                        <ul className="strategy-list">
+                            <li>Increase hands-on and kinesthetic execution tasks.</li>
+                            <li>Create structured physical and procedural skill progression ladders.</li>
+                            <li>Bridge theoretical instruction with concrete experimentation.</li>
+                            <li>Provide guided iterative practice opportunities with rapid feedback.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 

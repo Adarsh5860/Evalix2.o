@@ -1,0 +1,241 @@
+// styles/AboutAnalysis.scss
+@import './designTokens.scss';
+
+.about-analysis-page {
+  padding-top: 1.5rem;
+
+  .about-section-header {
+    margin-bottom: 1.75rem;
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      font-family: 'Plus Jakarta Sans', var(--font-sans);
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+  }
+
+  /* Domains Grid */
+  .domains-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+
+    .about-domain-card {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+
+      &.border-purple { border-color: rgba(124, 58, 237, 0.3); }
+      &.border-magenta { border-color: rgba(236, 72, 153, 0.3); }
+      &.border-cyan { border-color: rgba(34, 211, 238, 0.3); }
+
+      .domain-card-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 1rem;
+
+        .domain-icon-box {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+
+          &.purple {
+            background: rgba(124, 58, 237, 0.2);
+            color: #C084FC;
+            border: 1px solid rgba(124, 58, 237, 0.4);
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
+          }
+
+          &.magenta {
+            background: rgba(236, 72, 153, 0.2);
+            color: #F472B6;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+          }
+
+          &.cyan {
+            background: rgba(34, 211, 238, 0.2);
+            color: #38BDF8;
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+          }
+        }
+
+        .domain-author {
+          font-size: 0.72rem;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
+        .domain-name {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 2px 0 0;
+        }
+      }
+
+      .domain-description {
+        font-size: 0.88rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        flex: 1;
+      }
+
+      .levels-ladder {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 12px;
+
+        .ladder-step {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 0.82rem;
+          color: var(--text-secondary);
+          padding: 4px 8px;
+          border-radius: 6px;
+
+          .step-num {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            width: 14px;
+          }
+
+          &.highlight-purple {
+            background: rgba(124, 58, 237, 0.25);
+            color: #FFFFFF;
+            font-weight: 600;
+            border: 1px solid rgba(124, 58, 237, 0.4);
+          }
+
+          &.highlight-magenta {
+            background: rgba(236, 72, 153, 0.25);
+            color: #FFFFFF;
+            font-weight: 600;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+          }
+
+          &.highlight-cyan {
+            background: rgba(34, 211, 238, 0.25);
+            color: #FFFFFF;
+            font-weight: 600;
+            border: 1px solid rgba(34, 211, 238, 0.4);
+          }
+        }
+      }
+    }
+  }
+
+  /* Pipeline Steps Grid */
+  .pipeline-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+
+    .pipeline-step-card {
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.25s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+        border-color: rgba(124, 58, 237, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(124, 58, 237, 0.2);
+      }
+
+      .step-badge {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        background: rgba(124, 58, 237, 0.15);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        color: #C084FC;
+        padding: 2px 8px;
+        border-radius: 6px;
+        margin-bottom: 0.75rem;
+      }
+
+      .step-icon-wrap {
+        font-size: 1.5rem;
+        color: #38BDF8;
+        margin-bottom: 0.75rem;
+      }
+
+      .step-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 0.5rem;
+      }
+
+      .step-text {
+        font-size: 0.82rem;
+        line-height: 1.5;
+        color: var(--text-muted);
+        margin: 0;
+      }
+    }
+  }
+
+  /* CTA Card */
+  .about-cta-card {
+    background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.15) 0%, rgba(10, 15, 31, 0.8) 100%);
+    border: 1px solid var(--border-glow);
+
+    .cta-heading {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .cta-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .about-analysis-page {
+    .domains-overview-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pipeline-steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .about-analysis-page {
+    .pipeline-steps-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

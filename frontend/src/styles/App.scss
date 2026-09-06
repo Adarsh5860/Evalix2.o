@@ -1,87 +1,91 @@
 // styles/App.scss
-@import "~bootstrap/scss/bootstrap";
+@import './designTokens.scss';
 
-body {
-    background-color: #f8f9fa;
+.evalix-app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-darkest);
+  color: var(--text-primary);
+  overflow-x: hidden;
 }
 
-.app-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+/* Mobile subbar for small viewports */
+.mobile-subbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(10, 15, 31, 0.9);
+  border-bottom: 1px solid var(--border-subtle);
 
-.main-container {
-    flex: 1;
-    padding: 20px;
-}
-
-.sidebar-container {
-    background-color: white;
-    border-right: 1px solid #e9ecef;
-    min-height: calc(100vh - 60px);
-}
-
-.content-container {
-    padding: 20px;
-}
-
-.analysis-loader {
-    display: flex;
-    flex-direction: column;
+  .mobile-nav-toggle-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 40px;
-    text-align: center;
+    gap: 8px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(124, 58, 237, 0.35);
+    color: #C084FC;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
 
-    .spinner {
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        border-left-color: #09d;
-        animation: spin 1s linear infinite;
-        margin-bottom: 20px;
-    }
-
-    .progress-bar {
-        width: 100%;
-        max-width: 300px;
-        height: 6px;
-        background: #e9ecef;
-        border-radius: 3px;
-        margin-top: 20px;
-        overflow: hidden;
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #09d, #87CEFA);
-            width: 70%;
-            animation: progress 1.5s ease infinite;
-        }
-    }
+  .mobile-brand-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+/* Main Layout Grid (Sidebar + Content) */
+.evalix-main-layout {
+  display: flex;
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 65px);
 }
 
-@keyframes progress {
-    0% {
-        width: 0%;
-    }
+/* Mobile backdrop */
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1040;
+}
 
-    50% {
-        width: 70%;
-    }
+/* Content Area */
+.evalix-content-area {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+}
 
-    100% {
-        width: 100%;
-    }
+@media (max-width: 768px) {
+  .evalix-content-area {
+    padding: 1rem 0.75rem;
+  }
+}
+
+/* Global utility animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
 }

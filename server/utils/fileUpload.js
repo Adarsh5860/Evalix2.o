@@ -14,14 +14,17 @@ const storage = multer.diskStorage({
 
 // File filter
 const fileFilter = (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const validExtensions = ['.pdf', '.docx', '.doc', '.txt'];
     const validTypes = [
         'application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
         'application/msword', // doc
-        'text/plain'
+        'text/plain',
+        'application/octet-stream'
     ];
 
-    if (validTypes.includes(file.mimetype)) {
+    if (validExtensions.includes(ext) || validTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
         cb(new Error('Invalid file type. Only PDF, DOC, DOCX, and TXT files are allowed.'), false);

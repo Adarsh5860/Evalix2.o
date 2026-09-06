@@ -1,17 +1,25 @@
-// components/ReportsList.js - Updated version
-import React, { useState } from 'react';
-import { Card, Button, Spinner, ListGroup } from 'react-bootstrap';
-import { FiDownload, FiFile, FiDatabase, FiAlertCircle } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiDownload, FiFileText, FiDatabase, FiAlertCircle, FiClock, FiHardDrive } from 'react-icons/fi';
+import { getReportsList, downloadReportFile } from '../services/api';
+import '../styles/ReportsList.scss';
 
 const ReportsList = ({ currentReport }) => {
-    const [loading, setLoading] = useState(false);
+    const [reports, setReports] = useState([]);
+    const [downloading, setDownloading] = useState(null);
     const [error, setError] = useState(null);
 
-    // Format file size in KB or MB
+    useEffect(() => {
+        getReportsList()
+            .then(res => {
+                if (res?.data?.reports) {
+                    setReports(res.data.reports);
+                }
+            })
+            .catch(err => console.warn('Could not load reports list:', err));
+    }, [currentReport]);
 
-    // Format date from ISO string to readable format
     const formatDate = (isoString) => {
-        if (!isoString) return 'Unknown date';
+        if (!isoString) return 'Recent';
         const date = new Date(isoString);
         return date.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -22,125 +30,152 @@ const ReportsList = ({ currentReport }) => {
         });
     };
 
-    // Handle file download to force download instead of navigation
     const handleDownload = async (url, filename) => {
         try {
-            setLoading(true);
-
-            // Use fetch to get the file as a blob
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Download failed');
-
-            const blob = await response.blob();
-
-            // Create an object URL for the blob
-            const objectUrl = URL.createObjectURL(blob);
-
-            // Create a download link and trigger click
-            const downloadLink = document.createElement('a');
-            downloadLink.href = objectUrl;
-            downloadLink.download = filename || 'report.xlsx';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-
-            // Clean up the URL object
-            URL.revokeObjectURL(objectUrl);
-
+            setDownloading(filename);
+            setError(null);
+            await downloadReportFile(url, filename);
         } catch (err) {
             setError(`Failed to download: ${err.message}`);
         } finally {
-            setLoading(false);
+            setDownloading(null);
         }
     };
 
-    if (loading) {
-        return (
-            <Card className="shadow-sm mb-4">
-                <Card.Body className="text-center py-4">
-                    <Spinner animation="border" variant="primary" />
-                    <p className="mt-3 text-muted">Processing download...</p>
-                </Card.Body>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card className="shadow-sm border-danger mb-4">
-                <Card.Body className="text-center py-4">
-                    <FiAlertCircle size={32} className="text-danger mb-2" />
-                    <h5 className="text-danger">Error</h5>
-                    <p>{error}</p>
-                    <Button variant="outline-primary" onClick={() => setError(null)}>Dismiss</Button>
-                </Card.Body>
-            </Card>
-        );
-    }
-
     return (
-        <Card className="shadow-sm">
-            <Card.Header className="bg-white">
-                <h5 className="mb-0">Available Reports</h5>
-            </Card.Header>
-            <ListGroup variant="flush">
-                {/* Current Analysis Report */}
-                {currentReport ? (
-                    <ListGroup.Item>
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex align-items-center">
-                                <FiFile size={20} className="text-primary me-3" />
+        <div className="evalix-dashboard-page reports-page">
+            <div className="page-header-block mb-4">
+                <div className="header-badge">
+                    <span className="badge-sparkle">✦</span>
+                    <span>Excel Exports & Historical Audits</span>
+                </div>
+                <h1 className="header-title">
+                    Analysis <span className="gradient-text">Reports</span>
+                </h1>
+                <p className="header-subtitle">
+                    Download detailed multi-tab Excel workbooks containing complete verb inventories, domain counts, and longitudinal analysis logs.
+                </p>
+            </div>
+
+            {error && (
+                <div className="evalix-alert-banner alert-error mb-4">
+                    <FiAlertCircle className="alert-icon" />
+                    <div className="alert-message">{error}</div>
+                    <button className="alert-close-btn" onClick={() => setError(null)}>×</button>
+                </div>
+            )}
+
+            {/* Master History Report Hero Card */}
+            <div className="master-report-card glass-panel mb-4">
+                <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div className="d-flex align-items-center gap-3">
+                        <div className="report-icon-box green">
+                            <FiDatabase />
+                        </div>
+                        <div>
+                            <span className="report-badge master">Master Repository</span>
+                            <h3 className="report-title">Longitudinal Analysis History Report</h3>
+                            <p className="report-desc">
+                                Cumulative spreadsheet consolidating metrics from every analyzed paper in the workspace.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button
+                        className="btn-evalix-primary"
+                        onClick={() => handleDownload('/api/papers/master-report', 'analysis_history.xlsx')}
+                        disabled={downloading === 'analysis_history.xlsx'}
+                    >
+                        <FiDownload className="me-2" />
+                        {downloading === 'analysis_history.xlsx' ? 'Downloading...' : 'Download Master History'}
+                    </button>
+                </div>
+            </div>
+
+            {/* Individual Available Reports */}
+            <div className="available-reports-card glass-panel">
+                <div className="card-header-bar">
+                    <h3 className="section-title">Individual Paper Reports</h3>
+                    <span className="reports-count-pill">{reports.length} Reports Found</span>
+                </div>
+
+                <div className="reports-list-wrap">
+                    {/* Current Report */}
+                    {currentReport && (
+                        <div className="report-row-item active-current">
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="report-icon-box purple">
+                                    <FiFileText />
+                                </div>
                                 <div>
-                                    <div className="fw-bold">Current Analysis Report</div>
-                                    <small className="text-muted">
-                                        Generated on {formatDate(currentReport.created || new Date().toISOString())}
-                                    </small>
+                                    <div className="report-name-row">
+                                        <span className="report-file-name">{currentReport.filename}</span>
+                                        <span className="current-badge">Current Analysis</span>
+                                    </div>
+                                    <div className="report-meta-text">
+                                        <FiClock className="me-1" />
+                                        <span>Generated on {formatDate(currentReport.created || new Date().toISOString())}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <Button
-                                variant="outline-primary"
-                                size="sm"
-                                onClick={() => handleDownload(currentReport.url, "verb_analysis_report.xlsx")}
-                                className="d-flex align-items-center"
-                                disabled={loading}
+                            <button
+                                className="btn-evalix-secondary"
+                                onClick={() => handleDownload(currentReport.url, currentReport.filename)}
+                                disabled={downloading === currentReport.filename}
                             >
-                                <FiDownload className="me-1" />
-                                Download
-                            </Button>
+                                <FiDownload className="me-2" />
+                                {downloading === currentReport.filename ? 'Downloading...' : 'Download Excel'}
+                            </button>
                         </div>
-                    </ListGroup.Item>
-                ) : (
-                    <ListGroup.Item className="text-muted text-center py-4">
-                        No current report available
-                    </ListGroup.Item>
-                )}
+                    )}
 
-                {/* Master Analysis History Report */}
-                <ListGroup.Item>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className="d-flex align-items-center">
-                            <FiDatabase size={20} className="text-success me-3" />
-                            <div>
-                                <div className="fw-bold">Analysis History Report</div>
-                                <small className="text-muted">
-                                    Complete history of all document analyses
-                                </small>
+                    {/* Historical Reports */}
+                    {reports && reports.length > 0 ? (
+                        reports
+                            .filter(r => !currentReport || r.filename !== currentReport.filename)
+                            .map((rep, idx) => (
+                                <div key={idx} className="report-row-item">
+                                    <div className="d-flex align-items-center gap-3">
+                                        <div className="report-icon-box blue">
+                                            <FiFileText />
+                                        </div>
+                                        <div>
+                                            <span className="report-file-name">{rep.filename}</span>
+                                            <div className="report-meta-text">
+                                                <FiClock className="me-1" />
+                                                <span>{formatDate(rep.created)}</span>
+                                                {rep.size && (
+                                                    <>
+                                                        <span className="meta-sep">•</span>
+                                                        <FiHardDrive className="me-1" />
+                                                        <span>{(rep.size / 1024).toFixed(1)} KB</span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="btn-evalix-secondary"
+                                        onClick={() => handleDownload(rep.url || `/api/papers/reports/${rep.filename}`, rep.filename)}
+                                        disabled={downloading === rep.filename}
+                                    >
+                                        <FiDownload className="me-2" />
+                                        {downloading === rep.filename ? 'Downloading...' : 'Download'}
+                                    </button>
+                                </div>
+                            ))
+                    ) : (
+                        !currentReport && (
+                            <div className="no-reports-placeholder text-center py-5">
+                                <FiFileText className="empty-icon text-muted mb-2" style={{ fontSize: '2rem' }} />
+                                <div className="text-secondary">No previous reports found.</div>
+                                <small className="text-muted">Analyze your first paper to generate downloadable reports.</small>
                             </div>
-                        </div>
-                        <Button
-                            variant="outline-success"
-                            size="sm"
-                            onClick={() => handleDownload("/api/papers/master-report", "verb_taxonomy_history.xlsx")}
-                            className="d-flex align-items-center"
-                            disabled={loading}
-                        >
-                            <FiDownload className="me-1" />
-                            Download
-                        </Button>
-                    </div>
-                </ListGroup.Item>
-            </ListGroup>
-        </Card>
+                        )
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };
 

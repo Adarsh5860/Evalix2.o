@@ -1,0 +1,445 @@
+// styles/ResearchPaperVisual.scss
+@import './designTokens.scss';
+
+.research-paper-visual-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1rem 0;
+
+  /* Ambient radial glows */
+  .visual-glow {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+  }
+
+  .visual-glow-purple {
+    top: 10%;
+    left: 10%;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.45) 0%, transparent 70%);
+  }
+
+  .visual-glow-blue {
+    bottom: 20%;
+    right: 5%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  }
+
+  /* Scene wrapper */
+  .visual-scene {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  /* Central Floating Main Card */
+  .main-paper-card {
+    position: relative;
+    width: 290px;
+    background: rgba(13, 20, 41, 0.85);
+    border: 1px solid rgba(124, 58, 237, 0.35);
+    border-radius: 18px;
+    padding: 1.25rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.6),
+      0 0 25px rgba(124, 58, 237, 0.25),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    z-index: 2;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba(124, 58, 237, 0.55);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.7),
+        0 0 35px rgba(124, 58, 237, 0.4);
+    }
+
+    .paper-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .paper-tag {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+
+        .paper-icon {
+          color: #A855F7;
+          font-size: 1.1rem;
+        }
+      }
+
+      .paper-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22D3EE;
+        box-shadow: 0 0 10px #22D3EE;
+      }
+    }
+
+    .paper-body {
+      .paper-title-placeholder {
+        margin-bottom: 0.75rem;
+
+        .line-title-1 {
+          height: 10px;
+          background: linear-gradient(90deg, #CBD5E1 0%, rgba(203, 213, 225, 0.4) 100%);
+          border-radius: 5px;
+          margin-bottom: 6px;
+          width: 85%;
+        }
+
+        .line-title-2 {
+          height: 10px;
+          background: linear-gradient(90deg, rgba(203, 213, 225, 0.4) 0%, rgba(203, 213, 225, 0.15) 100%);
+          border-radius: 5px;
+          width: 55%;
+        }
+      }
+
+      .paper-meta-pills {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 0.85rem;
+
+        .meta-pill {
+          font-size: 0.68rem;
+          padding: 2px 8px;
+          border-radius: 6px;
+          font-weight: 600;
+
+          &.pill-purple {
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid rgba(124, 58, 237, 0.35);
+            color: #C084FC;
+          }
+
+          &.pill-cyan {
+            background: rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            color: #38BDF8;
+          }
+        }
+      }
+
+      .paper-lines {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 0.85rem;
+
+        .line {
+          height: 5px;
+          border-radius: 3px;
+          background: rgba(255, 255, 255, 0.08);
+
+          &.short {
+            width: 50%;
+          }
+
+          &.medium {
+            width: 75%;
+          }
+
+          &.line-highlight {
+            height: auto;
+            background: none;
+            display: flex;
+            gap: 4px;
+            margin: 4px 0;
+
+            .verb-tag {
+              font-size: 0.65rem;
+              padding: 2px 6px;
+              border-radius: 4px;
+              background: rgba(59, 130, 246, 0.18);
+              border: 1px solid rgba(59, 130, 246, 0.3);
+              color: #93C5FD;
+              font-family: monospace;
+            }
+          }
+        }
+      }
+    }
+
+    .paper-footer {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 0.6rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+      .paper-metric {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+          font-size: 0.65rem;
+          color: var(--text-muted);
+        }
+
+        .value {
+          font-size: 0.85rem;
+          font-weight: 700;
+          color: var(--text-primary);
+        }
+      }
+    }
+  }
+
+  /* Satellite Floating Badges */
+  .satellite-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(10, 15, 31, 0.9);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    padding: 8px 14px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+    z-index: 3;
+    transition: all 0.3s ease;
+
+    .satellite-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+
+      &.purple {
+        background: rgba(124, 58, 237, 0.2);
+        color: #A855F7;
+        box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+      }
+
+      &.blue {
+        background: rgba(59, 130, 246, 0.2);
+        color: #3B82F6;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+      }
+
+      &.cyan {
+        background: rgba(34, 211, 238, 0.2);
+        color: #22D3EE;
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+      }
+    }
+
+    .satellite-text {
+      display: flex;
+      flex-direction: column;
+
+      .sat-title {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .sat-sub {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+      }
+    }
+
+    &.satellite-top-left {
+      top: 25px;
+      left: 10px;
+    }
+
+    &.satellite-top-right {
+      top: 35px;
+      right: 10px;
+    }
+
+    &.satellite-bottom {
+      bottom: 25px;
+      right: 35px;
+    }
+  }
+
+  /* Floating Animation keyframes */
+  .animate-float-main {
+    animation: floatMain 6s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: floatSat1 5s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: floatSat2 6.5s ease-in-out infinite 0.5s;
+  }
+
+  .animate-float-reverse {
+    animation: floatSat3 5.5s ease-in-out infinite 1s;
+  }
+
+  @keyframes floatMain {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-8px) rotate(0.5deg);
+    }
+  }
+
+  @keyframes floatSat1 {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes floatSat2 {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-9px);
+    }
+  }
+
+  @keyframes floatSat3 {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+
+  /* Quote wrap */
+  .product-quote-wrap {
+    margin: 1.5rem 0 1.25rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+
+    .product-quote {
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .quote-underline {
+      width: 140px;
+      height: 3px;
+      background: var(--gradient-horizontal);
+      margin: 0.6rem auto 0;
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.6);
+    }
+  }
+
+  /* Statistics Glass Card */
+  .visual-stats-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1.25rem 1rem;
+    background: rgba(10, 15, 31, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+
+    .stat-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .stat-number {
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 4px;
+        font-family: 'Plus Jakarta Sans', var(--font-sans);
+      }
+
+      .stat-label-primary {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .stat-label-sub {
+        font-size: 0.74rem;
+        color: var(--text-muted);
+      }
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .research-paper-visual-container {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .research-paper-visual-container {
+    .visual-scene {
+      height: 320px;
+    }
+    .main-paper-card {
+      width: 250px;
+    }
+    .satellite-card {
+      padding: 6px 10px;
+      .sat-sub {
+        font-size: 0.72rem;
+      }
+    }
+  }
+}
