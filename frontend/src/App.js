@@ -9,6 +9,7 @@ import FileUploadPanel from './components/FileUploadPanel';
 import AnalysisDashboard from './components/AnalysisDashboard';
 import RecommendationsDashboard from './components/RecommendationsDashboard';
 import ReportsList from './components/ReportsList';
+import LandingPage from './components/LandingPage';
 // App.js - Update
 function App() {
     const [analysisData, setAnalysisData] = useState(null);
@@ -25,39 +26,50 @@ function App() {
 
     return (
         <Router>
-            <div className="app-wrapper">
-                <Header />
-                <div className="main-container">
-                    <div className="d-flex">
-                        <div className="sidebar-container border-end">
-                            <Sidebar />
+            <Routes>
+                {/* Landing Page: Screen 1 */}
+                <Route path="/landing" element={<LandingPage />} />
+
+                {/* Main App Screens */}
+                <Route
+                    path="/*"
+                    element={
+                        <div className="app-wrapper">
+                            <Header />
+                            <div className="main-container">
+                                <div className="d-flex">
+                                    <div className="sidebar-container border-end">
+                                        <Sidebar />
+                                    </div>
+                                    <div className="content-container p-4 flex-grow-1">
+                                        <Routes>
+                                            <Route
+                                                path="/"
+                                                element={<FileUploadPanel onAnalysisComplete={handleAnalysisComplete} />}
+                                            />
+                                            <Route
+                                                path="/analysis"
+                                                element={<AnalysisDashboard data={analysisData} />}
+                                            />
+                                            <Route
+                                                path="/recommendations"
+                                                element={<RecommendationsDashboard
+                                                    recommendations={analysisData?.recommendations}
+                                                    report={analysisData?.report}
+                                                />}
+                                            />
+                                            <Route
+                                                path="/reports"
+                                                element={<ReportsList currentReport={analysisData?.report} />}
+                                            />
+                                        </Routes>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="content-container p-4 flex-grow-1">
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={<FileUploadPanel onAnalysisComplete={handleAnalysisComplete} />}
-                                />
-                                <Route
-                                    path="/analysis"
-                                    element={<AnalysisDashboard data={analysisData} />}
-                                />
-                                <Route
-                                    path="/recommendations"
-                                    element={<RecommendationsDashboard
-                                        recommendations={analysisData?.recommendations}
-                                        report={analysisData?.report}
-                                    />}
-                                />
-                                <Route
-                                    path="/reports"
-                                    element={<ReportsList currentReport={analysisData?.report} />}
-                                />
-                            </Routes>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    }
+                />
+            </Routes>
         </Router>
     );
 }

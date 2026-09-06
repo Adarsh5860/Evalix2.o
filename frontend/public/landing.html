@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evalix 2.0 — Bloom's Taxonomy Evaluation</title>
+  <meta name="description" content="Upload a syllabus, exam, or rubric. Evalix maps every action verb to Bloom's Taxonomy and shows you where cognitive demand is strong, weak, or missing." />
+
+  <!-- Google Fonts: Source Serif 4 (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,700;1,8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            paper:      '#F6F1E7',
+            ink:        '#1C2333',
+            rule:       '#C9BFA8',
+            'mark-red':   '#B23A2E',
+            'mark-green': '#4B6B3A',
+            'd-bg':     '#14161F',
+            'd-text':   '#EDE6D6',
+            'd-rule':   '#2A2D3A',
+            'd-surface':'#1C1F2E',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ------------------------------------------------------------------ */
+    /* Hand-drawn circle around verbs (irregular border-radius)           */
+    /* ------------------------------------------------------------------ */
+    .circled-red,
+    .circled-green {
+      position: relative;
+      display: inline;
+      white-space: nowrap;
+    }
+    .circled-red::after,
+    .circled-green::after {
+      content: '';
+      position: absolute;
+      inset: -3px -5px;
+      border-width: 1.5px;
+      border-style: solid;
+      border-radius: 55% 42% 48% 52% / 45% 55% 48% 50%;
+      transform: rotate(-1.5deg);
+      pointer-events: none;
+    }
+    .circled-red::after  { border-color: #B23A2E; }
+    .circled-green::after { border-color: #4B6B3A; }
+
+    /* ------------------------------------------------------------------ */
+    /* Bloom's pyramid: one-time reveal animation, bottom → top           */
+    /* ------------------------------------------------------------------ */
+    .pyramid-level {
+      opacity: 0.12;
+      animation: revealLevel 0.5s ease-out forwards;
+    }
+    .pyramid-level:nth-child(1) { animation-delay: 0.3s; }
+    .pyramid-level:nth-child(2) { animation-delay: 0.6s; }
+    .pyramid-level:nth-child(3) { animation-delay: 0.9s; }
+    .pyramid-level:nth-child(4) { animation-delay: 1.2s; }
+    .pyramid-level:nth-child(5) { animation-delay: 1.5s; }
+    .pyramid-level:nth-child(6) { animation-delay: 1.8s; }
+
+    @keyframes revealLevel {
+      to { opacity: 1; }
+    }
+
+    /* Respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .pyramid-level {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Ruled-paper lines on the document mockup                           */
+    /* ------------------------------------------------------------------ */
+    .ruled-lines {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        #C9BFA8 27px,
+        #C9BFA8 28px
+      );
+    }
+    .dark .ruled-lines {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        #2A2D3A 27px,
+        #2A2D3A 28px
+      );
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Stamp: rotated "EVALUATED" mark in corner                          */
+    /* ------------------------------------------------------------------ */
+    .stamp {
+      transform: rotate(-8deg);
+      border: 2px solid #B23A2E;
+      color: #B23A2E;
+      padding: 4px 14px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      border-radius: 3px;
+    }
+    .dark .stamp {
+      border-color: #D4685E;
+      color: #D4685E;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased bg-paper dark:bg-d-bg text-ink dark:text-d-text min-h-screen flex flex-col transition-colors duration-300 selection:bg-mark-red/20 selection:text-mark-red dark:selection:bg-mark-red/30">
+
+  <!-- ==================================================================== -->
+  <!-- 1. NAVBAR                                                            -->
+  <!-- ==================================================================== -->
+  <header id="navbar" class="sticky top-0 z-50 w-full bg-paper dark:bg-d-bg border-b border-rule dark:border-d-rule transition-colors duration-300">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Left: Wordmark -->
+        <a href="#" class="flex items-baseline gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red rounded px-1 group" aria-label="Evalix 2.0 Home">
+          <span class="font-serif text-2xl font-bold tracking-tight text-ink dark:text-d-text">Evalix</span>
+          <span class="text-[0.65rem] font-semibold tracking-wider uppercase px-1.5 py-0.5 border border-rule dark:border-d-rule text-rule dark:text-d-rule rounded-sm">2.0</span>
+        </a>
+
+        <!-- Right: Desktop actions -->
+        <div class="hidden sm:flex items-center gap-3">
+          <!-- Theme toggle -->
+          <button id="themeToggle" type="button" aria-label="Toggle color theme"
+            class="p-2 rounded-md text-ink/50 dark:text-d-text/50 hover:text-ink dark:hover:text-d-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red">
+            <i id="iconSun" data-lucide="sun" class="w-[18px] h-[18px] hidden"></i>
+            <i id="iconMoon" data-lucide="moon" class="w-[18px] h-[18px]"></i>
+          </button>
+
+          <!-- Login -->
+          <button type="button" onclick="openAuth('login')"
+            class="px-4 py-1.5 text-sm font-medium border border-rule dark:border-d-rule text-ink dark:text-d-text hover:border-ink dark:hover:border-d-text rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red">
+            Log in
+          </button>
+
+          <!-- Sign Up -->
+          <button type="button" onclick="openAuth('signup')"
+            class="px-4 py-1.5 text-sm font-medium bg-ink dark:bg-d-text text-paper dark:text-d-bg rounded-md hover:bg-ink/85 dark:hover:bg-d-text/85 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red">
+            Sign up
+          </button>
+        </div>
+
+        <!-- Mobile controls -->
+        <div class="flex items-center gap-1 sm:hidden">
+          <button id="mobileTheme" type="button" aria-label="Toggle color theme"
+            class="p-2 text-ink/50 dark:text-d-text/50">
+            <i data-lucide="sun" class="w-[18px] h-[18px] hidden dark:block"></i>
+            <i data-lucide="moon" class="w-[18px] h-[18px] dark:hidden"></i>
+          </button>
+          <button id="mobileMenuBtn" type="button" aria-label="Open menu"
+            class="p-2 text-ink/70 dark:text-d-text/70">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu dropdown -->
+      <div id="mobileMenu" class="hidden sm:hidden pb-4 space-y-2">
+        <button type="button" onclick="openAuth('login')"
+          class="block w-full py-2 text-center text-sm font-medium border border-rule dark:border-d-rule rounded-md">
+          Log in
+        </button>
+        <button type="button" onclick="openAuth('signup')"
+          class="block w-full py-2 text-center text-sm font-medium bg-ink dark:bg-d-text text-paper dark:text-d-bg rounded-md">
+          Sign up
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ==================================================================== -->
+  <!-- 2. HERO                                                              -->
+  <!-- ==================================================================== -->
+  <main class="flex-grow flex items-center">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-16 lg:py-24 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- Left: Copy ------------------------------------------------- -->
+        <div class="lg:col-span-5 text-center lg:text-left">
+
+          <h1 class="font-serif text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-[1.15] tracking-tight mb-6 text-ink dark:text-d-text">
+            Grade like you<br />read every&nbsp;line.
+          </h1>
+
+          <p class="text-base sm:text-lg leading-relaxed text-ink/70 dark:text-d-text/70 mb-8 max-w-md mx-auto lg:mx-0">
+            Upload a syllabus, exam paper, or rubric. Evalix extracts every action verb, maps it to Bloom's Taxonomy, and shows you where cognitive demand is strong, weak, or missing&nbsp;— in&nbsp;seconds.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+            <!-- Primary CTA -->
+            <button type="button" onclick="openAuth('signup')"
+              class="px-6 py-2.5 text-sm font-semibold bg-ink dark:bg-d-text text-paper dark:text-d-bg rounded-md hover:bg-ink/85 dark:hover:bg-d-text/85 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red">
+              Get started
+            </button>
+            <!-- Secondary CTA -->
+            <button type="button" onclick="document.getElementById('samplePaper').scrollIntoView({behavior:'smooth'})"
+              class="px-6 py-2.5 text-sm font-semibold border border-rule dark:border-d-rule text-ink/80 dark:text-d-text/80 rounded-md hover:border-ink dark:hover:border-d-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red">
+              See a sample grade
+            </button>
+          </div>
+
+          <!-- What it checks — plain list -->
+          <ul class="text-sm text-ink/55 dark:text-d-text/55 space-y-1.5 max-w-sm mx-auto lg:mx-0">
+            <li class="flex items-start gap-2">
+              <span class="mt-0.5 w-4 h-4 flex-shrink-0 border border-mark-green/60 rounded-sm flex items-center justify-center text-mark-green text-[10px]">✓</span>
+              <span>Verb-level cognitive demand (all 6 Bloom's levels)</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="mt-0.5 w-4 h-4 flex-shrink-0 border border-mark-green/60 rounded-sm flex items-center justify-center text-mark-green text-[10px]">✓</span>
+              <span>Coverage across cognitive, affective &amp; psychomotor domains</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="mt-0.5 w-4 h-4 flex-shrink-0 border border-mark-green/60 rounded-sm flex items-center justify-center text-mark-green text-[10px]">✓</span>
+              <span>Gap analysis with actionable verb suggestions</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: Annotated Document Visual ----------------------------- -->
+        <div class="lg:col-span-7 flex justify-center" id="samplePaper">
+          <div class="w-full max-w-xl relative">
+
+            <!-- The "paper" -->
+            <div class="ruled-lines bg-white dark:bg-d-surface border border-rule/60 dark:border-d-rule/60 shadow-[4px_4px_0_0_rgba(201,191,168,0.3)] dark:shadow-[4px_4px_0_0_rgba(42,45,58,0.5)] relative">
+
+              <!-- Red margin line -->
+              <div class="absolute top-0 bottom-0 left-[52px] w-[1.5px] bg-mark-red/30 dark:bg-mark-red/20"></div>
+
+              <!-- Paper content area -->
+              <div class="pl-[68px] pr-5 sm:pr-8 py-6 space-y-6 text-sm leading-7">
+
+                <!-- Document header -->
+                <div class="pb-2">
+                  <p class="font-semibold text-ink dark:text-d-text text-xs uppercase tracking-widest text-ink/40 dark:text-d-text/40 mb-1">Course Evaluation — CS 301: Data Structures</p>
+                  <p class="text-ink/35 dark:text-d-text/35 text-xs">Mid-Semester Examination · 60 marks · 90 min</p>
+                </div>
+
+                <!-- Q1 -->
+                <div>
+                  <p class="text-ink/80 dark:text-d-text/80">
+                    <span class="font-semibold text-ink dark:text-d-text">Q1.</span>
+                    <span class="circled-red"><strong>Define</strong></span> the properties of a balanced binary search tree. <span class="text-ink/40 dark:text-d-text/40">[10 marks]</span>
+                  </p>
+                  <!-- Margin annotation -->
+                  <p class="mt-1 text-xs text-mark-red font-medium italic pl-1 border-l-2 border-mark-red/40">
+                    Remember level — consider "compare" or "analyze"
+                  </p>
+                </div>
+
+                <!-- Q3 -->
+                <div>
+                  <p class="text-ink/80 dark:text-d-text/80">
+                    <span class="font-semibold text-ink dark:text-d-text">Q3.</span>
+                    <span class="circled-green"><strong>Evaluate</strong></span> and <span class="circled-green"><strong>compare</strong></span> the time complexity of three sorting algorithms for the given dataset. <span class="text-ink/40 dark:text-d-text/40">[25 marks]</span>
+                  </p>
+                  <p class="mt-1 text-xs text-mark-green font-medium italic pl-1 border-l-2 border-mark-green/40">
+                    ✓ Higher-order thinking — Evaluate + Analyze
+                  </p>
+                </div>
+
+                <!-- Q5 -->
+                <div>
+                  <p class="text-ink/80 dark:text-d-text/80">
+                    <span class="font-semibold text-ink dark:text-d-text">Q5.</span>
+                    <span class="circled-red"><strong>List</strong></span> the applications of graph traversal algorithms. <span class="text-ink/40 dark:text-d-text/40">[10 marks]</span>
+                  </p>
+                  <p class="mt-1 text-xs text-mark-red font-medium italic pl-1 border-l-2 border-mark-red/40">
+                    Remember level — try "design" or "construct"
+                  </p>
+                </div>
+
+                <!-- Q7 -->
+                <div>
+                  <p class="text-ink/80 dark:text-d-text/80">
+                    <span class="font-semibold text-ink dark:text-d-text">Q7.</span>
+                    <span class="circled-green"><strong>Design</strong></span> a hash table with chaining to handle a minimum load factor of 0.75. <span class="text-ink/40 dark:text-d-text/40">[15 marks]</span>
+                  </p>
+                  <p class="mt-1 text-xs text-mark-green font-medium italic pl-1 border-l-2 border-mark-green/40">
+                    ✓ Create level — strong
+                  </p>
+                </div>
+              </div>
+
+              <!-- EVALUATED stamp (top-right corner) -->
+              <div class="absolute top-4 right-4 stamp">Evaluated</div>
+
+              <!-- Bloom's Taxonomy Pyramid (bottom-right corner) --------- -->
+              <!-- Single animation: levels light up from base to apex     -->
+              <div class="absolute bottom-4 right-4 w-[120px] sm:w-[140px]" aria-label="Bloom's Taxonomy pyramid — levels animate from Remember at the base to Create at the top">
+                <svg viewBox="0 0 140 156" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" role="img">
+                  <!-- Level 1: Remember (base) -->
+                  <g class="pyramid-level">
+                    <rect x="4" y="130" width="132" height="22" rx="1" class="fill-ink/[0.06] dark:fill-d-text/[0.08] stroke-rule dark:stroke-d-rule" stroke-width="0.75" />
+                    <text x="70" y="145" text-anchor="middle" class="fill-ink/60 dark:fill-d-text/60" font-size="8" font-family="Inter, sans-serif" font-weight="500">Remember</text>
+                  </g>
+                  <!-- Level 2: Understand -->
+                  <g class="pyramid-level">
+                    <rect x="15" y="106" width="110" height="22" rx="1" class="fill-ink/[0.06] dark:fill-d-text/[0.08] stroke-rule dark:stroke-d-rule" stroke-width="0.75" />
+                    <text x="70" y="121" text-anchor="middle" class="fill-ink/60 dark:fill-d-text/60" font-size="8" font-family="Inter, sans-serif" font-weight="500">Understand</text>
+                  </g>
+                  <!-- Level 3: Apply -->
+                  <g class="pyramid-level">
+                    <rect x="26" y="82" width="88" height="22" rx="1" class="fill-ink/[0.06] dark:fill-d-text/[0.08] stroke-rule dark:stroke-d-rule" stroke-width="0.75" />
+                    <text x="70" y="97" text-anchor="middle" class="fill-ink/60 dark:fill-d-text/60" font-size="8" font-family="Inter, sans-serif" font-weight="500">Apply</text>
+                  </g>
+                  <!-- Level 4: Analyze -->
+                  <g class="pyramid-level">
+                    <rect x="37" y="58" width="66" height="22" rx="1" class="fill-ink/[0.06] dark:fill-d-text/[0.08] stroke-rule dark:stroke-d-rule" stroke-width="0.75" />
+                    <text x="70" y="73" text-anchor="middle" class="fill-ink/60 dark:fill-d-text/60" font-size="8" font-family="Inter, sans-serif" font-weight="500">Analyze</text>
+                  </g>
+                  <!-- Level 5: Evaluate -->
+                  <g class="pyramid-level">
+                    <rect x="46" y="34" width="48" height="22" rx="1" class="fill-mark-green/20 dark:fill-mark-green/15 stroke-mark-green/50 dark:stroke-mark-green/40" stroke-width="0.75" />
+                    <text x="70" y="49" text-anchor="middle" class="fill-mark-green dark:fill-mark-green" font-size="8" font-family="Inter, sans-serif" font-weight="600">Evaluate</text>
+                  </g>
+                  <!-- Level 6: Create (apex) -->
+                  <g class="pyramid-level">
+                    <rect x="53" y="10" width="34" height="22" rx="1" class="fill-mark-green/20 dark:fill-mark-green/15 stroke-mark-green/50 dark:stroke-mark-green/40" stroke-width="0.75" />
+                    <text x="70" y="25" text-anchor="middle" class="fill-mark-green dark:fill-mark-green" font-size="8" font-family="Inter, sans-serif" font-weight="600">Create</text>
+                  </g>
+                </svg>
+              </div>
+
+            </div><!-- /.paper -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+
+  <!-- ==================================================================== -->
+  <!-- 3. FOOTER                                                            -->
+  <!-- ==================================================================== -->
+  <footer class="border-t border-rule dark:border-d-rule py-5">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink/40 dark:text-d-text/40">
+      <span>© 2026 Evalix 2.0. All rights reserved.</span>
+      <nav class="flex items-center gap-5">
+        <a href="#privacy" onclick="alert('Placeholder: Privacy Policy'); return false;" class="hover:text-ink dark:hover:text-d-text transition-colors focus:outline-none focus-visible:underline">Privacy</a>
+        <a href="#terms" onclick="alert('Placeholder: Terms of Service'); return false;" class="hover:text-ink dark:hover:text-d-text transition-colors focus:outline-none focus-visible:underline">Terms</a>
+        <a href="#contact" onclick="alert('Placeholder: Contact'); return false;" class="hover:text-ink dark:hover:text-d-text transition-colors focus:outline-none focus-visible:underline">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+
+  <!-- ==================================================================== -->
+  <!-- 4. AUTH MODAL (placeholder)                                          -->
+  <!-- ==================================================================== -->
+  <!-- PLACEHOLDER: Wire to backend auth (POST /api/auth/login or          -->
+  <!-- /api/auth/register), Firebase, Supabase, or custom JWT.             -->
+  <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/50 dark:bg-black/60 backdrop-blur-sm hidden">
+    <div class="relative w-full max-w-sm p-6 sm:p-8 bg-paper dark:bg-d-surface border border-rule dark:border-d-rule shadow-lg rounded-md">
+
+      <!-- Close -->
+      <button onclick="closeAuth()" class="absolute top-3 right-3 p-1.5 text-ink/40 dark:text-d-text/40 hover:text-ink dark:hover:text-d-text transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-mark-red rounded">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <h3 id="modalTitle" class="font-serif text-xl font-bold text-ink dark:text-d-text">Welcome back</h3>
+        <p id="modalSub" class="text-sm text-ink/50 dark:text-d-text/50 mt-1">Sign in to access your evaluations</p>
+      </div>
+
+      <form onsubmit="handleSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-medium text-ink/70 dark:text-d-text/70 mb-1">Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-ink/30 dark:text-d-text/30 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="email" required placeholder="you@institution.edu"
+              class="w-full pl-9 pr-3 py-2 text-sm border border-rule dark:border-d-rule bg-white dark:bg-d-bg text-ink dark:text-d-text rounded-md focus:outline-none focus:ring-2 focus:ring-mark-red/40 focus:border-mark-red/60 transition" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-ink/70 dark:text-d-text/70 mb-1">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 text-ink/30 dark:text-d-text/30 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="password" required placeholder="••••••••"
+              class="w-full pl-9 pr-3 py-2 text-sm border border-rule dark:border-d-rule bg-white dark:bg-d-bg text-ink dark:text-d-text rounded-md focus:outline-none focus:ring-2 focus:ring-mark-red/40 focus:border-mark-red/60 transition" />
+          </div>
+        </div>
+        <button id="modalBtn" type="submit"
+          class="w-full py-2.5 text-sm font-semibold bg-ink dark:bg-d-text text-paper dark:text-d-bg rounded-md hover:bg-ink/85 dark:hover:bg-d-text/85 transition-colors mt-1">
+          Sign in
+        </button>
+      </form>
+
+      <p class="mt-4 text-[11px] text-center text-ink/35 dark:text-d-text/35 border-t border-rule/50 dark:border-d-rule/50 pt-3">
+        UI prototype — authentication will be connected to the Evalix API.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ==================================================================== -->
+  <!-- 5. SCRIPT                                                            -->
+  <!-- ==================================================================== -->
+  <script>
+    lucide.createIcons();
+
+    // ── Theme ──────────────────────────────────────────────────────────────
+    const iconSun  = document.getElementById('iconSun');
+    const iconMoon = document.getElementById('iconMoon');
+
+    function applyTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      iconSun.classList.toggle('hidden', !dark);
+      iconMoon.classList.toggle('hidden', dark);
+    }
+
+    // BUG FIX #1: respect OS preference when no saved theme exists
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved ? saved === 'dark' : prefersDark);
+
+    function toggleTheme() {
+      applyTheme(!document.documentElement.classList.contains('dark'));
+    }
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('mobileTheme').addEventListener('click', toggleTheme);
+
+    // ── Mobile menu ────────────────────────────────────────────────────────
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+
+    // ── Auth modal ─────────────────────────────────────────────────────────
+    const modal    = document.getElementById('authModal');
+    const mTitle   = document.getElementById('modalTitle');
+    const mSub     = document.getElementById('modalSub');
+    const mBtn     = document.getElementById('modalBtn');
+
+    function openAuth(mode) {
+      if (mode === 'signup') {
+        mTitle.textContent = 'Create an Evalix account';
+        mSub.textContent   = 'Start grading documents in minutes';
+        mBtn.textContent   = 'Sign up';
+      } else {
+        mTitle.textContent = 'Welcome back';
+        mSub.textContent   = 'Sign in to access your evaluations';
+        mBtn.textContent   = 'Sign in';
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeAuth() { modal.classList.add('hidden'); }
+
+    modal.addEventListener('click', e => { if (e.target === modal) closeAuth(); });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Placeholder: connect to your auth backend here.');
+      closeAuth();
+    }
+  </script>
+</body>
+</html>
