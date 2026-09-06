@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const paperRoutes = require('./routes/paperRoutes');
+const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 
 // Load environment variables
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Create required directories
 const fs = require('fs');
+
 const directories = ['./uploads', './cache', './reports'];
 
 directories.forEach(dir => {
@@ -30,12 +32,21 @@ directories.forEach(dir => {
 
 // Routes
 app.use('/api/papers', paperRoutes);
+app.use('/api/auth', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Server error:', err.message);
-    const isValidationError = err.message && (err.message.includes('Invalid file type') || err.message.includes('file size'));
+
+    const isValidationError =
+        err.message &&
+        (
+            err.message.includes('Invalid file type') ||
+            err.message.includes('file size')
+        );
+
     const statusCode = isValidationError ? 400 : 500;
+
     res.status(statusCode).json({
         success: false,
         error: err.message || 'Something went wrong!'

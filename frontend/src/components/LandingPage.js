@@ -65,18 +65,40 @@ const LandingPage = () => {
   };
 
   // Authentication and dashboard navigation
-  const handleAuthSubmit = (e) => {
-    e.preventDefault();
+  const handleAuthSubmit = async (e) => {
+  e.preventDefault();
 
-    if (authModal.mode === 'login') {
-      navigate('/charts');
-      closeAuth();
-      return;
+  if (authModal.mode === 'login') {
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        closeAuth();
+        navigate('/charts');
+      } else {
+        alert(data.message || 'Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Unable to connect to the server. Make sure the backend is running.');
     }
 
-    alert(`Placeholder Action (${authModal.mode}): Authenticating user... Proceeding to dashboard.`);
-    closeAuth();
-  };
+    return;
+  }
+
+  alert('Sign Up is not connected yet.');
+};
 
   return (
     <div className={`landing-page-root ${isDarkMode ? 'dark' : ''}`}>
