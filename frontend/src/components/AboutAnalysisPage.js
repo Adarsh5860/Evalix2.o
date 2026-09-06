@@ -161,7 +161,7 @@ const AboutAnalysisPage = () => {
                 <p className="cta-sub mb-4">Upload your syllabus, research publication, or course curriculum to see immediate insights.</p>
                 <button 
                     className="btn-evalix-primary"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/upload')}
                 >
                     <FiUploadCloud className="me-2" />
                     Upload Document Now

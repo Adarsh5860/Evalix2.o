@@ -1,15 +1,44 @@
 // components/Header.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell, FiChevronDown } from 'react-icons/fi';
+import { FiSearch, FiBell, FiChevronDown, FiLogOut } from 'react-icons/fi';
 import evalixLogo from '../assets/evalix-logo.png';
+import { useAuth } from '../context/AuthContext';
 import '../styles/Header.scss';
 
 const Header = () => {
+    const { user, logout } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const navigate = useNavigate();
+
+    // Determine user details from auth state
+    const displayName = user?.name || (user?.email ? user.email.split('@')[0] : 'Guest User');
+    const userEmail = user?.email || 'guest@evalix.com';
+    const userRole = user?.role || 'Researcher / Analyst';
+
+    // Compute initials (e.g. "DR" for Demo Researcher)
+    const getInitials = () => {
+        if (!user) return 'GU';
+        if (user.name) {
+            const parts = user.name.trim().split(/\s+/);
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            }
+            return parts[0].substring(0, 2).toUpperCase();
+        }
+        if (user.email) {
+            return user.email.substring(0, 2).toUpperCase();
+        }
+        return 'EX';
+    };
+
+    const handleLogout = async () => {
+        setUserMenuOpen(false);
+        await logout();
+        navigate('/landing');
+    };
 
     const handleSearch = (e) => {
         if (e.key === 'Enter' && searchQuery.trim()) {
@@ -22,7 +51,7 @@ const Header = () => {
             <div className="navbar-container">
                 {/* Left: Brand Logo & Title */}
                 <div className="navbar-brand-section">
-                    <Link to="/" className="brand-logo-link">
+                    <Link to="/upload" className="brand-logo-link">
                         <div className="brand-logo-icon">
                             <img src={evalixLogo} alt="Evalix Logo" className="brand-logo-img" />
                         </div>
@@ -95,18 +124,19 @@ const Header = () => {
                             onClick={() => setUserMenuOpen(!userMenuOpen)}
                             aria-label="User menu"
                         >
-                            <div className="user-avatar">TB</div>
-                            <span className="user-name">User Name</span>
+                            <div className="user-avatar">{getInitials()}</div>
+                            <span className="user-name">{displayName}</span>
                             <FiChevronDown className={`dropdown-chevron ${userMenuOpen ? 'open' : ''}`} />
                         </button>
                         {userMenuOpen && (
                             <div className="navbar-dropdown user-dropdown">
                                 <div className="dropdown-user-info">
-                                    <div className="info-name">User Name</div>
-                                    <div className="info-role">Researcher / Analyst</div>
+                                    <div className="info-name">{displayName}</div>
+                                    <div className="info-email">{userEmail}</div>
+                                    <div className="info-role">{userRole}</div>
                                 </div>
                                 <div className="dropdown-divider"></div>
-                                <Link to="/" className="dropdown-link" onClick={() => setUserMenuOpen(false)}>
+                                <Link to="/upload" className="dropdown-link" onClick={() => setUserMenuOpen(false)}>
                                     Dashboard Home
                                 </Link>
                                 <Link to="/charts" className="dropdown-link" onClick={() => setUserMenuOpen(false)}>
@@ -115,8 +145,18 @@ const Header = () => {
                                 <Link to="/about" className="dropdown-link" onClick={() => setUserMenuOpen(false)}>
                                     About Analysis
                                 </Link>
+                                <div className="dropdown-divider"></div>
+                                <button
+                                    type="button"
+                                    className="dropdown-link signout-btn"
+                                    onClick={handleLogout}
+                                >
+                                    <FiLogOut />
+                                    <span>Sign Out</span>
+                                </button>
                             </div>
                         )}
+
                     </div>
                 </div>
             </div>

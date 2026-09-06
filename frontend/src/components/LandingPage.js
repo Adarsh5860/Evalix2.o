@@ -12,10 +12,13 @@ import {
   LuMenu,
   LuX,
   LuMail,
-  LuLock
+  LuLock,
+  LuUser
 } from 'react-icons/lu';
 
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { loginUser, signupUser } from '../services/api';
 
 import '../styles/LandingPage.scss';
 
@@ -25,19 +28,24 @@ import '../styles/LandingPage.scss';
  * Screen 1 of the app flow:
  * - Professional, modern, and aesthetically polished static landing page
  * - Features sticky glassmorphism navbar, hero copy, live metrics mockup, and minimal footer
- * - Contains placeholder hooks for auth modals, OAuth, and app navigation
+ * - Contains connected authentication for login, signup, and dashboard navigation
  */
 const LandingPage = () => {
 
   const navigate = useNavigate();
+  const { login: setAuthUser } = useAuth();
 
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' });
 
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authSuccess, setAuthSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Scroll detection for dynamic glassmorphism navbar
   useEffect(() => {
@@ -55,53 +63,66 @@ const LandingPage = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Open authentication placeholder modal
+  // Open authentication modal
   const openAuth = (mode = 'login') => {
+    setAuthError('');
+    setAuthSuccess('');
     setAuthModal({ isOpen: true, mode });
   };
 
   const closeAuth = () => {
+    setAuthError('');
+    setAuthSuccess('');
     setAuthModal({ ...authModal, isOpen: false });
   };
 
   // Authentication and dashboard navigation
   const handleAuthSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setAuthError('');
+    setAuthSuccess('');
+    setIsSubmitting(true);
 
-  if (authModal.mode === 'login') {
     try {
-      const response = await fetch('http://localhost:5001/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        closeAuth();
-        navigate('/charts');
+      if (authModal.mode === 'login') {
+        const data = await loginUser(email, password);
+        if (data.success) {
+          setAuthUser(data.user, data.token);
+          setAuthSuccess('Login successful! Entering dashboard...');
+          setTimeout(() => {
+            closeAuth();
+            navigate('/upload');
+          }, 400);
+        } else {
+          setAuthError(data.message || 'Invalid email or password.');
+        }
       } else {
-        alert(data.message || 'Invalid email or password.');
+        const data = await signupUser(email, password, fullName);
+        if (data.success) {
+          setAuthUser(data.user, data.token);
+          setAuthSuccess('Account created! Entering dashboard...');
+          setTimeout(() => {
+            closeAuth();
+            navigate('/upload');
+          }, 400);
+        } else {
+          setAuthError(data.message || 'Unable to create account.');
+        }
       }
     } catch (error) {
-      console.error('Login error:', error);
-      alert('Unable to connect to the server. Make sure the backend is running.');
+      console.error('Authentication error:', error);
+      const serverMsg = error.response?.data?.message || 'Unable to connect to the server. Make sure the backend is running on port 5001.';
+      setAuthError(serverMsg);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    return;
-  }
-
-  alert('Sign Up is not connected yet.');
-};
+  };
 
   return (
-    <div className={`landing-page-root ${isDarkMode ? 'dark' : ''}`}>
+    <div
+      className={`landing-page-root ${isDarkMode ? 'dark' : ''}`}
+      data-bs-theme={isDarkMode ? 'dark' : 'light'}
+    >
 
       <div className="grid-bg-overlay"></div>
 
@@ -325,11 +346,12 @@ const LandingPage = () => {
               </h1>
 
               <p
-                className="lead mb-5 text-secondary"
+                className="lead mb-5"
                 style={{
                   maxWidth: '600px',
                   margin: '0 auto 2rem auto',
-                  fontSize: '1.15rem'
+                  fontSize: '1.15rem',
+                  color: isDarkMode ? '#94a3b8' : '#475569'
                 }}
               >
                 Evalix 2.0 helps you evaluate, analyze, and improve with AI-driven precision — fast, accurate, and effortless.
@@ -357,7 +379,10 @@ const LandingPage = () => {
 
               </div>
 
-              <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-4 text-xs text-secondary mt-3">
+              <div
+                className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-4 text-xs mt-3"
+                style={{ color: isDarkMode ? '#94a3b8' : '#64748b' }}
+              >
 
                 <div className="d-flex align-items-center gap-1.5">
                   <LuCircleCheck size={16} color="#10b981" />
@@ -382,228 +407,262 @@ const LandingPage = () => {
 
             <div className="col-12 col-lg-5">
 
-              <div className="mockup-card">
+              <div className="mockup-card-wrapper">
 
-                <div
-                  className="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom"
-                  style={{
-                    borderColor: isDarkMode ? '#1e293b' : '#f1f5f9'
-                  }}
-                >
+                <div className="mockup-card">
 
-                  <div className="d-flex align-items-center gap-1.5">
+                  <div
+                    className="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom"
+                    style={{
+                      borderColor: isDarkMode ? '#1e293b' : '#f1f5f9'
+                    }}
+                  >
+
+                    <div className="d-flex align-items-center gap-1.5">
+
+                      <span
+                        className="rounded-circle d-inline-block"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: '#ef4444'
+                        }}
+                      ></span>
+
+                      <span
+                        className="rounded-circle d-inline-block"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: '#f59e0b'
+                        }}
+                      ></span>
+
+                      <span
+                        className="rounded-circle d-inline-block"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: '#10b981'
+                        }}
+                      ></span>
+
+                      <span
+                        className="ms-2 font-monospace text-xs"
+                        style={{ color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                      >
+                        research_paper_analysis.pdf
+                      </span>
+
+                    </div>
 
                     <span
-                      className="rounded-circle d-inline-block"
+                      className="badge rounded-pill px-2.5 py-1 text-xs"
                       style={{
-                        width: 10,
-                        height: 10,
-                        backgroundColor: '#ef4444'
+                        backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.15)' : '#ecfdf5',
+                        color: isDarkMode ? '#34d399' : '#059669',
+                        border: isDarkMode ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid #a7f3d0'
                       }}
-                    ></span>
+                    >
+                      ● Analyzed
+                    </span>
+
+                  </div>
+
+                  <div className="row g-2 mb-4">
+
+                    <div className="col-4">
+                      <div className="stat-card-item">
+                        <span
+                          className="d-block"
+                          style={{
+                            fontSize: '0.7rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b'
+                          }}
+                        >
+                          Total Verbs
+                        </span>
+
+                        <span className="fw-bold fs-6">
+                          1,428
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-4">
+                      <div className="stat-card-item">
+                        <span
+                          className="d-block"
+                          style={{
+                            fontSize: '0.7rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b'
+                          }}
+                        >
+                          Top Domain
+                        </span>
+
+                        <span
+                          className="fw-bold fs-6"
+                          style={{ color: isDarkMode ? '#818cf8' : '#4f46e5' }}
+                        >
+                          Cognitive
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="col-4">
+                      <div className="stat-card-item">
+                        <span
+                          className="d-block"
+                          style={{
+                            fontSize: '0.7rem',
+                            color: isDarkMode ? '#94a3b8' : '#64748b'
+                          }}
+                        >
+                          Accuracy
+                        </span>
+
+                        <span
+                          className="fw-bold fs-6"
+                          style={{ color: isDarkMode ? '#34d399' : '#059669' }}
+                        >
+                          96.8%
+                        </span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div className="mb-4">
+
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <span
+                        className="text-xs fw-semibold"
+                        style={{ color: isDarkMode ? '#f1f5f9' : '#1e293b' }}
+                      >
+                        Taxonomy Distribution
+                      </span>
+
+                      <span
+                        className="text-xs"
+                        style={{ color: isDarkMode ? '#94a3b8' : '#64748b' }}
+                      >
+                        Weights
+                      </span>
+                    </div>
+
+                    <div className="mb-2.5">
+
+                      <div
+                        className="d-flex justify-content-between text-xs mb-1"
+                        style={{ color: isDarkMode ? '#cbd5e1' : '#334155' }}
+                      >
+                        <span>Cognitive (Analysis & Evaluation)</span>
+                        <span className="fw-semibold">68%</span>
+                      </div>
+
+                      <div className="progress progress-track">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: '68%',
+                            backgroundColor: '#6366f1'
+                          }}
+                        ></div>
+                      </div>
+
+                    </div>
+
+                    <div className="mb-2.5">
+
+                      <div
+                        className="d-flex justify-content-between text-xs mb-1"
+                        style={{ color: isDarkMode ? '#cbd5e1' : '#334155' }}
+                      >
+                        <span>Affective (Valuing)</span>
+                        <span className="fw-semibold">21%</span>
+                      </div>
+
+                      <div className="progress progress-track">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: '21%',
+                            backgroundColor: '#a855f7'
+                          }}
+                        ></div>
+                      </div>
+
+                    </div>
+
+                    <div>
+
+                      <div
+                        className="d-flex justify-content-between text-xs mb-1"
+                        style={{ color: isDarkMode ? '#cbd5e1' : '#334155' }}
+                      >
+                        <span>Psychomotor (Origination)</span>
+                        <span className="fw-semibold">11%</span>
+                      </div>
+
+                      <div className="progress progress-track">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: '11%',
+                            backgroundColor: '#06b6d4'
+                          }}
+                        ></div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div
+                    className="pt-3 border-top"
+                    style={{
+                      borderColor: isDarkMode ? '#1e293b' : '#f1f5f9',
+                      paddingBottom: '12px'
+                    }}
+                  >
 
                     <span
-                      className="rounded-circle d-inline-block"
-                      style={{
-                        width: 10,
-                        height: 10,
-                        backgroundColor: '#f59e0b'
-                      }}
-                    ></span>
-
-                    <span
-                      className="rounded-circle d-inline-block"
-                      style={{
-                        width: 10,
-                        height: 10,
-                        backgroundColor: '#10b981'
-                      }}
-                    ></span>
-
-                    <span className="ms-2 font-monospace text-xs text-secondary">
-                      research_paper_analysis.pdf
-                    </span>
-
-                  </div>
-
-                  <span className="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5 py-1 text-xs">
-                    ● Analyzed
-                  </span>
-
-                </div>
-
-                <div className="row g-2 mb-4">
-
-                  <div className="col-4">
-                    <div
-                      className="p-2.5 rounded-3"
-                      style={{
-                        backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc'
-                      }}
+                      className="d-block text-xs mb-2"
+                      style={{ color: isDarkMode ? '#94a3b8' : '#64748b' }}
                     >
-                      <span
-                        className="text-secondary d-block"
-                        style={{ fontSize: '0.7rem' }}
-                      >
-                        Total Verbs
-                      </span>
-
-                      <span className="fw-bold fs-6">
-                        1,428
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-4">
-                    <div
-                      className="p-2.5 rounded-3"
-                      style={{
-                        backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc'
-                      }}
-                    >
-                      <span
-                        className="text-secondary d-block"
-                        style={{ fontSize: '0.7rem' }}
-                      >
-                        Top Domain
-                      </span>
-
-                      <span className="fw-bold fs-6 text-primary">
-                        Cognitive
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="col-4">
-                    <div
-                      className="p-2.5 rounded-3"
-                      style={{
-                        backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc'
-                      }}
-                    >
-                      <span
-                        className="text-secondary d-block"
-                        style={{ fontSize: '0.7rem' }}
-                      >
-                        Accuracy
-                      </span>
-
-                      <span className="fw-bold fs-6 text-success">
-                        96.8%
-                      </span>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="mb-4">
-
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <span className="text-xs fw-semibold">
-                      Taxonomy Distribution
+                      Detected Action Verbs
                     </span>
 
-                    <span className="text-xs text-secondary">
-                      Weights
-                    </span>
-                  </div>
+                    <div className="d-flex flex-wrap gap-1.5 pe-sm-4">
 
-                  <div className="mb-2">
+                      <span className="verb-pill primary">
+                        synthesize
+                      </span>
 
-                    <div className="d-flex justify-content-between text-xs mb-1">
-                      <span>Cognitive (Analysis & Evaluation)</span>
-                      <span className="fw-semibold">68%</span>
-                    </div>
+                      <span className="verb-pill primary">
+                        critique
+                      </span>
 
-                    <div className="progress" style={{ height: '6px' }}>
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: '68%',
-                          backgroundColor: '#4f46e5'
-                        }}
-                      ></div>
-                    </div>
+                      <span className="verb-pill primary">
+                        formulate
+                      </span>
 
-                  </div>
+                      <span className="verb-pill secondary">
+                        demonstrate
+                      </span>
 
-                  <div className="mb-2">
+                      <span className="verb-pill secondary">
+                        optimize
+                      </span>
 
-                    <div className="d-flex justify-content-between text-xs mb-1">
-                      <span>Affective (Valuing)</span>
-                      <span className="fw-semibold">21%</span>
-                    </div>
-
-                    <div className="progress" style={{ height: '6px' }}>
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: '21%',
-                          backgroundColor: '#8b5cf6'
-                        }}
-                      ></div>
-                    </div>
-
-                  </div>
-
-                  <div>
-
-                    <div className="d-flex justify-content-between text-xs mb-1">
-                      <span>Psychomotor (Origination)</span>
-                      <span className="fw-semibold">11%</span>
-                    </div>
-
-                    <div className="progress" style={{ height: '6px' }}>
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: '11%',
-                          backgroundColor: '#06b6d4'
-                        }}
-                      ></div>
                     </div>
 
                   </div>
 
                 </div>
 
-                <div
-                  className="pt-3 border-top"
-                  style={{
-                    borderColor: isDarkMode ? '#1e293b' : '#f1f5f9'
-                  }}
-                >
-
-                  <span className="d-block text-secondary text-xs mb-2">
-                    Detected Action Verbs
-                  </span>
-
-                  <div className="d-flex flex-wrap gap-1.5">
-
-                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                      synthesize
-                    </span>
-
-                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                      critique
-                    </span>
-
-                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">
-                      formulate
-                    </span>
-
-                    <span className="badge bg-secondary-subtle text-secondary">
-                      demonstrate
-                    </span>
-
-                    <span className="badge bg-secondary-subtle text-secondary">
-                      optimize
-                    </span>
-
-                  </div>
-
-                </div>
-
+                {/* Micro Badge floating cleanly outside card overflow */}
                 <div className="floating-badge">
 
                   <LuShieldCheck color="#10b981" size={18} />
@@ -744,9 +803,51 @@ const LandingPage = () => {
 
             </div>
 
+            {/* Error or Success feedback alert */}
+            {authError && (
+              <div className="alert alert-danger py-2 px-3 text-xs mb-3 rounded-3" role="alert">
+                {authError}
+              </div>
+            )}
+
+            {authSuccess && (
+              <div className="alert alert-success py-2 px-3 text-xs mb-3 rounded-3" role="alert">
+                {authSuccess}
+              </div>
+            )}
+
             {/* Form */}
 
             <form onSubmit={handleAuthSubmit}>
+
+              {authModal.mode === 'signup' && (
+                <div className="mb-3">
+                  <label className="form-label text-xs fw-semibold">
+                    Full Name
+                  </label>
+                  <div className="input-group">
+                    <span
+                      className="input-group-text bg-transparent border-end-0 text-secondary"
+                      style={{
+                        borderColor: isDarkMode ? '#334155' : '#cbd5e1'
+                      }}
+                    >
+                      <LuUser size={16} />
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Dr. Jane Smith"
+                      className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
+                      style={{
+                        borderColor: isDarkMode ? '#334155' : '#cbd5e1'
+                      }}
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="mb-3">
 
@@ -801,7 +902,8 @@ const LandingPage = () => {
                   <input
                     type="password"
                     required
-                    placeholder="••••••••"
+                    minLength={6}
+                    placeholder="Min. 6 characters"
                     className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
                     style={{
                       borderColor: isDarkMode ? '#334155' : '#cbd5e1'
@@ -816,12 +918,53 @@ const LandingPage = () => {
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="btn-primary-gradient w-100 py-2.5"
               >
-                {authModal.mode === 'signup' ? 'Sign Up' : 'Sign In'}
+                {isSubmitting
+                  ? 'Please wait...'
+                  : authModal.mode === 'signup'
+                    ? 'Create Account'
+                    : 'Sign In'
+                }
               </button>
 
             </form>
+
+            {/* Mode switch */}
+            <div className="text-center mt-3">
+              {authModal.mode === 'login' ? (
+                <p className="text-xs text-secondary mb-0">
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthError('');
+                      setAuthSuccess('');
+                      setAuthModal({ ...authModal, mode: 'signup' });
+                    }}
+                    className="btn btn-link p-0 text-xs text-primary fw-semibold text-decoration-none"
+                  >
+                    Sign Up
+                  </button>
+                </p>
+              ) : (
+                <p className="text-xs text-secondary mb-0">
+                  Already have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthError('');
+                      setAuthSuccess('');
+                      setAuthModal({ ...authModal, mode: 'login' });
+                    }}
+                    className="btn btn-link p-0 text-xs text-primary fw-semibold text-decoration-none"
+                  >
+                    Sign In
+                  </button>
+                </p>
+              )}
+            </div>
 
             <div
               className="mt-4 p-2.5 rounded-3 text-center"
@@ -836,8 +979,9 @@ const LandingPage = () => {
                 color: isDarkMode ? '#a5b4fc' : '#4338ca'
               }}
             >
-              💡 <strong>Note:</strong> UI prototype screen. Authentication will be wired to the Evalix backend API.
+              💡 <strong>Demo Login:</strong> demo@evalix.com / EvalixDemo123 (or register any new email).
             </div>
+
 
           </div>
 

@@ -6,6 +6,37 @@ const api = axios.create({
     baseURL: API_URL
 });
 
+// Attach Authorization token from localStorage if present
+api.interceptors.request.use((config) => {
+    try {
+        const token = localStorage.getItem('evalix_token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+    } catch (err) {
+        // ignore localStorage access errors
+    }
+    return config;
+}, (error) => Promise.reject(error));
+
+/**
+ * Authentication API calls
+ */
+export const loginUser = async (email, password) => {
+    const response = await api.post('/auth/login', { email, password });
+    return response.data;
+};
+
+export const signupUser = async (email, password, name) => {
+    const response = await api.post('/auth/signup', { email, password, name });
+    return response.data;
+};
+
+export const fetchCurrentUser = async () => {
+    const response = await api.get('/auth/me');
+    return response.data;
+};
+
 export const analyzePaper = async (formData) => {
     try {
         const response = await api.post('/papers/analyze', formData, {

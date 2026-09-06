@@ -1,0 +1,47 @@
+[
+  {
+    "id": "user_demo_01",
+    "email": "demo@evalix.com",
+    "name": "Demo Researcher",
+    "role": "Senior NLP Researcher",
+    "salt": "2a986544dc8ab3050a6d6aae7227ba24",
+    "passwordHash": "b0754415616184c2a078809b9e4169ec3b7b17c14e01cc64f5732eda0d278d1f85323a954683dcf82bfc346124d7e2629a2846ef5e1c8c910eda0953ba74e612",
+    "createdAt": "2026-09-06T16:23:30.546Z"
+  },
+  {
+    "id": "user_1788711836970_42f62b51",
+    "email": "newuser@evalix.com",
+    "name": "AlanTuring",
+    "role": "Researcher / Analyst",
+    "salt": "fe0127add77cd6761bd53e55b8c3048c",
+    "passwordHash": "780b9f7185b1aa38efcce25c9bb5691b088e6374c83f7ae52d2c02f4fa9a47e8bf5a472513af96773f7a3d4f68d38b2aea5a9fc7aa9c81969f0097b0dfc297a6",
+    "createdAt": "2026-09-06T16:23:56.970Z"
+  },
+  {
+    "id": "user_1788712200392_9ec0f436",
+    "email": "prof.adams@university.edu",
+    "name": "Prof. Adams",
+    "role": "Researcher / Analyst",
+    "salt": "5d2a53466f08e98091a0ba7874ca9ba1",
+    "passwordHash": "7b3c885e4d6467151e416f8dc7b6566f6dfd70aa171a1ddd6a9566726767dd2e0777a8dd8d7260a90ee56e44dc175d509b9b021c8986babc98a805696b0aaebf",
+    "createdAt": "2026-09-06T16:30:00.392Z"
+  },
+  {
+    "id": "user_1788712543294_347749da",
+    "email": "omvirulkar61@gmail.com",
+    "name": "om",
+    "role": "Researcher / Analyst",
+    "salt": "0cee1cfef945605750f8883f08c3727f",
+    "passwordHash": "1c555c3786939df11adb177c49e752aed569eb0add9ca8b5928abfccb92b43dd77c693c56010c226bd90930609c4312cb98e933bb7583a1a3abf48fb42372d74",
+    "createdAt": "2026-09-06T16:35:43.294Z"
+  },
+  {
+    "id": "user_1788712611246_82f33e1b",
+    "email": "om.virulkar@walchandsangli.ac.in",
+    "name": "omjv",
+    "role": "Researcher / Analyst",
+    "salt": "5cb09592d88239a301a8bd44c6031bdd",
+    "passwordHash": "7643aac21caab5b353d4d73a527c848a1069f040e699e2d5f356e07f09e7b2cb996623ecd2f65943377fbda1b779be0d524b80e664283cced50b25fafc2e40fa",
+    "createdAt": "2026-09-06T16:36:51.246Z"
+  }
+]

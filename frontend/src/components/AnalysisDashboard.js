@@ -99,7 +99,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     <div className="empty-actions-row">
                         <button 
                             className="btn-evalix-primary"
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate('/upload')}
                         >
                             <FiUpload className="me-2" />
                             Upload Document Now
