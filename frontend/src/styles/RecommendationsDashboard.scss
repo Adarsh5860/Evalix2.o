@@ -1,0 +1,171 @@
+// styles/RecommendationsDashboard.scss
+@import './designTokens.scss';
+
+.recommendations-page {
+  padding-top: 1.5rem;
+
+  .assessment-hero-card {
+    padding: 2rem;
+    border-color: rgba(124, 58, 237, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+
+    .assessment-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .assessment-lead-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 900px;
+      margin: 0;
+    }
+  }
+
+  /* 3 Domain Cards */
+  .recommendations-domain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+
+    .domain-rec-card {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+
+      &.border-purple { border-color: rgba(124, 58, 237, 0.35); }
+      &.border-magenta { border-color: rgba(236, 72, 153, 0.35); }
+      &.border-cyan { border-color: rgba(34, 211, 238, 0.35); }
+
+      .card-rec-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1rem;
+
+        .rec-icon-box {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2rem;
+
+          &.purple {
+            background: rgba(124, 58, 237, 0.2);
+            color: #C084FC;
+            border: 1px solid rgba(124, 58, 237, 0.4);
+          }
+
+          &.magenta {
+            background: rgba(236, 72, 153, 0.2);
+            color: #F472B6;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+          }
+
+          &.cyan {
+            background: rgba(34, 211, 238, 0.2);
+            color: #38BDF8;
+            border: 1px solid rgba(34, 211, 238, 0.4);
+          }
+        }
+
+        .rec-title {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0;
+        }
+      }
+
+      .rec-body-text {
+        font-size: 0.92rem;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+    }
+  }
+
+  /* Implementation Strategies Card */
+  .implementation-card {
+    padding: 2rem;
+
+    .impl-header {
+      .impl-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin-bottom: 4px;
+      }
+
+      .impl-sub {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        margin: 0;
+      }
+    }
+
+    .strategies-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+
+      .strategy-col {
+        .strategy-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+
+          .strategy-check {
+            font-size: 1.1rem;
+          }
+
+          &.purple-text { color: #C084FC; }
+          &.magenta-text { color: #F472B6; }
+          &.cyan-text { color: #38BDF8; }
+        }
+
+        .strategy-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+
+            &::before {
+              content: '▹';
+              position: absolute;
+              left: 0;
+              color: var(--text-muted);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .recommendations-page {
+    .recommendations-domain-grid,
+    .implementation-card .strategies-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

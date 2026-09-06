@@ -1,5 +1,6 @@
 //textExtractor.js
 const fs = require('fs');
+const path = require('path');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 
@@ -10,9 +11,10 @@ exports.extractText = async (file) => {
     try {
         const filePath = file.path;
         const mimeType = file.mimetype;
+        const ext = path.extname(file.originalname || file.path).toLowerCase();
 
         // Extract text based on file type
-        if (mimeType === 'application/pdf') {
+        if (mimeType === 'application/pdf' || ext === '.pdf') {
             // PDF file processing
             const dataBuffer = fs.readFileSync(filePath);
             const pdfData = await pdfParse(dataBuffer);
@@ -20,7 +22,9 @@ exports.extractText = async (file) => {
         }
         else if (
             mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-            mimeType === 'application/msword'
+            mimeType === 'application/msword' ||
+            ext === '.docx' ||
+            ext === '.doc'
         ) {
             // Word document processing
             const result = await mammoth.extractRawText({
@@ -28,7 +32,7 @@ exports.extractText = async (file) => {
             });
             return result.value;
         }
-        else if (mimeType === 'text/plain') {
+        else if (mimeType === 'text/plain' || ext === '.txt') {
             // Plain text file processing
             return fs.readFileSync(filePath, 'utf8');
         }
