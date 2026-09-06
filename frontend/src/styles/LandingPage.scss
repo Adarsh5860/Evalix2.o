@@ -1,382 +1,219 @@
 // LandingPage.scss
-// Academic paper-and-ink aesthetic for Evalix 2.0
+// Modern, sleek SaaS styling inspired by Linear, Vercel & Notion
 
-// ─── Design Tokens ───────────────────────────────────────────────────────────
-$paper:       #F6F1E7;
-$ink:         #1C2333;
-$rule:        #C9BFA8;
-$mark-red:    #B23A2E;
-$mark-green:  #4B6B3A;
-
-$d-bg:        #14161F;
-$d-text:      #EDE6D6;
-$d-rule:      #2A2D3A;
-$d-surface:   #1C1F2E;
-
-// ─── Root container ──────────────────────────────────────────────────────────
-.landing-root {
+.landing-page-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: $paper;
-  color: $ink;
-  transition: background-color 0.3s, color 0.3s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
+  // Light Theme
+  background-color: #f8fafc;
+  color: #0f172a;
+
+  // Dark Theme
   &.dark {
-    background-color: $d-bg;
-    color: $d-text;
+    background-color: #090d16;
+    color: #f1f5f9;
   }
 
-  // Selection color
-  ::selection {
-    background: rgba($mark-red, 0.2);
-    color: $mark-red;
-  }
-  &.dark ::selection {
-    background: rgba($mark-red, 0.3);
-  }
-}
-
-// ─── Navbar ──────────────────────────────────────────────────────────────────
-.landing-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background-color: $paper;
-  border-bottom: 1px solid $rule;
-  transition: background-color 0.3s, border-color 0.3s;
-
-  .dark & {
-    background-color: $d-bg;
-    border-bottom-color: $d-rule;
-  }
-}
-
-.nav-wordmark {
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: -0.03em;
-  color: $ink;
-  text-decoration: none;
-
-  .dark & { color: $d-text; }
-}
-
-.nav-version-badge {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border: 1px solid $rule;
-  border-radius: 2px;
-  color: $rule;
-
-  .dark & {
-    border-color: $d-rule;
-    color: $d-rule;
-  }
-}
-
-// ─── Buttons ─────────────────────────────────────────────────────────────────
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 20px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background-color: $ink;
-  color: $paper;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  text-decoration: none;
-
-  &:hover { background-color: rgba($ink, 0.85); }
-
-  .dark & {
-    background-color: $d-text;
-    color: $d-bg;
-    &:hover { background-color: rgba($d-text, 0.85); }
-  }
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  background: transparent;
-  color: $ink;
-  border: 1px solid $rule;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  text-decoration: none;
-
-  &:hover {
-    border-color: $ink;
-    color: $ink;
-  }
-
-  .dark & {
-    color: $d-text;
-    border-color: $d-rule;
-    &:hover {
-      border-color: $d-text;
-      color: $d-text;
-    }
-  }
-}
-
-// ─── Hero headline ──────────────────────────────────────────────────────────
-.hero-headline {
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: $ink;
-
-  .dark & { color: $d-text; }
-}
-
-// ─── Check-item list ─────────────────────────────────────────────────────────
-.check-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  margin-top: 2px;
-  border: 1px solid rgba($mark-green, 0.6);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: $mark-green;
-}
-
-// ─── Annotated Paper Mockup ──────────────────────────────────────────────────
-.paper-mockup {
-  position: relative;
-  background-color: #fff;
-  border: 1px solid rgba($rule, 0.6);
-  box-shadow: 4px 4px 0 0 rgba($rule, 0.3);
-
-  .dark & {
-    background-color: $d-surface;
-    border-color: rgba($d-rule, 0.6);
-    box-shadow: 4px 4px 0 0 rgba($d-rule, 0.5);
-  }
-
-  // Ruled lines
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 27px,
-    $rule 27px,
-    $rule 28px
-  );
-
-  .dark & {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 27px,
-      $d-rule 27px,
-      $d-rule 28px
-    );
-  }
-}
-
-// Red margin line
-.margin-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 52px;
-  width: 1.5px;
-  background-color: rgba($mark-red, 0.3);
-
-  .dark & { background-color: rgba($mark-red, 0.2); }
-}
-
-// Hand-drawn circles around verbs
-.circled-red,
-.circled-green {
-  position: relative;
-  display: inline;
-  white-space: nowrap;
-
-  &::after {
-    content: '';
+  // Grid background
+  .grid-bg-overlay {
     position: absolute;
-    inset: -3px -5px;
-    border-width: 1.5px;
-    border-style: solid;
-    border-radius: 55% 42% 48% 52% / 45% 55% 48% 50%;
-    transform: rotate(-1.5deg);
+    inset: 0;
     pointer-events: none;
-  }
-}
-.circled-red::after  { border-color: $mark-red; }
-.circled-green::after { border-color: $mark-green; }
-
-// Margin annotations
-.annotation-red {
-  font-size: 0.75rem;
-  color: $mark-red;
-  font-weight: 500;
-  font-style: italic;
-  padding-left: 4px;
-  border-left: 2px solid rgba($mark-red, 0.4);
-}
-
-.annotation-green {
-  font-size: 0.75rem;
-  color: $mark-green;
-  font-weight: 500;
-  font-style: italic;
-  padding-left: 4px;
-  border-left: 2px solid rgba($mark-green, 0.4);
-}
-
-// EVALUATED stamp
-.stamp {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  transform: rotate(-8deg);
-  border: 2px solid $mark-red;
-  color: $mark-red;
-  padding: 4px 14px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  opacity: 0.65;
-  border-radius: 3px;
-
-  .dark & {
-    border-color: lighten($mark-red, 15%);
-    color: lighten($mark-red, 15%);
-  }
-}
-
-// ─── Bloom's Pyramid Animation ──────────────────────────────────────────────
-.pyramid-level {
-  opacity: 0.12;
-  animation: revealLevel 0.5s ease-out forwards;
-
-  @for $i from 1 through 6 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{0.3 * $i}s;
-    }
-  }
-}
-
-@keyframes revealLevel {
-  to { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pyramid-level {
-    animation: none !important;
-    opacity: 1 !important;
-  }
-}
-
-// ─── Footer ──────────────────────────────────────────────────────────────────
-.landing-footer {
-  border-top: 1px solid $rule;
-  padding: 20px 0;
-
-  .dark & { border-top-color: $d-rule; }
-
-  a {
-    color: rgba($ink, 0.4);
-    text-decoration: none;
-    transition: color 0.2s;
-
-    &:hover { color: $ink; }
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
 
     .dark & {
-      color: rgba($d-text, 0.4);
-      &:hover { color: $d-text; }
+      background-image: 
+        linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
     }
   }
-}
 
-// ─── Auth Modal ──────────────────────────────────────────────────────────────
-.auth-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background-color: rgba($ink, 0.5);
-  backdrop-filter: blur(4px);
+  // Sticky Glass Navbar
+  .landing-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
 
-  .dark & { background-color: rgba(#000, 0.6); }
-}
+    &.scrolled {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background-color: rgba(255, 255, 255, 0.85);
+      border-bottom-color: rgba(226, 232, 240, 0.8);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
-.auth-card {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  padding: 24px 28px;
-  background-color: $paper;
-  border: 1px solid $rule;
-  border-radius: 6px;
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-
-  .dark & {
-    background-color: $d-surface;
-    border-color: $d-rule;
-    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-  }
-}
-
-.auth-title {
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: $ink;
-  .dark & { color: $d-text; }
-}
-
-.auth-input {
-  width: 100%;
-  padding: 8px 12px 8px 36px;
-  font-size: 0.875rem;
-  border: 1px solid $rule;
-  border-radius: 6px;
-  background-color: #fff;
-  color: $ink;
-  transition: border-color 0.2s, box-shadow 0.2s;
-
-  &:focus {
-    outline: none;
-    border-color: rgba($mark-red, 0.6);
-    box-shadow: 0 0 0 3px rgba($mark-red, 0.1);
-  }
-
-  .dark & {
-    background-color: $d-bg;
-    border-color: $d-rule;
-    color: $d-text;
-
-    &:focus {
-      border-color: rgba($mark-red, 0.6);
-      box-shadow: 0 0 0 3px rgba($mark-red, 0.15);
+      .dark & {
+        background-color: rgba(9, 13, 22, 0.85);
+        border-bottom-color: rgba(30, 41, 59, 0.8);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      }
     }
+  }
+
+  // Brand Logo Gradient
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.35);
+  }
+
+  // Hero headline gradients
+  .gradient-text {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    .dark & {
+      background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  // Primary Gradient Button
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 14px;
+    padding: 12px 26px;
+    border: none;
+    box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.35);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.45);
+      color: white;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Secondary Outlined Button
+  .btn-secondary-ghost {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #334155;
+    font-weight: 600;
+    border-radius: 14px;
+    padding: 12px 22px;
+    border: 1px solid #cbd5e1;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+
+    &:hover {
+      border-color: #6366f1;
+      background-color: #f1f5f9;
+      color: #4f46e5;
+      transform: translateY(-2px);
+    }
+
+    .dark & {
+      background-color: rgba(15, 23, 42, 0.7);
+      color: #e2e8f0;
+      border-color: #334155;
+
+      &:hover {
+        background-color: #1e293b;
+        color: #ffffff;
+        border-color: #475569;
+      }
+    }
+  }
+
+  // Ambient Glow Orbs
+  .glow-orb-1 {
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, rgba(79, 70, 229, 0) 70%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  .glow-orb-2 {
+    position: absolute;
+    top: 30%;
+    right: 20%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0) 70%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  // Mockup Card
+  .mockup-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+
+    .dark & {
+      background-color: #0f172a;
+      border-color: #1e293b;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  // Floating Micro Badge
+  .floating-badge {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: floatBadge 5s ease-in-out infinite;
+
+    .dark & {
+      background-color: #1e293b;
+      border-color: #334155;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
   }
 }

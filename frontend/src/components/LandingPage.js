@@ -1,317 +1,348 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  LuSun,
-  LuMoon,
-  LuMenu,
-  LuX,
-  LuMail,
-  LuLock,
+import { 
+  LuLayers, 
+  LuSparkles, 
+  LuArrowRight, 
+  LuLogIn, 
+  LuShieldCheck, 
+  LuCheckCircle2, 
+  LuSun, 
+  LuMoon, 
+  LuMenu, 
+  LuX, 
+  LuMail, 
+  LuLock 
 } from 'react-icons/lu';
 import '../styles/LandingPage.scss';
 
 /**
- * LandingPage — Screen 1 of the Evalix 2.0 app flow.
- *
- * Academic paper-and-ink aesthetic.  All auth buttons are placeholders —
- * wire to your backend (POST /api/auth/login, etc.) when ready.
+ * LandingPage Component for Evalix 2.0
+ * 
+ * Screen 1 of the app flow:
+ * - Professional, modern, and aesthetically polished static landing page
+ * - Features sticky glassmorphism navbar, hero copy, live metrics mockup, and minimal footer
+ * - Contains placeholder hooks for auth modals, OAuth, and app navigation
  */
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authModal, setAuthModal] = useState({ isOpen: false, mode: 'login' }); // 'login' | 'signup'
 
-  // ── Theme state ────────────────────────────────────────────────────────
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved) return saved === 'dark';
-    // BUG FIX #1: respect OS preference, don't force dark
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
-  });
-
+  // Scroll detection for dynamic glassmorphism navbar
   useEffect(() => {
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  }, [isDark]);
-
-  // ── Mobile menu ────────────────────────────────────────────────────────
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  // ── Auth modal ─────────────────────────────────────────────────────────
-  const [auth, setAuth] = useState({ open: false, mode: 'login' });
-
-  const openAuth = (mode) => setAuth({ open: true, mode });
-  const closeAuth = () => setAuth({ ...auth, open: false });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    /**
-     * PLACEHOLDER — connect to backend here:
-     * - POST /api/auth/login   (mode === 'login')
-     * - POST /api/auth/register (mode === 'signup')
-     */
-    alert(`Placeholder (${auth.mode}): connect to your auth backend.`);
-    closeAuth();
-    navigate('/');
-  };
-
-  // ── Bloom's Taxonomy SVG Pyramid ───────────────────────────────────────
-  const pyramidLevels = [
-    { label: 'Remember',   w: 132, x: 4,  accent: false },
-    { label: 'Understand',  w: 110, x: 15, accent: false },
-    { label: 'Apply',       w: 88,  x: 26, accent: false },
-    { label: 'Analyze',     w: 66,  x: 37, accent: false },
-    { label: 'Evaluate',    w: 48,  x: 46, accent: true  },
-    { label: 'Create',      w: 34,  x: 53, accent: true  },
-  ];
-
-  // Detect prefers-reduced-motion
-  const [reducedMotion, setReducedMotion] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mq.matches);
-    const handler = (e) => setReducedMotion(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Theme toggle handler
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  // Open authentication placeholder modal
+  const openAuth = (mode = 'login') => {
+    setAuthModal({ isOpen: true, mode });
+  };
+
+  const closeAuth = () => {
+    setAuthModal({ ...authModal, isOpen: false });
+  };
+
+  // Placeholder action: Navigate to App Dashboard or run Auth
+  const handleAuthSubmit = (e) => {
+    e.preventDefault();
+    /*
+     * =========================================================================
+     * PLACEHOLDER: Connect authentication logic here.
+     * Examples:
+     * - Call backend auth endpoint: POST /api/auth/login or /api/auth/register
+     * - Trigger Firebase / Supabase / Auth0 OAuth sign-in
+     * - Store JWT token in localStorage/cookies
+     * =========================================================================
+     */
+    alert(`Placeholder Action (${authModal.mode}): Authenticating user... Proceeding to dashboard.`);
+    closeAuth();
+    
+    // In future routing, navigate directly to document upload/evaluation:
+    // navigate('/upload');
+  };
+
   return (
-    <div className={`landing-root ${isDark ? 'dark' : ''}`}>
+    <div className={`landing-page-root ${isDarkMode ? 'dark' : ''}`}>
+      <div className="grid-bg-overlay"></div>
 
-      {/* ================================================================ */}
-      {/* NAVBAR                                                           */}
-      {/* ================================================================ */}
-      <header className="landing-nav">
-        <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
-          <div className="d-flex align-items-center justify-content-between" style={{ height: 64 }}>
+      {/* Ambient background glow orbs */}
+      <div className="glow-orb-1"></div>
+      <div className="glow-orb-2"></div>
 
-            {/* Wordmark */}
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="d-flex align-items-baseline gap-2 bg-transparent border-0 p-0"
-              style={{ cursor: 'pointer' }}
-            >
-              <span className="nav-wordmark">Evalix</span>
-              <span className="nav-version-badge">2.0</span>
-            </button>
-
-            {/* Desktop actions */}
-            <div className="d-none d-md-flex align-items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setIsDark(!isDark)}
-                className="bg-transparent border-0 p-2"
-                aria-label="Toggle color theme"
-                style={{ cursor: 'pointer', color: 'inherit', opacity: 0.5 }}
-              >
-                {isDark ? <LuSun size={18} /> : <LuMoon size={18} />}
-              </button>
-              <button type="button" onClick={() => openAuth('login')}  className="btn-outline">Log in</button>
-              <button type="button" onClick={() => openAuth('signup')} className="btn-primary">Sign up</button>
+      {/* ===================================================================== */}
+      {/* 1. NAVBAR (Sticky Top, Dynamic Glassmorphism on Scroll)               */}
+      {/* ===================================================================== */}
+      <header className={`landing-nav ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="container-xl px-4 mx-auto">
+          <div className="d-flex align-items-center justify-content-between py-3">
+            
+            {/* Left: Brand Logo / Wordmark */}
+            <div className="d-flex align-items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="logo-icon">
+                <LuLayers size={22} />
+              </div>
+              <div className="d-flex align-items-baseline gap-2">
+                <span className="fw-bold fs-4 tracking-tight" style={{ letterSpacing: '-0.03em' }}>
+                  Evalix
+                </span>
+                <span className="badge rounded-pill px-2 py-1 text-xs fw-semibold" style={{ 
+                  backgroundColor: isDarkMode ? '#1e1b4b' : '#e0e7ff',
+                  color: isDarkMode ? '#a5b4fc' : '#4338ca',
+                  border: isDarkMode ? '1px solid #3730a3' : '1px solid #c7d2fe'
+                }}>
+                  2.0
+                </span>
+              </div>
             </div>
 
-            {/* Mobile */}
-            <div className="d-flex d-md-none align-items-center gap-1">
-              <button
-                type="button"
-                onClick={() => setIsDark(!isDark)}
-                className="bg-transparent border-0 p-2"
-                style={{ cursor: 'pointer', color: 'inherit', opacity: 0.5 }}
+            {/* Right: Actions (Theme Toggle, Login, Sign Up) */}
+            <div className="d-none d-md-flex align-items-center gap-3">
+              {/* Dark/Light Mode Toggle */}
+              <button 
+                type="button" 
+                onClick={toggleTheme}
+                className="btn btn-link text-decoration-none p-2 rounded-3 text-secondary"
                 aria-label="Toggle color theme"
               >
-                {isDark ? <LuSun size={18} /> : <LuMoon size={18} />}
+                {isDarkMode ? <LuSun size={20} color="#f8fafc" /> : <LuMoon size={20} color="#334155" />}
               </button>
-              <button
+
+              {/* PLACEHOLDER: Trigger Login */}
+              <button 
                 type="button"
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="bg-transparent border-0 p-2"
-                style={{ cursor: 'pointer', color: 'inherit', opacity: 0.7 }}
-                aria-label="Open menu"
+                onClick={() => openAuth('login')}
+                className="btn-secondary-ghost text-sm"
               >
-                {menuOpen ? <LuX size={20} /> : <LuMenu size={20} />}
+                Login
+              </button>
+
+              {/* PLACEHOLDER: Trigger Sign Up */}
+              <button 
+                type="button"
+                onClick={() => openAuth('signup')}
+                className="btn-primary-gradient text-sm"
+              >
+                Sign Up
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="d-flex d-md-none align-items-center gap-2">
+              <button type="button" onClick={toggleTheme} className="btn btn-link text-secondary p-1">
+                {isDarkMode ? <LuSun size={20} color="#f8fafc" /> : <LuMoon size={20} color="#334155" />}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="btn btn-link text-secondary p-1"
+              >
+                {mobileMenuOpen ? <LuX size={24} /> : <LuMenu size={24} />}
               </button>
             </div>
           </div>
 
-          {/* Mobile menu dropdown */}
-          {menuOpen && (
-            <div className="d-md-none pb-3" style={{ display: 'grid', gap: 8 }}>
-              <button type="button" onClick={() => { setMenuOpen(false); openAuth('login'); }}  className="btn-outline w-100">Log in</button>
-              <button type="button" onClick={() => { setMenuOpen(false); openAuth('signup'); }} className="btn-primary w-100">Sign up</button>
+          {/* Mobile Collapsed Menu */}
+          {mobileMenuOpen && (
+            <div className="d-md-none py-3 border-top" style={{ borderColor: isDarkMode ? '#1e293b' : '#e2e8f0' }}>
+              <div className="d-grid gap-2">
+                <button type="button" onClick={() => { setMobileMenuOpen(false); openAuth('login'); }} className="btn-secondary-ghost w-100">
+                  Login
+                </button>
+                <button type="button" onClick={() => { setMobileMenuOpen(false); openAuth('signup'); }} className="btn-primary-gradient w-100">
+                  Sign Up
+                </button>
+              </div>
             </div>
           )}
         </div>
       </header>
 
-      {/* ================================================================ */}
-      {/* HERO                                                              */}
-      {/* ================================================================ */}
-      <main className="flex-grow-1 d-flex align-items-center">
-        <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
-          <div className="row align-items-center g-5 py-5">
+      {/* ===================================================================== */}
+      {/* 2. HERO SECTION (Main Focus, Center of Screen)                        */}
+      {/* ===================================================================== */}
+      <main className="flex-grow-1 d-flex align-items-center justify-content-center py-5 position-relative">
+        <div className="container-xl px-4">
+          <div className="row align-items-center g-5">
+            
+            {/* Left Column: Eyebrow, Headline, Subheading, CTAs */}
+            <div className="col-12 col-lg-7 text-center text-lg-start">
+              
+              {/* Eyebrow Tag */}
+              <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-4" style={{
+                backgroundColor: isDarkMode ? 'rgba(30, 27, 75, 0.7)' : '#eef2ff',
+                border: isDarkMode ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid #c7d2fe',
+                color: isDarkMode ? '#a5b4fc' : '#4f46e5',
+                fontSize: '0.85rem',
+                fontWeight: 600
+              }}>
+                <span className="spinner-grow spinner-grow-sm" style={{ width: '8px', height: '8px', backgroundColor: '#6366f1' }}></span>
+                <span>AI-Powered Evaluation Platform</span>
+                <LuSparkles size={14} />
+              </div>
 
-            {/* ── Left: Copy ─────────────────────────────────────────── */}
-            <div className="col-12 col-lg-5 text-center text-lg-start">
-
-              <h1 className="hero-headline mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.4rem)' }}>
-                Grade like you<br />read every&nbsp;line.
+              {/* Headline (Max 2 lines) */}
+              <h1 className="display-4 fw-bolder tracking-tight mb-4" style={{ lineHeight: 1.15 }}>
+                Next-Gen Evaluation.<br />
+                <span className="gradient-text">
+                  Driven by Precision AI.
+                </span>
               </h1>
 
-              <p style={{ maxWidth: 440, margin: '0 auto 1.8rem', lineHeight: 1.7, opacity: 0.65, fontSize: '1.05rem' }}
-                 className="mx-lg-0">
-                Upload a syllabus, exam paper, or rubric. Evalix extracts every action verb, maps it to Bloom's Taxonomy,
-                and shows you where cognitive demand is strong, weak, or missing&nbsp;— in&nbsp;seconds.
+              {/* Subheading */}
+              <p className="lead mb-5 text-secondary" style={{ maxWidth: '600px', margin: '0 auto 2rem auto', fontSize: '1.15rem' }}>
+                Evalix 2.0 helps you evaluate, analyze, and improve with AI-driven precision — fast, accurate, and effortless.
               </p>
 
-              {/* CTAs */}
-              <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start mb-4">
-                <button type="button" onClick={() => openAuth('signup')} className="btn-primary" style={{ padding: '10px 24px' }}>
-                  Get started
+              {/* Action Buttons */}
+              <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3 mb-4">
+                
+                {/* Primary CTA: Get Started */}
+                {/* PLACEHOLDER: Route to Onboarding / App */}
+                <button 
+                  type="button" 
+                  onClick={() => openAuth('signup')}
+                  className="btn-primary-gradient"
+                >
+                  <span>Get Started</span>
+                  <LuArrowRight size={18} />
                 </button>
-                <button type="button" onClick={() => {
-                  document.getElementById('samplePaper')?.scrollIntoView({ behavior: 'smooth' });
-                }} className="btn-outline" style={{ padding: '10px 24px' }}>
-                  See a sample grade
+
+                {/* Secondary CTA: Login */}
+                {/* PLACEHOLDER: Route to Login Modal */}
+                <button 
+                  type="button" 
+                  onClick={() => openAuth('login')}
+                  className="btn-secondary-ghost"
+                >
+                  <LuLogIn size={18} />
+                  <span>Login</span>
                 </button>
               </div>
 
-              {/* What it checks */}
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '0.85rem', opacity: 0.55, maxWidth: 380 }}
-                  className="mx-auto mx-lg-0">
-                {[
-                  'Verb-level cognitive demand (all 6 Bloom\'s levels)',
-                  'Coverage across cognitive, affective & psychomotor domains',
-                  'Gap analysis with actionable verb suggestions',
-                ].map((text, i) => (
-                  <li key={i} className="d-flex align-items-start gap-2 mb-1">
-                    <span className="check-icon">✓</span>
-                    <span>{text}</span>
-                  </li>
-                ))}
-              </ul>
+              {/* Feature Trust Pills */}
+              <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-4 text-xs text-secondary mt-3">
+                <div className="d-flex align-items-center gap-1.5">
+                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <span>Bloom's Taxonomy Framework</span>
+                </div>
+                <div className="d-flex align-items-center gap-1.5">
+                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <span>Semantic Vector Embeddings</span>
+                </div>
+                <div className="d-flex align-items-center gap-1.5">
+                  <LuCheckCircle2 size={16} color="#10b981" />
+                  <span>Instant Excel Audit Reports</span>
+                </div>
+              </div>
+
             </div>
 
-            {/* ── Right: Annotated Document ──────────────────────────── */}
-            <div className="col-12 col-lg-7" id="samplePaper">
-              <div className="paper-mockup" style={{ maxWidth: 580, margin: '0 auto' }}>
-
-                {/* Red margin line */}
-                <div className="margin-line" />
-
-                {/* Paper content */}
-                <div style={{ paddingLeft: 68, paddingRight: 20, paddingTop: 24, paddingBottom: 24 }}>
-
-                  {/* Header */}
-                  <div style={{ paddingBottom: 8, marginBottom: 20, opacity: 0.4 }}>
-                    <p style={{ fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>
-                      Course Evaluation — CS 301: Data Structures
-                    </p>
-                    <p style={{ fontSize: '0.7rem', margin: 0 }}>
-                      Mid-Semester Examination · 60 marks · 90 min
-                    </p>
+            {/* Right Column: Supporting Visual (SaaS Dashboard Mockup Illustration) */}
+            <div className="col-12 col-lg-5">
+              <div className="mockup-card">
+                
+                {/* Mockup Header Dots */}
+                <div className="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom" style={{ borderColor: isDarkMode ? '#1e293b' : '#f1f5f9' }}>
+                  <div className="d-flex align-items-center gap-1.5">
+                    <span className="rounded-circle d-inline-block" style={{ width: 10, height: 10, backgroundColor: '#ef4444' }}></span>
+                    <span className="rounded-circle d-inline-block" style={{ width: 10, height: 10, backgroundColor: '#f59e0b' }}></span>
+                    <span className="rounded-circle d-inline-block" style={{ width: 10, height: 10, backgroundColor: '#10b981' }}></span>
+                    <span className="ms-2 font-monospace text-xs text-secondary">research_paper_analysis.pdf</span>
                   </div>
+                  <span className="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5 py-1 text-xs">
+                    ● Analyzed
+                  </span>
+                </div>
 
-                  {/* Question items */}
-                  <div style={{ fontSize: '0.875rem', lineHeight: 1.8 }} className="d-flex flex-column gap-4">
-
-                    {/* Q1 */}
-                    <div>
-                      <p style={{ opacity: 0.8, margin: 0 }}>
-                        <strong>Q1.</strong>{' '}
-                        <span className="circled-red"><strong>Define</strong></span>{' '}
-                        the properties of a balanced binary search tree.{' '}
-                        <span style={{ opacity: 0.4 }}>[10 marks]</span>
-                      </p>
-                      <p className="annotation-red" style={{ marginTop: 4, marginBottom: 0 }}>
-                        Remember level — consider "compare" or "analyze"
-                      </p>
+                {/* Metric KPIs */}
+                <div className="row g-2 mb-4">
+                  <div className="col-4">
+                    <div className="p-2.5 rounded-3" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
+                      <span className="text-secondary d-block" style={{ fontSize: '0.7rem' }}>Total Verbs</span>
+                      <span className="fw-bold fs-6">1,428</span>
                     </div>
-
-                    {/* Q3 */}
-                    <div>
-                      <p style={{ opacity: 0.8, margin: 0 }}>
-                        <strong>Q3.</strong>{' '}
-                        <span className="circled-green"><strong>Evaluate</strong></span>{' '}
-                        and{' '}
-                        <span className="circled-green"><strong>compare</strong></span>{' '}
-                        the time complexity of three sorting algorithms for the given dataset.{' '}
-                        <span style={{ opacity: 0.4 }}>[25 marks]</span>
-                      </p>
-                      <p className="annotation-green" style={{ marginTop: 4, marginBottom: 0 }}>
-                        ✓ Higher-order thinking — Evaluate + Analyze
-                      </p>
+                  </div>
+                  <div className="col-4">
+                    <div className="p-2.5 rounded-3" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
+                      <span className="text-secondary d-block" style={{ fontSize: '0.7rem' }}>Top Domain</span>
+                      <span className="fw-bold fs-6 text-primary">Cognitive</span>
                     </div>
-
-                    {/* Q5 */}
-                    <div>
-                      <p style={{ opacity: 0.8, margin: 0 }}>
-                        <strong>Q5.</strong>{' '}
-                        <span className="circled-red"><strong>List</strong></span>{' '}
-                        the applications of graph traversal algorithms.{' '}
-                        <span style={{ opacity: 0.4 }}>[10 marks]</span>
-                      </p>
-                      <p className="annotation-red" style={{ marginTop: 4, marginBottom: 0 }}>
-                        Remember level — try "design" or "construct"
-                      </p>
-                    </div>
-
-                    {/* Q7 */}
-                    <div>
-                      <p style={{ opacity: 0.8, margin: 0 }}>
-                        <strong>Q7.</strong>{' '}
-                        <span className="circled-green"><strong>Design</strong></span>{' '}
-                        a hash table with chaining to handle a minimum load factor of 0.75.{' '}
-                        <span style={{ opacity: 0.4 }}>[15 marks]</span>
-                      </p>
-                      <p className="annotation-green" style={{ marginTop: 4, marginBottom: 0 }}>
-                        ✓ Create level — strong
-                      </p>
+                  </div>
+                  <div className="col-4">
+                    <div className="p-2.5 rounded-3" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
+                      <span className="text-secondary d-block" style={{ fontSize: '0.7rem' }}>Accuracy</span>
+                      <span className="fw-bold fs-6 text-success">96.8%</span>
                     </div>
                   </div>
                 </div>
 
-                {/* EVALUATED stamp */}
-                <div className="stamp">Evaluated</div>
+                {/* Progress Bars */}
+                <div className="mb-4">
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="text-xs fw-semibold">Taxonomy Distribution</span>
+                    <span className="text-xs text-secondary">Weights</span>
+                  </div>
 
-                {/* Bloom's Taxonomy Pyramid */}
-                <div
-                  style={{ position: 'absolute', bottom: 16, right: 16, width: 130 }}
-                  aria-label="Bloom's Taxonomy pyramid — levels animate from Remember at the base to Create at the top"
-                >
-                  <svg viewBox="0 0 140 156" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" style={{ width: '100%' }}>
-                    {pyramidLevels.map((level, i) => {
-                      const y = 130 - i * 24;
-                      const style = reducedMotion ? { opacity: 1 } : {
-                        opacity: 0.12,
-                        animation: `revealLevel 0.5s ease-out ${0.3 * (i + 1)}s forwards`,
-                      };
-                      return (
-                        <g key={level.label} style={style}>
-                          <rect
-                            x={level.x}
-                            y={y}
-                            width={level.w}
-                            height={22}
-                            rx={1}
-                            fill={level.accent ? 'rgba(75,107,58,0.15)' : (isDark ? 'rgba(237,230,214,0.06)' : 'rgba(28,35,51,0.05)')}
-                            stroke={level.accent ? 'rgba(75,107,58,0.4)' : (isDark ? '#2A2D3A' : '#C9BFA8')}
-                            strokeWidth={0.75}
-                          />
-                          <text
-                            x={70}
-                            y={y + 15}
-                            textAnchor="middle"
-                            fill={level.accent ? '#4B6B3A' : (isDark ? 'rgba(237,230,214,0.5)' : 'rgba(28,35,51,0.5)')}
-                            fontSize={8}
-                            fontFamily="Inter, sans-serif"
-                            fontWeight={level.accent ? 600 : 500}
-                          >
-                            {level.label}
-                          </text>
-                        </g>
-                      );
-                    })}
-                  </svg>
+                  <div className="mb-2">
+                    <div className="d-flex justify-content-between text-xs mb-1">
+                      <span>Cognitive (Analysis & Evaluation)</span>
+                      <span className="fw-semibold">68%</span>
+                    </div>
+                    <div className="progress" style={{ height: '6px' }}>
+                      <div className="progress-bar" style={{ width: '68%', backgroundColor: '#4f46e5' }}></div>
+                    </div>
+                  </div>
+
+                  <div className="mb-2">
+                    <div className="d-flex justify-content-between text-xs mb-1">
+                      <span>Affective (Valuing)</span>
+                      <span className="fw-semibold">21%</span>
+                    </div>
+                    <div className="progress" style={{ height: '6px' }}>
+                      <div className="progress-bar" style={{ width: '21%', backgroundColor: '#8b5cf6' }}></div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="d-flex justify-content-between text-xs mb-1">
+                      <span>Psychomotor (Origination)</span>
+                      <span className="fw-semibold">11%</span>
+                    </div>
+                    <div className="progress" style={{ height: '6px' }}>
+                      <div className="progress-bar" style={{ width: '11%', backgroundColor: '#06b6d4' }}></div>
+                    </div>
+                  </div>
                 </div>
 
+                {/* Detected Verbs Badges */}
+                <div className="pt-3 border-top" style={{ borderColor: isDarkMode ? '#1e293b' : '#f1f5f9' }}>
+                  <span className="d-block text-secondary text-xs mb-2">Detected Action Verbs</span>
+                  <div className="d-flex flex-wrap gap-1.5">
+                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">synthesize</span>
+                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">critique</span>
+                    <span className="badge bg-primary-subtle text-primary border border-primary-subtle">formulate</span>
+                    <span className="badge bg-secondary-subtle text-secondary">demonstrate</span>
+                    <span className="badge bg-secondary-subtle text-secondary">optimize</span>
+                  </div>
+                </div>
+
+                {/* Floating Badge */}
+                <div className="floating-badge">
+                  <LuShieldCheck color="#10b981" size={18} />
+                  <span className="text-xs fw-semibold">AI Confidence: High</span>
+                </div>
               </div>
             </div>
 
@@ -319,75 +350,119 @@ const LandingPage = () => {
         </div>
       </main>
 
-      {/* ================================================================ */}
-      {/* FOOTER                                                            */}
-      {/* ================================================================ */}
-      <footer className="landing-footer">
-        <div className="container" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
-          <div className="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3" style={{ fontSize: '0.75rem', opacity: 0.4 }}>
-            <span>© 2026 Evalix 2.0. All rights reserved.</span>
+      {/* ===================================================================== */}
+      {/* 3. FOOTER (Minimal, Thin Strip)                                       */}
+      {/* ===================================================================== */}
+      <footer className="py-4 border-top" style={{ borderColor: isDarkMode ? '#1e293b' : '#e2e8f0' }}>
+        <div className="container-xl px-4">
+          <div className="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 text-secondary text-xs">
+            <div>
+              <span>© 2026 Evalix 2.0. All rights reserved.</span>
+            </div>
             <nav className="d-flex align-items-center gap-4">
-              <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('Placeholder: Privacy Policy'); }}>Privacy</a>
-              <a href="#terms"   onClick={(e) => { e.preventDefault(); alert('Placeholder: Terms of Service'); }}>Terms</a>
-              <a href="#contact" onClick={(e) => { e.preventDefault(); alert('Placeholder: Contact'); }}>Contact</a>
+              <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('Placeholder: Privacy Policy'); }} className="text-secondary text-decoration-none">
+                Privacy
+              </a>
+              <a href="#terms" onClick={(e) => { e.preventDefault(); alert('Placeholder: Terms of Service'); }} className="text-secondary text-decoration-none">
+                Terms
+              </a>
+              <a href="#contact" onClick={(e) => { e.preventDefault(); alert('Placeholder: Contact Support'); }} className="text-secondary text-decoration-none">
+                Contact
+              </a>
             </nav>
           </div>
         </div>
       </footer>
 
-      {/* ================================================================ */}
-      {/* AUTH MODAL (placeholder)                                          */}
-      {/* ================================================================ */}
-      {auth.open && (
-        <div className="auth-overlay" onClick={closeAuth}>
-          <div className="auth-card" onClick={(e) => e.stopPropagation()}>
-
-            <button
-              type="button"
-              onClick={closeAuth}
-              className="bg-transparent border-0 position-absolute"
-              style={{ top: 12, right: 12, cursor: 'pointer', opacity: 0.4 }}
-              aria-label="Close"
+      {/* ===================================================================== */}
+      {/* 4. AUTH MODAL (Placeholder UI for Login & Sign Up)                    */}
+      {/* ===================================================================== */}
+      {authModal.isOpen && (
+        <div 
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center p-3"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(8px)', zIndex: 1050 }}
+          onClick={closeAuth}
+        >
+          <div 
+            className="p-4 p-sm-5 rounded-4 position-relative"
+            style={{ 
+              maxWidth: '440px', 
+              width: '100%', 
+              backgroundColor: isDarkMode ? '#0f172a' : '#ffffff',
+              border: isDarkMode ? '1px solid #1e293b' : '1px solid #e2e8f0',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              type="button" 
+              onClick={closeAuth} 
+              className="btn btn-link position-absolute top-0 end-0 p-3 text-secondary text-decoration-none"
             >
-              <LuX size={16} />
+              <LuX size={20} />
             </button>
 
+            {/* Modal Title */}
             <div className="text-center mb-4">
-              <h3 className="auth-title">
-                {auth.mode === 'signup' ? 'Create an Evalix account' : 'Welcome back'}
+              <h3 className="fw-bold mb-1">
+                {authModal.mode === 'signup' ? 'Create your Evalix 2.0 Account' : 'Welcome back to Evalix 2.0'}
               </h3>
-              <p style={{ fontSize: '0.8rem', opacity: 0.5, margin: '4px 0 0' }}>
-                {auth.mode === 'signup' ? 'Start grading documents in minutes' : 'Sign in to access your evaluations'}
+              <p className="text-secondary text-sm mb-0">
+                {authModal.mode === 'signup' ? 'Start evaluating documents with precision AI' : 'Sign in to access your evaluations and reports'}
               </p>
             </div>
 
-            <form onSubmit={handleSubmit}>
+            {/* Form */}
+            <form onSubmit={handleAuthSubmit}>
               <div className="mb-3">
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, opacity: 0.7, marginBottom: 4 }}>Email</label>
-                <div className="position-relative">
-                  <LuMail size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', opacity: 0.3 }} />
-                  <input type="email" required placeholder="you@institution.edu" className="auth-input" />
+                <label className="form-label text-xs fw-semibold">Email Address</label>
+                <div className="input-group">
+                  <span className="input-group-text bg-transparent border-end-0 text-secondary" style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}>
+                    <LuMail size={16} />
+                  </span>
+                  <input 
+                    type="email" 
+                    required 
+                    placeholder="you@institution.edu" 
+                    className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
+                    style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}
+                  />
                 </div>
               </div>
-              <div className="mb-3">
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, opacity: 0.7, marginBottom: 4 }}>Password</label>
-                <div className="position-relative">
-                  <LuLock size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', opacity: 0.3 }} />
-                  <input type="password" required placeholder="••••••••" className="auth-input" />
+
+              <div className="mb-4">
+                <label className="form-label text-xs fw-semibold">Password</label>
+                <div className="input-group">
+                  <span className="input-group-text bg-transparent border-end-0 text-secondary" style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}>
+                    <LuLock size={16} />
+                  </span>
+                  <input 
+                    type="password" 
+                    required 
+                    placeholder="••••••••" 
+                    className={`form-control border-start-0 ${isDarkMode ? 'bg-dark text-white' : ''}`}
+                    style={{ borderColor: isDarkMode ? '#334155' : '#cbd5e1' }}
+                  />
                 </div>
               </div>
-              <button type="submit" className="btn-primary w-100" style={{ marginTop: 4, padding: '10px 0' }}>
-                {auth.mode === 'signup' ? 'Sign up' : 'Sign in'}
+
+              <button type="submit" className="btn-primary-gradient w-100 py-2.5">
+                {authModal.mode === 'signup' ? 'Sign Up' : 'Sign In'}
               </button>
             </form>
 
-            <p style={{ fontSize: '0.68rem', textAlign: 'center', opacity: 0.35, marginTop: 12, paddingTop: 12, borderTop: '1px solid', borderColor: 'inherit' }}>
-              UI prototype — authentication will be connected to the Evalix API.
-            </p>
+            <div className="mt-4 p-2.5 rounded-3 text-center" style={{ 
+              backgroundColor: isDarkMode ? 'rgba(30, 27, 75, 0.4)' : '#eef2ff',
+              border: isDarkMode ? '1px solid rgba(99, 102, 241, 0.2)' : '1px solid #c7d2fe',
+              fontSize: '0.75rem',
+              color: isDarkMode ? '#a5b4fc' : '#4338ca'
+            }}>
+              💡 <strong>Note:</strong> UI prototype screen. Authentication will be wired to the Evalix backend API.
+            </div>
           </div>
         </div>
       )}
-
     </div>
   );
 };
