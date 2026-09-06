@@ -1,0 +1,315 @@
+// styles/VerbClassifications.scss
+@import './designTokens.scss';
+
+.verb-classifications-page {
+  padding-top: 1.5rem;
+}
+
+/* Controls bar */
+.table-controls-bar {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+
+  .domain-filter-pills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    .filter-pill {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+
+        &.dot-cognitive { background: #7C3AED; }
+        &.dot-affective { background: #EC4899; }
+        &.dot-psychomotor { background: #22D3EE; }
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #FFFFFF;
+      }
+
+      &.active {
+        background: var(--gradient-primary);
+        color: #FFFFFF;
+        border-color: transparent;
+        font-weight: 600;
+        box-shadow: 0 2px 10px rgba(124, 58, 237, 0.4);
+
+        .dot {
+          background: #FFFFFF;
+        }
+      }
+    }
+  }
+
+  .table-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 0 12px;
+    width: 280px;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      border-color: rgba(124, 58, 237, 0.5);
+      box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .search-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 8px 10px;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      width: 100%;
+
+      &::placeholder {
+        color: #64748B;
+      }
+    }
+
+    .clear-search-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        color: #FFFFFF;
+      }
+    }
+  }
+}
+
+/* Glass Table Card */
+.verb-table-card {
+  overflow: hidden;
+
+  .table-responsive {
+    margin: 0;
+  }
+
+  .evalix-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+
+    thead {
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid var(--border-subtle);
+
+      th {
+        padding: 14px 18px;
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        &.sortable-th {
+          cursor: pointer;
+          user-select: none;
+
+          &:hover {
+            color: #FFFFFF;
+            background: rgba(124, 58, 237, 0.06);
+          }
+
+          .th-content {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+
+          .sort-arrow {
+            color: #38BDF8;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    tbody {
+      .table-data-row {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(124, 58, 237, 0.06);
+        }
+
+        td {
+          padding: 14px 18px;
+          vertical-align: middle;
+        }
+
+        .verb-name-cell {
+          display: flex;
+          flex-direction: column;
+
+          .verb-main-text {
+            font-weight: 600;
+            color: #FFFFFF;
+            font-size: 0.95rem;
+          }
+
+          .matched-with-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+          }
+        }
+
+        .table-freq-badge {
+          background: rgba(59, 130, 246, 0.15);
+          color: #93C5FD;
+          font-weight: 700;
+          padding: 3px 10px;
+          border-radius: 6px;
+          font-family: monospace;
+          font-size: 0.85rem;
+        }
+
+        .domain-table-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 10px;
+          border-radius: 8px;
+          border: 1px solid;
+          font-size: 0.78rem;
+          font-weight: 600;
+
+          .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+          }
+        }
+
+        .subdomain-text {
+          color: var(--text-secondary);
+          font-weight: 500;
+        }
+
+        .confidence-meter-wrap {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          max-width: 180px;
+
+          .confidence-bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+
+            .confidence-bar-fill {
+              height: 100%;
+              border-radius: 3px;
+              transition: width 0.3s ease;
+            }
+          }
+
+          .confidence-pct-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            font-family: monospace;
+            width: 36px;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+
+  /* Table Footer / Pagination */
+  .table-footer-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(15, 23, 42, 0.5);
+    border-top: 1px solid var(--border-subtle);
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .pagination-info {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .page-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 0.82rem;
+        padding: 5px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover:not(:disabled) {
+          background: rgba(124, 58, 237, 0.2);
+          border-color: rgba(124, 58, 237, 0.4);
+        }
+
+        &:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+      }
+
+      .page-current-indicator {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .table-controls-bar {
+    .table-search-box {
+      width: 100%;
+    }
+  }
+}

@@ -16,4 +16,10 @@ router.get('/reports/:filename', paperController.downloadReport);
 // GET - Download the master analysis history report
 router.get('/master-report', paperController.getMasterReport);
 
+// POST - Dynamically export analysis data to Excel
+router.post('/export-excel', paperController.exportExcel);
+
+// GET - Aggregate dashboard stats
+router.get('/stats', paperController.getStats);
+
 module.exports = router;

@@ -654,5 +654,6 @@ module.exports = {
     generatePaperReport,
     getAvailableReports,
     getReportPath,
-    generateRecommendations
+    generateRecommendations,
+    createNewMasterWorkbook
 };
