@@ -160,7 +160,7 @@ const VerbClassificationsPage = ({ data, onLoadSample }) => {
                         Upload and analyze an educational document to classify action verbs into Cognitive, Affective, and Psychomotor domains with semantic similarity scoring.
                     </p>
                     <div className="empty-actions-row">
-                        <button className="btn-evalix-primary" onClick={() => navigate('/')}>
+                        <button className="btn-evalix-primary" onClick={() => navigate('/upload')}>
                             <FiUpload className="me-2" />
                             Upload Document
                         </button>

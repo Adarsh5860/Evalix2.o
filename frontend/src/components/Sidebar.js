@@ -47,8 +47,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
                     <div className="sidebar-heading">Analysis Tools</div>
                     <nav className="sidebar-nav">
                         <NavLink 
-                            to="/" 
-                            end
+                            to="/upload" 
                             className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
                             onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
                         >
@@ -56,7 +55,7 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
                                 <FiUploadCloud className="nav-icon" />
                             </span>
                             <span className="item-label">Upload Document</span>
-                            {location.pathname === '/' && <span className="active-pill-glow"></span>}
+                            {(location.pathname === '/upload' || location.pathname === '/') && <span className="active-pill-glow"></span>}
                         </NavLink>
 
                         <NavLink 

@@ -28,7 +28,7 @@ const RecommendationsDashboard = ({ recommendations, report, onLoadSample }) => 
                         Upload and analyze a research paper or syllabus to receive AI-powered educational recommendations and Bloom's Taxonomy gap analyses.
                     </p>
                     <div className="empty-actions-row">
-                        <button className="btn-evalix-primary" onClick={() => navigate('/')}>
+                        <button className="btn-evalix-primary" onClick={() => navigate('/upload')}>
                             <FiUpload className="me-2" />
                             Upload Document
                         </button>
