@@ -1,63 +1,65 @@
-const natural = require('natural');
-const tokenizer = new natural.WordTokenizer();
-const WordPOS = require('wordpos');
-const wordpos = new WordPOS();
+const nlp = require('compromise');
+
+// Structural / auxiliary verbs that do not represent Bloom's Taxonomy action verbs
+const AUXILIARY_VERBS = new Set([
+  'be', 'is', 'am', 'are', 'was', 'were', 'been', 'being',
+  'have', 'has', 'had', 'having',
+  'do', 'does', 'did', 'done', 'doing',
+  'will', 'would', 'shall', 'should',
+  'may', 'might', 'must', 'can', 'could',
+  'get', 'got', 'getting', 'gotten'
+]);
+
+// Prepositions and particles to omit if returned as part of a verb phrase stem
+const STOP_PARTICLES = new Set([
+  'on', 'in', 'at', 'by', 'to', 'for', 'with', 'about', 'of', 'from', 'up', 'down', 'out', 'off', 'over', 'under'
+]);
 
 /**
- * Extract verbs from the given text with frequency tracking
+ * Extract verbs from the given text with frequency tracking using sentence-based contextual POS tagging
  */
 exports.extractVerbs = async (text) => {
   try {
-    console.log('Starting verb extraction process...');
-
-    // Tokenize the text
-    const tokens = tokenizer.tokenize(text);
-    console.log(`Tokenized ${tokens.length} words from text`);
-
-    // Filter out short tokens and non-alphabetic tokens
-    const filteredTokens = tokens
-      .filter(token => token.length > 1)
-      .filter(token => /^[a-zA-Z]+$/.test(token))
-      .map(token => token.toLowerCase());
-
-    console.log(`After filtering: ${filteredTokens.length} words remaining`);
-
-    // Track original frequencies before deduplication
-    const verbFrequency = {};
-    filteredTokens.forEach(token => {
-      if (verbFrequency[token]) {
-        verbFrequency[token]++;
-      } else {
-        verbFrequency[token] = 1;
-      }
-    });
-
-    // Get unique tokens to reduce processing for WordPOS
-    const uniqueTokens = [...new Set(filteredTokens)];
-    console.log(`${uniqueTokens.length} unique words to analyze`);
-
-    // Identify verbs using WordPOS
-    let identifiedVerbs = [];
-    try {
-      identifiedVerbs = await wordpos.getVerbs(uniqueTokens);
-      console.log(`Identified ${identifiedVerbs.length} unique verbs`);
-    } catch (error) {
-      console.error('Error using WordPOS:', error);
-      // Basic fallback: Look for common verb endings
-      identifiedVerbs = uniqueTokens.filter(token => {
-        return token.endsWith('ing') || token.endsWith('ed') || token.endsWith('s') || token.endsWith('ly');
-      });
-      console.log(`Fallback method identified ${identifiedVerbs.length} potential verbs`);
+    if (!text || typeof text !== 'string' || text.trim().length === 0) {
+      return [];
     }
 
-    // Create result with verb frequencies
-    const verbsWithFrequency = identifiedVerbs.map(verb => ({
-      word: verb,
-      frequency: verbFrequency[verb] || 0
+    console.log('Starting contextual verb extraction process...');
+
+    const doc = nlp(text);
+    const verbFrequency = {};
+
+    // Process sentence by sentence for contextual POS disambiguation
+    doc.sentences().forEach(sentence => {
+      const verbPhrases = sentence.verbs().json();
+
+      verbPhrases.forEach(v => {
+        const rawVerb = v.verb.infinitive || v.verb.root || v.text || '';
+        const tokens = rawVerb
+          .toLowerCase()
+          .replace(/[^a-z\s]/g, ' ')
+          .trim()
+          .split(/\s+/);
+
+        tokens.forEach(word => {
+          if (
+            word.length > 1 &&
+            /^[a-z]+$/.test(word) &&
+            !AUXILIARY_VERBS.has(word) &&
+            !STOP_PARTICLES.has(word)
+          ) {
+            verbFrequency[word] = (verbFrequency[word] || 0) + 1;
+          }
+        });
+      });
+    });
+
+    const verbsWithFrequency = Object.keys(verbFrequency).map(word => ({
+      word,
+      frequency: verbFrequency[word]
     }));
 
-    console.log('Verb extraction complete');
-    console.log(verbsWithFrequency)
+    console.log(`Contextual verb extraction complete: found ${verbsWithFrequency.length} unique action verbs`);
     return verbsWithFrequency;
   } catch (error) {
     console.error('Error extracting verbs:', error);

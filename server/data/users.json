@@ -43,5 +43,41 @@
     "salt": "5cb09592d88239a301a8bd44c6031bdd",
     "passwordHash": "7643aac21caab5b353d4d73a527c848a1069f040e699e2d5f356e07f09e7b2cb996623ecd2f65943377fbda1b779be0d524b80e664283cced50b25fafc2e40fa",
     "createdAt": "2026-09-06T16:36:51.246Z"
+  },
+  {
+    "id": "user_1788746484087_f94cf757",
+    "email": "adarsh.patil@walchandsangli.ac.in",
+    "name": "Adarsh Patil",
+    "role": "Researcher / Analyst",
+    "salt": "3ec667a02abcd8b8076cba26685402a1",
+    "passwordHash": "0bff9bd33dd56378abc46ffc77e0b6f9cd8f0a8ad81e71c3bb1d6154e70f49192ed06a9092ab5d9e8593e8e041c00b009645b7b0b838be9c84bcf7902485c9df",
+    "createdAt": "2026-09-07T02:01:24.087Z"
+  },
+  {
+    "id": "user_1788770237361_9f69389d",
+    "email": "adupatil529@gmail.com",
+    "name": "Adarsh",
+    "role": "Researcher / Analyst",
+    "salt": "966946024b865730e1063a46438bc90b",
+    "passwordHash": "a5ae76f7c6affd57f87fcebd046adebeecc7dbb1089b47fdd75c835b0aac0e8fe95618f7ad30cd91c07e65e2a77fe1b4e688e491cdd35e97eb0614035586522f",
+    "createdAt": "2026-09-07T08:37:17.361Z"
+  },
+  {
+    "id": "user_1788782555509_04001116",
+    "email": "adupatil519@gmail.com",
+    "name": "Adarsh",
+    "role": "Researcher / Analyst",
+    "salt": "4bb9c237cfd3cacf6881d5b9ff2c8cb8",
+    "passwordHash": "277a74cf1e469910ad0e13aedf2c1b523772362d73ea4159bbb73c18d660d6b7c48c631e700744b9a07065f682358dbc641d5a2a540722cf2998c8bfaed1ce83",
+    "createdAt": "2026-09-07T12:02:35.509Z"
+  },
+  {
+    "id": "user_1789534904703_7ffc3c40",
+    "email": "adupatil5292@gmail.com",
+    "name": "adarsh",
+    "role": "Researcher / Analyst",
+    "salt": "2b1aabe8e5686c60422988a3ebd26ed2",
+    "passwordHash": "d3cae094122e179c1ae375defbc227e930b41ebf610e15bc63b0673e76713a971ccc1ab4b6fcd2102caea1fb436df54ea9c268ce7bdcf41b371a8137b11f28af",
+    "createdAt": "2026-09-16T05:01:44.703Z"
   }
 ]
