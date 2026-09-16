@@ -221,6 +221,11 @@ async function generatePaperReport(paperInfo, analysisResults) {
         // Create recommendations sheet
         createRecommendationsSheet(workbook, analysisResults);
 
+        // Create quality score sheet if available
+        if (analysisResults.qualityScore) {
+            createQualityScoreSheet(workbook, analysisResults);
+        }
+
         // Save the workbook
         await workbook.xlsx.writeFile(reportPath);
         console.log(`Paper report created at: ${reportPath}`);
@@ -647,6 +652,96 @@ function generateRecommendations(analysisResults) {
         affective: affectiveRecommendation,
         psychomotor: psychomotorRecommendation
     };
+}
+
+/**
+ * Create Quality Score worksheet in the individual paper Excel report
+ */
+function createQualityScoreSheet(workbook, analysisResults) {
+    const qualityScore = analysisResults.qualityScore;
+    if (!qualityScore) return;
+
+    const worksheet = workbook.addWorksheet('Quality Score');
+
+    // Title
+    worksheet.mergeCells('A1:D1');
+    const titleCell = worksheet.getCell('A1');
+    titleCell.value = 'Document Quality Quantification Assessment';
+    titleCell.font = { size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+    titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4F46E5' } };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+    worksheet.getRow(1).height = 32;
+
+    // Overview block
+    worksheet.getCell('A3').value = 'Document Type:';
+    worksheet.getCell('A3').font = { bold: true };
+    worksheet.getCell('B3').value = qualityScore.documentType;
+
+    worksheet.getCell('A4').value = 'Overall Quality Score:';
+    worksheet.getCell('A4').font = { bold: true };
+    worksheet.getCell('B4').value = `${qualityScore.overallScore} / 100`;
+    worksheet.getCell('B4').font = { bold: true, size: 12, color: { argb: 'FF4F46E5' } };
+
+    worksheet.getCell('A5').value = 'Quality Grade Band:';
+    worksheet.getCell('A5').font = { bold: true };
+    worksheet.getCell('B5').value = `${qualityScore.grade} (Band ${qualityScore.gradeBand})`;
+
+    worksheet.getCell('A6').value = 'Structural Completeness:';
+    worksheet.getCell('A6').font = { bold: true };
+    worksheet.getCell('B6').value = `${qualityScore.structuralScore}%`;
+
+    worksheet.getCell('A7').value = 'Bloom\'s Alignment:';
+    worksheet.getCell('A7').font = { bold: true };
+    worksheet.getCell('B7').value = `${qualityScore.bloomsAlignmentScore}%`;
+
+    worksheet.getCell('A8').value = 'Evaluated At:';
+    worksheet.getCell('A8').font = { bold: true };
+    worksheet.getCell('B8').value = qualityScore.evaluatedAt || new Date().toISOString();
+
+    // Section Audit Table
+    worksheet.getCell('A10').value = 'Required Structural Sections Audit';
+    worksheet.getCell('A10').font = { bold: true, size: 13 };
+
+    const headerRow = worksheet.getRow(11);
+    headerRow.values = ['Status', 'Section Name', 'Evaluation Note'];
+    headerRow.font = { bold: true };
+    headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2E8F0' } };
+
+    let currentRow = 12;
+    (qualityScore.detectedSections || []).forEach(sec => {
+        worksheet.getRow(currentRow).values = ['DETECTED', sec, 'Section found in document'];
+        worksheet.getCell(`A${currentRow}`).font = { color: { argb: 'FF16A34A' }, bold: true };
+        currentRow++;
+    });
+
+    (qualityScore.missingSections || []).forEach(sec => {
+        worksheet.getRow(currentRow).values = ['MISSING', sec, 'Required section missing from document'];
+        worksheet.getCell(`A${currentRow}`).font = { color: { argb: 'FFDC2626' }, bold: true };
+        currentRow++;
+    });
+
+    // Bloom's Alignment Feedback
+    currentRow += 1;
+    worksheet.getCell(`A${currentRow}`).value = 'Bloom\'s Taxonomy Alignment Feedback';
+    worksheet.getCell(`A${currentRow}`).font = { bold: true, size: 13 };
+    currentRow += 1;
+
+    if (qualityScore.misalignedLevels && qualityScore.misalignedLevels.length > 0) {
+        qualityScore.misalignedLevels.forEach(feedback => {
+            worksheet.getCell(`A${currentRow}`).value = `• ${feedback}`;
+            currentRow++;
+        });
+    } else {
+        worksheet.getCell(`A${currentRow}`).value = '• Bloom\'s Taxonomy distribution aligns well with expected cognitive profile.';
+        currentRow++;
+    }
+
+    worksheet.columns = [
+        { width: 16 },
+        { width: 35 },
+        { width: 50 },
+        { width: 20 }
+    ];
 }
 
 module.exports = {

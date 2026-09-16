@@ -2,6 +2,10 @@ const cosineSimilarity = require('compute-cosine-similarity');
 const { getEmbedding } = require('./embeddingService');
 const { persistCache } = require('./cacheManager');
 
+// Configurable similarity threshold constants
+const SIMILARITY_THRESHOLD_VERIFIED = 0.6;
+const SIMILARITY_THRESHOLD_UNVERIFIED = 0.75;
+
 // Define taxonomy structure - domains and subdomains with sample verbs
 const taxonomy = {
     cognitive: {
@@ -60,37 +64,45 @@ const getWordEmbedding = async (word) => {
 
 /**
  * Find best match for a verb in the taxonomy using semantic similarity
+ * 
+ * @param {string} verb - Action verb to classify
+ * @param {boolean} isVerified - Whether the verb is a verified action verb or an unverified candidate
  */
-const findBestMatch = async (verb) => {
+const findBestMatch = async (verb, isVerified = true) => {
     if (!verb || typeof verb !== 'string') {
-        return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error' };
+        return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error', matchedWith: undefined };
     }
 
     const normalizedVerb = verb.toLowerCase().trim();
 
     try {
-        console.log(`Finding best match for verb: "${normalizedVerb}"`);
+        console.log(`Finding best match for verb: "${normalizedVerb}" (verified: ${isVerified})`);
 
-        // Check for direct matches first (fastest approach)
+        // Check for direct matches first
         for (const [domain, subdomains] of Object.entries(taxonomy)) {
             for (const [subdomain, examples] of Object.entries(subdomains)) {
                 if (examples.includes(normalizedVerb)) {
                     console.log(`Direct match found for "${normalizedVerb}" in ${domain}.${subdomain}`);
-                    return { domain, subdomain, similarity: 1.0, method: 'exact match' };
+                    return { 
+                        domain, 
+                        subdomain, 
+                        similarity: 1.0, 
+                        method: 'exact match',
+                        matchedWith: normalizedVerb 
+                    };
                 }
             }
         }
 
-        // If no direct match, use similarity search
-        // console.log(`No direct match for "${normalizedVerb}", using semantic similarity`);
+        // If no direct match, use embedding-based cosine similarity against all taxonomy examples
         const verbEmbedding = await getWordEmbedding(normalizedVerb);
 
         if (!verbEmbedding) {
             console.error(`Failed to get embedding for "${normalizedVerb}"`);
-            return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error' };
+            return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error', matchedWith: undefined };
         }
 
-        let bestMatch = { domain: 'unclassified', subdomain: 'unknown', similarity: 0.50, method: 'similarity' };
+        let bestMatch = { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'similarity', matchedWith: undefined };
 
         for (const [domain, subdomains] of Object.entries(taxonomy)) {
             for (const [subdomain, examples] of Object.entries(subdomains)) {
@@ -98,22 +110,12 @@ const findBestMatch = async (verb) => {
                     try {
                         const exampleEmbedding = await getWordEmbedding(example);
 
-                        if (!exampleEmbedding) {
-                            console.warn(`Missing embedding for example "${example}"`);
-                            continue;
-                        }
-
-                        if (verbEmbedding.length !== exampleEmbedding.length) {
-                            // console.warn(`Dimension mismatch: ${normalizedVerb}(${verbEmbedding.length}) vs ${example}(${exampleEmbedding.length})`);
-                            continue;
-                        }
+                        if (!exampleEmbedding) continue;
+                        if (verbEmbedding.length !== exampleEmbedding.length) continue;
 
                         const similarity = cosineSimilarity(verbEmbedding, exampleEmbedding);
 
-                        if (isNaN(similarity)) {
-                            console.warn(`Invalid similarity value for ${normalizedVerb} vs ${example}`);
-                            continue;
-                        }
+                        if (isNaN(similarity)) continue;
 
                         if (similarity > bestMatch.similarity) {
                             bestMatch = {
@@ -131,16 +133,39 @@ const findBestMatch = async (verb) => {
             }
         }
 
-        // console.log(`Best match for "${normalizedVerb}": ${bestMatch.domain}.${bestMatch.subdomain} (${bestMatch.similarity.toFixed(2)})`);
-        return bestMatch;
+        // Apply strictness threshold based on verification status
+        const requiredThreshold = isVerified 
+            ? SIMILARITY_THRESHOLD_VERIFIED 
+            : SIMILARITY_THRESHOLD_UNVERIFIED;
+
+        if (bestMatch.similarity >= requiredThreshold) {
+            return {
+                domain: bestMatch.domain,
+                subdomain: bestMatch.subdomain,
+                similarity: bestMatch.similarity,
+                method: isVerified ? 'similarity' : 'similarity (unverified inference)',
+                matchedWith: bestMatch.matchedWith
+            };
+        } else {
+            // Below threshold: mark unclassified
+            return {
+                domain: 'unclassified',
+                subdomain: 'unknown',
+                similarity: bestMatch.similarity,
+                method: isVerified ? 'below threshold' : 'below threshold (unverified)',
+                matchedWith: bestMatch.matchedWith
+            };
+        }
     } catch (error) {
         console.error(`Error in findBestMatch for "${normalizedVerb}":`, error);
-        return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error' };
+        return { domain: 'unclassified', subdomain: 'unknown', similarity: 0, method: 'error', matchedWith: undefined };
     }
 };
 
 /**
  * Classify a list of verbs into domains and subdomains
+ * 
+ * @param {Array<{word: string, frequency: number, verified?: boolean}>} verbsWithFrequency
  */
 exports.classifyVerbs = async (verbsWithFrequency) => {
     console.log(`Starting classification of ${verbsWithFrequency.length} verbs`);
@@ -153,7 +178,7 @@ exports.classifyVerbs = async (verbsWithFrequency) => {
             unclassified: { count: 0, subdomains: { unknown: 0 } }
         },
         verbs: [],
-        verbsByFrequency: [], // New section with verbs sorted by frequency
+        verbsByFrequency: [], // Verbs sorted by frequency
         totalVerbCount: 0,    // Total instances including repeated verbs
         uniqueVerbCount: 0    // Unique verb count
     };
@@ -171,22 +196,31 @@ exports.classifyVerbs = async (verbsWithFrequency) => {
 
     // Process each verb
     for (const verbItem of verbsWithFrequency) {
-        const { word, frequency } = verbItem;
-        const classification = await findBestMatch(word);
+        const { word, frequency, verified } = verbItem;
+        const isVerified = (verified !== false);
+
+        const classification = await findBestMatch(word, isVerified);
 
         // Update counts (weighted by frequency)
         results.domains[classification.domain].count += frequency;
-        results.domains[classification.domain].subdomains[classification.subdomain] += frequency;
+        results.domains[classification.domain].subdomains[classification.subdomain] = 
+            (results.domains[classification.domain].subdomains[classification.subdomain] || 0) + frequency;
 
         // Store verb classification details
         results.verbs.push({
             verb: word,
             frequency: frequency,
+            verified: isVerified,
+            similarityScore: classification.similarity,
+            domain: classification.domain,
+            subdomain: classification.subdomain,
+            matchedWith: classification.matchedWith,
             classification: {
                 domain: classification.domain,
                 subdomain: classification.subdomain,
                 confidence: classification.similarity,
-                matchedWith: classification.matchedWith
+                matchedWith: classification.matchedWith,
+                verified: isVerified
             }
         });
     }
@@ -201,3 +235,7 @@ exports.classifyVerbs = async (verbsWithFrequency) => {
     console.log('Classification complete');
     return results;
 };
+
+exports.SIMILARITY_THRESHOLD_VERIFIED = SIMILARITY_THRESHOLD_VERIFIED;
+exports.SIMILARITY_THRESHOLD_UNVERIFIED = SIMILARITY_THRESHOLD_UNVERIFIED;
+exports.findBestMatch = findBestMatch;

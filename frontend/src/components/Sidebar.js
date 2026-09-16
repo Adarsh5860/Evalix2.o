@@ -7,6 +7,7 @@ import {
     FiList, 
     FiInfo, 
     FiBookOpen,
+    FiAward,
     FiX
 } from 'react-icons/fi';
 import '../styles/Sidebar.scss';
@@ -78,6 +79,17 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
                                 <FiList className="nav-icon" />
                             </span>
                             <span className="item-label">Verb Classifications</span>
+                        </NavLink>
+
+                        <NavLink 
+                            to="/quality-check" 
+                            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                            onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
+                        >
+                            <span className="item-icon-wrap">
+                                <FiAward className="nav-icon" />
+                            </span>
+                            <span className="item-label">Quality Check</span>
                         </NavLink>
 
                         <NavLink 

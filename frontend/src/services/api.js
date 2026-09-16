@@ -80,6 +80,21 @@ export const getReportsList = async () => {
 };
 
 /**
+ * Run quality check for an existing report with a selected document type
+ */
+export const runQualityCheckApi = async (filename, documentType) => {
+    try {
+        const response = await api.post(`/papers/reports/${encodeURIComponent(filename)}/quality-check`, {
+            documentType
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error running quality check API:', error);
+        throw error;
+    }
+};
+
+/**
  * Download an Excel report directly via API binary blob
  */
 export const downloadReportFile = async (reportUrl, filename) => {

@@ -3,6 +3,7 @@ const textExtractor = require('../utils/textExtractor');
 const verbExtractor = require('../utils/verbExtractor');
 const verbClassifier = require('../utils/verbClassifier');
 const reportGenerator = require('../utils/reportGenerator');
+const qualityScorer = require('../utils/qualityScorer');
 const path = require('path');
 const fs = require('fs');
 
@@ -63,6 +64,16 @@ exports.analyzePaper = async (req, res) => {
         const recommendations = reportGenerator.generateRecommendations(classificationResults);
         classificationResults.recommendations = recommendations;
 
+        // Score document quality based on specified or default document type
+        const documentType = req.body.documentType || 'Project Report';
+        console.log(`Scoring document quality for type: ${documentType}`);
+        const qualityScore = qualityScorer.scoreDocumentQuality(
+            documentType,
+            text,
+            classificationResults.domains,
+            classificationResults.domains?.cognitive?.subdomains
+        );
+        classificationResults.qualityScore = qualityScore;
 
         // Generate reports
         try {
@@ -83,6 +94,24 @@ exports.analyzePaper = async (req, res) => {
                 path: reportPath,
                 url: `/api/papers/reports/${reportFilename}`
             };
+
+            // Cache analysis data for re-scoring without re-uploading
+            try {
+                const analysesCacheDir = path.join(__dirname, '../cache/analyses');
+                if (!fs.existsSync(analysesCacheDir)) {
+                    fs.mkdirSync(analysesCacheDir, { recursive: true });
+                }
+                const cacheData = {
+                    paperInfo,
+                    extractedText: text,
+                    domains: classificationResults.domains,
+                    subdomains: classificationResults.domains?.cognitive?.subdomains,
+                    qualityScore
+                };
+                fs.writeFileSync(path.join(analysesCacheDir, `${reportFilename}.json`), JSON.stringify(cacheData));
+            } catch (cacheErr) {
+                console.warn('Could not cache analysis data for quality checks:', cacheErr.message);
+            }
 
             console.log('Reports generated successfully');
         } catch (reportError) {
@@ -241,6 +270,172 @@ exports.getStats = async (req, res) => {
                 taxonomyDomains: 3,
                 availableReports: 0
             }
+        });
+    }
+};
+
+/**
+ * Run quality check for an already-analyzed report without re-uploading
+ */
+exports.runQualityCheck = async (req, res) => {
+    try {
+        const rawFilename = req.params.filename || req.body.filename;
+        const documentType = req.body.documentType || 'Project Report';
+
+        if (!rawFilename) {
+            return res.status(400).json({
+                success: false,
+                error: 'Report filename is required'
+            });
+        }
+
+        const filename = path.basename(rawFilename);
+        console.log(`Running quality check for report: ${filename} with document type: ${documentType}`);
+
+        const analysesCacheDir = path.join(__dirname, '../cache/analyses');
+        const cacheFile = path.join(analysesCacheDir, `${filename}.json`);
+        
+        let extractedText = '';
+        let domains = null;
+        let subdomains = null;
+        let paperInfo = null;
+
+        // 1. Check cached analysis JSON
+        if (fs.existsSync(cacheFile)) {
+            try {
+                const cachedData = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+                extractedText = cachedData.extractedText || '';
+                domains = cachedData.domains || cachedData.classificationResults?.domains;
+                subdomains = cachedData.subdomains || domains?.cognitive?.subdomains;
+                paperInfo = cachedData.paperInfo;
+            } catch (err) {
+                console.warn(`Error reading cached analysis for ${filename}:`, err.message);
+            }
+        }
+
+        // 2. If text not cached, attempt to locate source file in uploads
+        if (!extractedText) {
+            const uploadsDir = path.join(__dirname, '../uploads');
+            if (fs.existsSync(uploadsDir)) {
+                const timestampMatch = filename.match(/(\d{10,14})/);
+                const uploadFiles = fs.readdirSync(uploadsDir);
+                let matchedUpload = null;
+
+                if (timestampMatch) {
+                    const ts = parseInt(timestampMatch[1], 10);
+                    matchedUpload = uploadFiles.find(uf => {
+                        const m = uf.match(/^(\d{10,14})-/);
+                        if (m) {
+                            const uts = parseInt(m[1], 10);
+                            return Math.abs(uts - ts) < 60000;
+                        }
+                        return false;
+                    });
+                }
+
+                if (!matchedUpload) {
+                    const cleanName = filename.replace(/_analysis_\d+\.xlsx$/i, '').toLowerCase();
+                    matchedUpload = uploadFiles.find(uf => {
+                        const cleanUf = uf.replace(/^\d+-/, '').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                        return cleanUf.includes(cleanName) || cleanName.includes(cleanUf);
+                    });
+                }
+
+                if (matchedUpload) {
+                    const uploadPath = path.join(uploadsDir, matchedUpload);
+                    const fileObj = {
+                        path: uploadPath,
+                        originalname: matchedUpload.replace(/^\d+-/, ''),
+                        mimetype: matchedUpload.endsWith('.pdf') 
+                            ? 'application/pdf' 
+                            : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    };
+                    extractedText = await textExtractor.extractText(fileObj);
+                }
+            }
+        }
+
+        // 3. If domains not found in cache, extract from Excel report workbook
+        if (!domains) {
+            const reportPath = reportGenerator.getReportPath(filename);
+            if (fs.existsSync(reportPath)) {
+                try {
+                    const Excel = require('exceljs');
+                    const wb = new Excel.Workbook();
+                    await wb.xlsx.readFile(reportPath);
+                    domains = {
+                        cognitive: { count: 0, subdomains: {} },
+                        affective: { count: 0, subdomains: {} },
+                        psychomotor: { count: 0, subdomains: {} },
+                        unclassified: { count: 0, subdomains: { unknown: 0 } }
+                    };
+
+                    const cogSheet = wb.getWorksheet('Cognitive');
+                    if (cogSheet) {
+                        cogSheet.eachRow((row, rowNum) => {
+                            if (rowNum > 1) {
+                                const sub = (row.getCell(1).value || '').toString().toLowerCase().trim();
+                                const count = parseInt(row.getCell(2).value, 10) || 0;
+                                if (sub) {
+                                    domains.cognitive.subdomains[sub] = count;
+                                    domains.cognitive.count += count;
+                                }
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.warn(`Could not parse Excel workbook for ${filename}:`, e.message);
+                }
+            }
+        }
+
+        // Default empty structure if no domain data could be recovered
+        if (!domains) {
+            domains = {
+                cognitive: { count: 0, subdomains: {} },
+                affective: { count: 0, subdomains: {} },
+                psychomotor: { count: 0, subdomains: {} }
+            };
+        }
+
+        // Score document quality
+        const qualityScore = qualityScorer.scoreDocumentQuality(
+            documentType,
+            extractedText,
+            domains,
+            subdomains || domains?.cognitive?.subdomains
+        );
+
+        // Update cached analysis with the new score
+        try {
+            if (!fs.existsSync(analysesCacheDir)) {
+                fs.mkdirSync(analysesCacheDir, { recursive: true });
+            }
+            const updatedCache = {
+                paperInfo: paperInfo || { filename },
+                extractedText,
+                domains,
+                subdomains: subdomains || domains?.cognitive?.subdomains,
+                qualityScore
+            };
+            fs.writeFileSync(cacheFile, JSON.stringify(updatedCache));
+        } catch (saveErr) {
+            console.warn('Error saving updated quality score cache:', saveErr.message);
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                filename,
+                documentType,
+                qualityScore
+            }
+        });
+    } catch (error) {
+        console.error('Error running quality check:', error);
+        return res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to run quality check'
         });
     }
 };

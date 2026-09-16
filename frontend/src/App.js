@@ -20,6 +20,7 @@ import FileUploadPanel from './components/FileUploadPanel';
 import ReportsList from './components/ReportsList';
 import LandingPage from './components/LandingPage';
 import AboutAnalysisPage from './components/AboutAnalysisPage';
+import QualityCheckPanel from './components/QualityCheckPanel';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 
@@ -490,6 +491,13 @@ function DashboardLayout({
                                 <ReportsList
                                     currentReport={analysisData?.report}
                                 />
+                            }
+                        />
+
+                        <Route
+                            path="/quality-check"
+                            element={
+                                <QualityCheckPanel />
                             }
                         />
 

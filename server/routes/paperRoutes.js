@@ -19,6 +19,10 @@ router.get('/master-report', paperController.getMasterReport);
 // POST - Dynamically export analysis data to Excel
 router.post('/export-excel', paperController.exportExcel);
 
+// POST - Run quality check for a specific report without re-uploading
+router.post('/reports/:filename/quality-check', paperController.runQualityCheck);
+router.post('/quality-check', paperController.runQualityCheck);
+
 // GET - Aggregate dashboard stats
 router.get('/stats', paperController.getStats);
 

@@ -342,7 +342,29 @@ const VerbClassificationsPage = ({ data, onLoadSample }) => {
                                     return (
                                         <tr key={idx} className="table-data-row">
                                             <td className="verb-name-cell">
-                                                <span className="verb-main-text">{item.verb}</span>
+                                                <div className="d-flex align-items-center gap-2 flex-wrap">
+                                                    <span className="verb-main-text">{item.verb}</span>
+                                                    {(item.verified === false || item.classification?.verified === false) && (
+                                                        <span 
+                                                            className="unverified-inferred-badge"
+                                                            title="Extracted as unverified candidate and classified via cosine similarity (>= 0.75)"
+                                                            style={{
+                                                                fontSize: '0.65rem',
+                                                                fontWeight: '600',
+                                                                background: 'rgba(245, 158, 11, 0.15)',
+                                                                border: '1px solid rgba(245, 158, 11, 0.4)',
+                                                                color: '#F59E0B',
+                                                                padding: '0.15rem 0.45rem',
+                                                                borderRadius: '4px',
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                gap: '0.25rem'
+                                                            }}
+                                                        >
+                                                            <span style={{ fontSize: '0.5rem' }}>●</span> Inferred (Cosine)
+                                                        </span>
+                                                    )}
+                                                </div>
                                                 {item.classification?.matchedWith && (
                                                     <span className="matched-with-sub">
                                                         matched with: <em>{item.classification.matchedWith}</em>

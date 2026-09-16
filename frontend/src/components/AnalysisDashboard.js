@@ -9,7 +9,12 @@ import {
     FiDownload, 
     FiList, 
     FiUpload, 
-    FiTrendingUp
+    FiTrendingUp,
+    FiAward,
+    FiCheckCircle,
+    FiAlertCircle,
+    FiLayers,
+    FiArrowRight
 } from 'react-icons/fi';
 import {
     Chart as ChartJS,
@@ -356,6 +361,117 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     </div>
                 </div>
             </div>
+
+            {/* Quality Score Card / Section */}
+            {data.qualityScore && (
+                <div className="quality-score-hero-card glass-panel mb-4 p-4 animate-fade-in" style={{
+                    background: 'linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                    border: '1px solid rgba(124, 58, 237, 0.3)',
+                    borderRadius: '16px'
+                }}>
+                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                        <div className="d-flex align-items-center gap-3">
+                            <div style={{
+                                width: '56px',
+                                height: '56px',
+                                borderRadius: '50%',
+                                border: `2px solid ${data.qualityScore.gradeColor || '#10B981'}`,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: `${data.qualityScore.gradeColor || '#10B981'}15`,
+                                color: data.qualityScore.gradeColor || '#10B981',
+                                fontSize: '1.5rem',
+                                fontWeight: 'bold'
+                            }}>
+                                {data.qualityScore.gradeBand || 'A'}
+                            </div>
+                            <div>
+                                <div className="d-flex align-items-center gap-2">
+                                    <span className="badge" style={{
+                                        background: 'rgba(124, 58, 237, 0.2)',
+                                        border: '1px solid rgba(124, 58, 237, 0.4)',
+                                        color: '#A855F7',
+                                        fontSize: '0.75rem',
+                                        padding: '0.2rem 0.5rem',
+                                        borderRadius: '9999px'
+                                    }}>
+                                        {data.qualityScore.documentType}
+                                    </span>
+                                    <span className="text-muted" style={{ fontSize: '0.8rem' }}>Quality Assessment</span>
+                                </div>
+                                <h3 className="m-0 mt-1" style={{ fontSize: '1.25rem', fontWeight: '700', color: '#F8FAFC' }}>
+                                    Overall Quality Score: <span style={{ color: data.qualityScore.gradeColor || '#10B981' }}>{data.qualityScore.overallScore}/100</span>
+                                    <span style={{ fontSize: '0.9rem', fontWeight: '400', color: '#94A3B8', marginLeft: '0.5rem' }}>
+                                        ({data.qualityScore.grade})
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+
+                        <button
+                            className="btn-evalix-secondary"
+                            onClick={() => navigate('/quality-check')}
+                            style={{ fontSize: '0.85rem' }}
+                        >
+                            <FiAward className="me-2" />
+                            Explore Full Quality Audit →
+                        </button>
+                    </div>
+
+                    <div className="row g-3">
+                        <div className="col-md-6">
+                            <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                    <span style={{ fontSize: '0.85rem', color: '#CBD5E1', fontWeight: '600' }}>
+                                        <FiLayers className="me-1 text-purple" /> Structural Completeness
+                                    </span>
+                                    <span style={{ fontWeight: '700', color: '#A855F7' }}>{data.qualityScore.structuralScore}%</span>
+                                </div>
+                                <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '9999px', overflow: 'hidden' }}>
+                                    <div style={{ height: '100%', width: `${data.qualityScore.structuralScore}%`, background: '#A855F7', borderRadius: '9999px' }}></div>
+                                </div>
+                                <div className="mt-2" style={{ fontSize: '0.78rem', color: '#94A3B8' }}>
+                                    {data.qualityScore.missingSections && data.qualityScore.missingSections.length > 0 ? (
+                                        <span className="text-warning">
+                                            Missing: {data.qualityScore.missingSections.join(', ')}
+                                        </span>
+                                    ) : (
+                                        <span className="text-success">
+                                            <FiCheckCircle className="me-1" /> All required sections detected
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6">
+                            <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                <div className="d-flex justify-content-between align-items-center mb-1">
+                                    <span style={{ fontSize: '0.85rem', color: '#CBD5E1', fontWeight: '600' }}>
+                                        <FiTrendingUp className="me-1 text-cyan" /> Bloom's Cognitive Alignment
+                                    </span>
+                                    <span style={{ fontWeight: '700', color: '#22D3EE' }}>{data.qualityScore.bloomsAlignmentScore}%</span>
+                                </div>
+                                <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '9999px', overflow: 'hidden' }}>
+                                    <div style={{ height: '100%', width: `${data.qualityScore.bloomsAlignmentScore}%`, background: '#22D3EE', borderRadius: '9999px' }}></div>
+                                </div>
+                                <div className="mt-2" style={{ fontSize: '0.78rem', color: '#94A3B8' }}>
+                                    {data.qualityScore.misalignedLevels && data.qualityScore.misalignedLevels.length > 0 ? (
+                                        <span>
+                                            {data.qualityScore.misalignedLevels[0]}
+                                        </span>
+                                    ) : (
+                                        <span className="text-success">
+                                            <FiCheckCircle className="me-1" /> Cognitive distribution well aligned with archetype
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Main Visual Charts Grid */}
             <div className="charts-main-grid">

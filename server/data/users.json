@@ -79,5 +79,14 @@
     "salt": "2b1aabe8e5686c60422988a3ebd26ed2",
     "passwordHash": "d3cae094122e179c1ae375defbc227e930b41ebf610e15bc63b0673e76713a971ccc1ab4b6fcd2102caea1fb436df54ea9c268ce7bdcf41b371a8137b11f28af",
     "createdAt": "2026-09-16T05:01:44.703Z"
+  },
+  {
+    "id": "user_1789538637807_3fbbf53b",
+    "email": "ammit23@gmail.com",
+    "name": "ammit",
+    "role": "Researcher / Analyst",
+    "salt": "7476ff5dd1638ad993ff670685abccfd",
+    "passwordHash": "10a7d017baa8f570922347495b19f0bcddca3be10988a4ffd842c57781d6e5d36746597ffb526fee86f892b5c997ddb016d9ad579609f0ed63b42b6364087d69",
+    "createdAt": "2026-09-16T06:03:57.807Z"
   }
 ]

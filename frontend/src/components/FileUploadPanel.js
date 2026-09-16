@@ -25,6 +25,7 @@ const LOADING_STEPS = [
 
 const FileUploadPanel = ({ onAnalysisComplete }) => {
     const [file, setFile] = useState(null);
+    const [documentType, setDocumentType] = useState('Project Report');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
@@ -137,6 +138,7 @@ const FileUploadPanel = ({ onAnalysisComplete }) => {
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('documentType', documentType);
 
         // Advance visual loading steps smoothly
         const stepTimer1 = setTimeout(() => setCurrentStep(2), 1200);
@@ -311,6 +313,34 @@ const FileUploadPanel = ({ onAnalysisComplete }) => {
                             </div>
                         </div>
                     )}
+
+                    {/* Document Type Dropdown */}
+                    <div className="document-type-selector-card glass-panel mb-3 p-3">
+                        <div className="d-flex align-items-center justify-content-between mb-2">
+                            <label className="form-label text-light mb-0 font-weight-bold" style={{ fontSize: '0.9rem' }}>
+                                <span className="text-purple me-1">✦</span> Target Document Type:
+                            </label>
+                            <span className="badge bg-dark text-muted" style={{ fontSize: '0.75rem' }}>Quality Rubric</span>
+                        </div>
+                        <select 
+                            className="form-select bg-dark text-light border-secondary"
+                            value={documentType}
+                            onChange={(e) => setDocumentType(e.target.value)}
+                            disabled={loading}
+                            style={{ 
+                                background: '#1E293B', 
+                                borderColor: 'rgba(255,255,255,0.15)',
+                                color: '#F8FAFC',
+                                borderRadius: '8px',
+                                padding: '0.6rem 0.9rem'
+                            }}
+                        >
+                            <option value="Mini Project Report">Mini Project Report (6 Core Sections • Mid-level Bloom's)</option>
+                            <option value="Project Report">Project Report (10 Sections • Apply, Analyze & Evaluate)</option>
+                            <option value="Dissertation">Dissertation (10 Sections • Higher-Order Cognitive Synthesis)</option>
+                            <option value="Technical Report">Technical Report (9 Sections • Architecture & Specifications)</option>
+                        </select>
+                    </div>
 
                     {/* Analyze Document Button */}
                     <div className="analyze-action-row">
