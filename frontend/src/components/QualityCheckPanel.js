@@ -10,8 +10,13 @@ import {
     FiX, 
     FiRefreshCw, 
     FiArrowRight, 
-    FiInfo,
-    FiShield
+    FiShield,
+    FiSearch,
+    FiFolder,
+    FiBookOpen,
+    FiCpu,
+    FiZap,
+    FiTrendingUp
 } from 'react-icons/fi';
 import { getReportsList, runQualityCheckApi } from '../services/api';
 import '../styles/QualityCheckPanel.scss';
@@ -20,22 +25,42 @@ const DOCUMENT_TYPES = [
     { 
         id: 'Mini Project Report', 
         name: 'Mini Project Report', 
-        shortDesc: '6 Core Sections • Mid-level Bloom\'s focus' 
+        sections: 6,
+        badge: '6 Sections',
+        focus: 'Practical Execution',
+        shortDesc: 'Abstract, Objectives, Methodology, Implementation, Results, Conclusion',
+        bloomsTag: 'Apply & Analyze Focus',
+        icon: 'folder'
     },
     { 
         id: 'Project Report', 
         name: 'Project Report', 
-        shortDesc: '10 Sections • Apply, Analyze & Evaluate' 
+        sections: 10,
+        badge: '10 Sections',
+        focus: 'Comprehensive Engineering',
+        shortDesc: 'Full SDLC: Architecture, Implementation, Testing & Validation',
+        bloomsTag: 'Apply, Analyze & Evaluate',
+        icon: 'layers'
     },
     { 
         id: 'Dissertation', 
         name: 'Dissertation', 
-        shortDesc: '10 Sections • Higher-Order Analyze & Synthesize' 
+        sections: 10,
+        badge: '10 Sections',
+        focus: 'Academic Research',
+        shortDesc: 'Hypothesis, Theoretical Framework, Empirical Analysis & Synthesis',
+        bloomsTag: 'Higher-Order Synthesis',
+        icon: 'book'
     },
     { 
         id: 'Technical Report', 
         name: 'Technical Report', 
-        shortDesc: '9 Sections • Spec, Architecture & Validation' 
+        sections: 9,
+        badge: '9 Sections',
+        focus: 'Specs & Architecture',
+        shortDesc: 'Problem Spec, Architecture, Implementation Details & Benchmarks',
+        bloomsTag: 'Specs & Validation',
+        icon: 'cpu'
     }
 ];
 
@@ -47,6 +72,7 @@ const QualityCheckPanel = () => {
     const [runningCheck, setRunningCheck] = useState(false);
     const [qualityResult, setQualityResult] = useState(null);
     const [error, setError] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Fetch previously analyzed reports
     useEffect(() => {
@@ -82,6 +108,13 @@ const QualityCheckPanel = () => {
         });
     };
 
+    const getCleanName = (filename) => {
+        if (!filename) return '';
+        return filename
+            .replace(/_analysis_\d+\.xlsx$/i, '')
+            .replace(/_/g, ' ');
+    };
+
     const handleRunQualityCheck = async () => {
         if (!selectedReport || !selectedDocType || runningCheck) return;
 
@@ -92,6 +125,13 @@ const QualityCheckPanel = () => {
             const response = await runQualityCheckApi(selectedReport.filename, selectedDocType);
             if (response && response.data && response.data.qualityScore) {
                 setQualityResult(response.data.qualityScore);
+                // Smooth scroll to results
+                setTimeout(() => {
+                    const resultsEl = document.getElementById('qc-results-section');
+                    if (resultsEl) {
+                        resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
             } else {
                 throw new Error('Quality check completed but returned no scoring data.');
             }
@@ -104,17 +144,45 @@ const QualityCheckPanel = () => {
         }
     };
 
+    const renderArchetypeIcon = (iconType) => {
+        switch (iconType) {
+            case 'folder':
+                return <FiFolder className="archetype-icon-svg" />;
+            case 'book':
+                return <FiBookOpen className="archetype-icon-svg" />;
+            case 'cpu':
+                return <FiCpu className="archetype-icon-svg" />;
+            case 'layers':
+            default:
+                return <FiLayers className="archetype-icon-svg" />;
+        }
+    };
+
     // Color helpers for score bars
     const getScoreBarColor = (score) => {
-        if (score >= 85) return '#10B981'; // Green
+        if (score >= 85) return '#10B981'; // Emerald Green
         if (score >= 70) return '#3B82F6'; // Blue
         if (score >= 50) return '#F59E0B'; // Amber
         return '#EF4444';                  // Red
     };
 
+    const getAlignmentStatus = (diff) => {
+        if (diff <= -12) return { text: 'Low Emphasis', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.12)' };
+        if (diff >= 18) return { text: 'Excessive', color: '#EC4899', bg: 'rgba(236, 72, 153, 0.12)' };
+        return { text: 'Aligned', color: '#10B981', bg: 'rgba(16, 185, 129, 0.12)' };
+    };
+
+    const filteredReports = reports.filter(r => {
+        if (!searchQuery.trim()) return true;
+        const q = searchQuery.toLowerCase().trim();
+        return r.filename.toLowerCase().includes(q) || getCleanName(r.filename).toLowerCase().includes(q);
+    });
+
+    const activeArchetype = DOCUMENT_TYPES.find(d => d.id === selectedDocType) || DOCUMENT_TYPES[1];
+
     return (
         <div className="evalix-dashboard-page quality-check-page">
-            {/* Header */}
+            {/* Page Header */}
             <div className="page-header-block mb-4">
                 <div className="header-badge">
                     <span className="badge-sparkle">✦</span>
@@ -124,7 +192,7 @@ const QualityCheckPanel = () => {
                     Quality <span className="gradient-text">Check</span>
                 </h1>
                 <p className="header-subtitle">
-                    Select an existing report to quantify its structural completeness and Bloom's Taxonomy cognitive alignment against institutional rubrics.
+                    Select an analyzed document to quantify its structural completeness and Bloom's Taxonomy cognitive alignment against institutional rubrics.
                 </p>
             </div>
 
@@ -139,7 +207,7 @@ const QualityCheckPanel = () => {
 
             {/* Main Interactive Configuration Grid */}
             <div className="qc-config-grid mb-4">
-                {/* Section A: Select Report Card */}
+                {/* Step 1: Select Analyzed Report Card */}
                 <div className="qc-card glass-panel reports-selection-card">
                     <div className="card-header-row">
                         <div className="card-header-left">
@@ -147,6 +215,31 @@ const QualityCheckPanel = () => {
                             <h3 className="section-title">Select Analyzed Report</h3>
                         </div>
                         <span className="reports-count-tag">{reports.length} Available</span>
+                    </div>
+
+                    <p className="section-desc">
+                        Choose a previously processed document analysis to evaluate against quality rubrics:
+                    </p>
+
+                    {/* Quick Search Bar */}
+                    <div className="reports-search-box mb-3">
+                        <FiSearch className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Filter reports by name..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="reports-search-input"
+                        />
+                        {searchQuery && (
+                            <button 
+                                className="search-clear-btn" 
+                                onClick={() => setSearchQuery('')}
+                                title="Clear search"
+                            >
+                                <FiX />
+                            </button>
+                        )}
                     </div>
 
                     {loadingReports ? (
@@ -159,9 +252,14 @@ const QualityCheckPanel = () => {
                             <FiFileText className="hint-icon" />
                             <p>No previous reports found. Please upload and analyze a document first.</p>
                         </div>
+                    ) : filteredReports.length === 0 ? (
+                        <div className="empty-reports-hint">
+                            <FiSearch className="hint-icon" />
+                            <p>No reports match "{searchQuery}". Try a different keyword.</p>
+                        </div>
                     ) : (
                         <div className="reports-selectable-list">
-                            {reports.map((report) => {
+                            {filteredReports.map((report) => {
                                 const isSelected = selectedReport?.filename === report.filename;
                                 return (
                                     <div
@@ -169,7 +267,6 @@ const QualityCheckPanel = () => {
                                         className={`report-select-item ${isSelected ? 'selected' : ''}`}
                                         onClick={() => {
                                             setSelectedReport(report);
-                                            // Reset active result when changing report
                                             if (selectedReport?.filename !== report.filename) {
                                                 setQualityResult(null);
                                             }
@@ -183,8 +280,8 @@ const QualityCheckPanel = () => {
 
                                         <div className="report-item-details">
                                             <div className="report-item-filename" title={report.filename}>
-                                                <FiFileText className="file-icon" />
-                                                <span className="name-text">{report.filename}</span>
+                                                <div className="file-badge">XLSX</div>
+                                                <span className="name-text">{getCleanName(report.filename)}</span>
                                             </div>
                                             <div className="report-item-meta">
                                                 <span className="meta-time">
@@ -203,20 +300,21 @@ const QualityCheckPanel = () => {
                     )}
                 </div>
 
-                {/* Section B: Document Type Selector & Action Card */}
+                {/* Step 2: Document Archetype Selector Card */}
                 <div className="qc-card glass-panel doctype-action-card">
                     <div className="card-header-row">
                         <div className="card-header-left">
-                            <span className="step-tag">Step 2</span>
-                            <h3 className="section-title">Select Document Type</h3>
+                            <span className="step-tag cyan">Step 2</span>
+                            <h3 className="section-title">Select Document Archetype</h3>
                         </div>
+                        <span className="archetype-count-tag">4 Archetypes</span>
                     </div>
 
                     <p className="section-desc">
-                        Select the document archetype to evaluate against expected sections and cognitive levels:
+                        Select the target document archetype to evaluate against expected sections and cognitive levels:
                     </p>
 
-                    {/* Document Type Segmented Control / Filter Pills */}
+                    {/* Document Type Grid */}
                     <div className="doctype-pills-grid">
                         {DOCUMENT_TYPES.map((dt) => {
                             const isActive = selectedDocType === dt.id;
@@ -225,88 +323,140 @@ const QualityCheckPanel = () => {
                                     key={dt.id}
                                     type="button"
                                     className={`doctype-pill ${isActive ? 'active' : ''}`}
-                                    onClick={() => {
-                                        setSelectedDocType(dt.id);
-                                    }}
+                                    onClick={() => setSelectedDocType(dt.id)}
                                 >
-                                    <div className="pill-header">
-                                        <span className={`pill-check ${isActive ? 'checked' : ''}`}>
-                                            {isActive ? <FiCheck /> : <span className="empty-dot"></span>}
-                                        </span>
-                                        <span className="pill-title">{dt.name}</span>
+                                    <div className="pill-top-row">
+                                        <div className="pill-icon-wrap">
+                                            {renderArchetypeIcon(dt.icon)}
+                                        </div>
+                                        <div className="pill-top-right">
+                                            <span className="pill-badge">{dt.badge}</span>
+                                            <span className={`pill-check ${isActive ? 'checked' : ''}`}>
+                                                {isActive ? <FiCheck /> : <span className="empty-dot"></span>}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <span className="pill-desc">{dt.shortDesc}</span>
+
+                                    <div className="pill-title">{dt.name}</div>
+                                    <div className="pill-tag">{dt.bloomsTag}</div>
+                                    <p className="pill-desc">{dt.shortDesc}</p>
                                 </button>
                             );
                         })}
                     </div>
-
-                    {/* Run Quality Check Action */}
-                    <div className="run-action-section mt-4">
-                        <button
-                            type="button"
-                            className="btn-run-qc"
-                            disabled={!selectedReport || !selectedDocType || runningCheck}
-                            onClick={handleRunQualityCheck}
-                        >
-                            {runningCheck ? (
-                                <>
-                                    <span className="button-spinner"></span>
-                                    <span>Quantifying Document Quality...</span>
-                                </>
-                            ) : (
-                                <>
-                                    <FiAward className="btn-icon" />
-                                    <span>Run Quality Check</span>
-                                    <FiArrowRight className="arrow-icon" />
-                                </>
-                            )}
-                        </button>
-
-                        {!selectedReport ? (
-                            <span className="qc-hint-text text-warning">
-                                <FiInfo /> Select a report above to run a quality check
-                            </span>
-                        ) : !selectedDocType ? (
-                            <span className="qc-hint-text text-warning">
-                                <FiInfo /> Choose a document type to continue
-                            </span>
-                        ) : (
-                            <span className="qc-hint-text">
-                                Ready to score {selectedReport.filename.slice(0, 32)}... as {selectedDocType}
-                            </span>
-                        )}
-                    </div>
                 </div>
             </div>
 
-            {/* Section C: Quality Quantification Results Display */}
+            {/* Action Bar / Evaluation Strip */}
+            <div className="qc-action-strip glass-panel mb-5">
+                <div className="action-strip-info">
+                    <div className="strip-info-icon">
+                        <FiZap />
+                    </div>
+                    <div className="strip-info-text">
+                        <div className="strip-info-title">
+                            Ready for Quality Evaluation
+                        </div>
+                        <div className="strip-info-summary">
+                            {selectedReport ? (
+                                <>
+                                    Target: <span className="highlight-tag report-tag" title={selectedReport.filename}>{getCleanName(selectedReport.filename)}</span>
+                                    <FiArrowRight className="inline-arrow" />
+                                    Archetype: <span className="highlight-tag archetype-tag">{selectedDocType} ({activeArchetype.badge})</span>
+                                </>
+                            ) : (
+                                <span className="text-warning">Select an analyzed report above to begin evaluation</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="action-strip-button-wrap">
+                    <button
+                        type="button"
+                        className="btn-run-qc"
+                        disabled={!selectedReport || !selectedDocType || runningCheck}
+                        onClick={handleRunQualityCheck}
+                    >
+                        {runningCheck ? (
+                            <>
+                                <span className="button-spinner"></span>
+                                <span>Quantifying Document Quality...</span>
+                            </>
+                        ) : (
+                            <>
+                                <FiAward className="btn-icon" />
+                                <span>Run Quality Check</span>
+                                <FiArrowRight className="arrow-icon" />
+                            </>
+                        )}
+                    </button>
+                </div>
+            </div>
+
+            {/* Quality Quantification Results Display */}
             {qualityResult ? (
-                <div className="qc-results-container animate-fade-in">
-                    {/* Results Overview Bar */}
+                <div id="qc-results-section" className="qc-results-container animate-fade-in">
+                    {/* Hero Score Banner */}
                     <div className="qc-hero-banner glass-panel">
                         <div className="hero-left">
-                            <div className="grade-badge-circle" style={{ borderColor: qualityResult.gradeColor }}>
+                            <div 
+                                className="grade-badge-circle" 
+                                style={{ 
+                                    borderColor: qualityResult.gradeColor,
+                                    boxShadow: `0 0 25px ${qualityResult.gradeColor}40`,
+                                    backgroundColor: `${qualityResult.gradeColor}15`
+                                }}
+                            >
                                 <span className="grade-letter" style={{ color: qualityResult.gradeColor }}>
                                     {qualityResult.gradeBand || 'A'}
                                 </span>
                                 <span className="grade-sub">Grade</span>
                             </div>
                             <div className="hero-text">
-                                <div className="archetype-label">
-                                    Archetype: <strong>{qualityResult.documentType}</strong>
+                                <div className="hero-tags-row">
+                                    <span className="archetype-badge">
+                                        Archetype: <strong>{qualityResult.documentType}</strong>
+                                    </span>
+                                    <span 
+                                        className="grade-chip" 
+                                        style={{ 
+                                            color: qualityResult.gradeColor,
+                                            backgroundColor: `${qualityResult.gradeColor}18`,
+                                            borderColor: `${qualityResult.gradeColor}40`
+                                        }}
+                                    >
+                                        Assessment: {qualityResult.grade}
+                                    </span>
                                 </div>
                                 <h2 className="overall-score-heading">
-                                    Overall Quality: <span style={{ color: qualityResult.gradeColor }}>{qualityResult.overallScore}</span>
-                                    <span className="score-denom"> / 100</span>
+                                    Overall Quality Score: <span className="score-val-wrap">
+                                        <span style={{ color: qualityResult.gradeColor }}>{qualityResult.overallScore}</span>
+                                        <span className="score-denom"> / 100</span>
+                                    </span>
                                 </h2>
-                                <p className="grade-desc">
-                                    Qualitative Assessment: <strong style={{ color: qualityResult.gradeColor }}>{qualityResult.grade}</strong>
+                                <p className="hero-meta-desc">
+                                    Evaluated against institutional rubrics with 50% structural completeness weighting and 50% Bloom's cognitive taxonomy alignment.
                                 </p>
                             </div>
                         </div>
 
                         <div className="hero-right">
+                            <div className="hero-mini-scores">
+                                <div className="mini-score-box">
+                                    <span className="mini-score-val" style={{ color: getScoreBarColor(qualityResult.structuralScore) }}>
+                                        {qualityResult.structuralScore}%
+                                    </span>
+                                    <span className="mini-score-label">Structural</span>
+                                </div>
+                                <div className="mini-score-box">
+                                    <span className="mini-score-val" style={{ color: getScoreBarColor(qualityResult.bloomsAlignmentScore) }}>
+                                        {qualityResult.bloomsAlignmentScore}%
+                                    </span>
+                                    <span className="mini-score-label">Cognitive</span>
+                                </div>
+                            </div>
+
                             <button 
                                 className="btn-re-score"
                                 onClick={handleRunQualityCheck}
@@ -325,10 +475,12 @@ const QualityCheckPanel = () => {
                         <div className="qc-dimension-card glass-panel">
                             <div className="dimension-header">
                                 <div className="dim-title-wrap">
-                                    <FiLayers className="dim-icon purple" />
+                                    <div className="dim-icon-box purple">
+                                        <FiLayers />
+                                    </div>
                                     <div>
                                         <h3 className="dim-title">Structural Completeness</h3>
-                                        <span className="dim-sub">Required headings & sections</span>
+                                        <span className="dim-sub">Required headings & structural rubric sections</span>
                                     </div>
                                 </div>
                                 <div className="dim-score-badge" style={{ color: getScoreBarColor(qualityResult.structuralScore) }}>
@@ -347,18 +499,28 @@ const QualityCheckPanel = () => {
                                 ></div>
                             </div>
 
-                            {/* Section Status Overview */}
+                            {/* Section Status Overview Strip */}
                             <div className="section-counts-row">
-                                <span>Detected: <strong>{qualityResult.foundSectionsCount || 0}</strong></span>
-                                <span>Missing: <strong className="text-danger">{qualityResult.missingSections?.length || 0}</strong></span>
-                                <span>Total Required: <strong>{qualityResult.totalRequiredSections || 0}</strong></span>
+                                <div className="count-stat-item">
+                                    <span className="stat-label">Detected:</span>
+                                    <strong className="stat-val text-success">{qualityResult.foundSectionsCount || 0}</strong>
+                                </div>
+                                <div className="count-stat-item">
+                                    <span className="stat-label">Missing:</span>
+                                    <strong className="stat-val text-danger">{qualityResult.missingSections?.length || 0}</strong>
+                                </div>
+                                <div className="count-stat-item">
+                                    <span className="stat-label">Total Required:</span>
+                                    <strong className="stat-val">{qualityResult.totalRequiredSections || 0}</strong>
+                                </div>
                             </div>
 
                             {/* Missing Sections Alert List */}
                             {qualityResult.missingSections && qualityResult.missingSections.length > 0 ? (
                                 <div className="missing-sections-block mt-3">
                                     <div className="block-label text-danger">
-                                        <FiAlertCircle className="me-1" /> Missing Required Sections:
+                                        <FiAlertCircle className="me-1 inline-icon" /> 
+                                        Missing Required Sections ({qualityResult.missingSections.length}):
                                     </div>
                                     <ul className="sections-tag-list">
                                         {qualityResult.missingSections.map((sec, i) => (
@@ -372,14 +534,17 @@ const QualityCheckPanel = () => {
                             ) : (
                                 <div className="all-sections-ok mt-3">
                                     <FiCheckCircle className="ok-icon text-success" />
-                                    <span>All required structural sections are present!</span>
+                                    <span>All required structural sections are present and verified!</span>
                                 </div>
                             )}
 
                             {/* Detected Sections Pills */}
                             {qualityResult.detectedSections && qualityResult.detectedSections.length > 0 && (
                                 <div className="detected-sections-block mt-3">
-                                    <div className="block-label text-muted">Detected Sections:</div>
+                                    <div className="block-label text-muted">
+                                        <FiCheckCircle className="me-1 inline-icon text-success" />
+                                        Detected Sections ({qualityResult.detectedSections.length}):
+                                    </div>
                                     <div className="detected-pills-wrap">
                                         {qualityResult.detectedSections.map((sec, i) => (
                                             <span key={i} className="detected-pill">
@@ -389,16 +554,29 @@ const QualityCheckPanel = () => {
                                     </div>
                                 </div>
                             )}
+
+                            {/* Improvement Tip */}
+                            {qualityResult.missingSections && qualityResult.missingSections.length > 0 && (
+                                <div className="qc-tip-box mt-3">
+                                    <FiTrendingUp className="tip-icon" />
+                                    <span className="tip-text">
+                                        Adding the missing sections ({qualityResult.missingSections.slice(0, 3).join(', ')}
+                                        {qualityResult.missingSections.length > 3 ? '...' : ''}) would elevate this report's structural completeness to 100%.
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         {/* 2. Bloom's Taxonomy Alignment Card */}
                         <div className="qc-dimension-card glass-panel">
                             <div className="dimension-header">
                                 <div className="dim-title-wrap">
-                                    <FiShield className="dim-icon cyan" />
+                                    <div className="dim-icon-box cyan">
+                                        <FiShield />
+                                    </div>
                                     <div>
-                                        <h3 className="dim-title">Bloom's Alignment Score</h3>
-                                        <span className="dim-sub">Cognitive level distribution profile</span>
+                                        <h3 className="dim-title">Bloom's Taxonomy Alignment</h3>
+                                        <span className="dim-sub">Cognitive level distribution vs archetype profile</span>
                                     </div>
                                 </div>
                                 <div className="dim-score-badge" style={{ color: getScoreBarColor(qualityResult.bloomsAlignmentScore) }}>
@@ -417,14 +595,14 @@ const QualityCheckPanel = () => {
                                 ></div>
                             </div>
 
-                            {/* Misaligned Levels List */}
+                            {/* Alignment Feedback */}
                             <div className="misaligned-feedback-block mt-3">
-                                <div className="block-label">Alignment Feedback:</div>
+                                <div className="block-label">Taxonomy Alignment Insights:</div>
                                 {qualityResult.misalignedLevels && qualityResult.misalignedLevels.length > 0 ? (
                                     <ul className="feedback-bullets-list">
                                         {qualityResult.misalignedLevels.map((feedback, idx) => (
                                             <li key={idx} className="feedback-bullet-item">
-                                                <span className="bullet-dot"></span>
+                                                <FiAlertCircle className="feedback-icon" />
                                                 <span>{feedback}</span>
                                             </li>
                                         ))}
@@ -432,44 +610,60 @@ const QualityCheckPanel = () => {
                                 ) : (
                                     <div className="all-sections-ok">
                                         <FiCheckCircle className="ok-icon text-success" />
-                                        <span>Cognitive verb levels closely match expected distribution profile.</span>
+                                        <span>Cognitive verb levels closely match the expected distribution profile.</span>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Distribution Comparison Table */}
+                            {/* Cognitive Distribution Comparison Visual Bars */}
                             {qualityResult.expectedDistribution && (
                                 <div className="distribution-comparison mt-3">
                                     <div className="block-label text-muted mb-2">Cognitive Distribution Comparison:</div>
-                                    <div className="table-responsive">
-                                        <table className="mini-dist-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Level</th>
-                                                    <th className="text-center">Actual</th>
-                                                    <th className="text-center">Expected</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {Object.keys(qualityResult.expectedDistribution).map((level) => {
-                                                    const actualVal = Math.round((qualityResult.actualDistribution?.[level] || 0) * 100);
-                                                    const expectedVal = Math.round((qualityResult.expectedDistribution[level] || 0) * 100);
-                                                    return (
-                                                        <tr key={level}>
-                                                            <td className="level-name">
-                                                                {level.charAt(0).toUpperCase() + level.slice(1)}
-                                                            </td>
-                                                            <td className="text-center actual-cell">
-                                                                {actualVal}%
-                                                            </td>
-                                                            <td className="text-center expected-cell text-muted">
-                                                                {expectedVal}%
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })}
-                                            </tbody>
-                                        </table>
+                                    <div className="dist-bars-container">
+                                        {Object.keys(qualityResult.expectedDistribution).map((level) => {
+                                            const actualVal = Math.round((qualityResult.actualDistribution?.[level] || 0) * 100);
+                                            const expectedVal = Math.round((qualityResult.expectedDistribution[level] || 0) * 100);
+                                            const diff = actualVal - expectedVal;
+                                            const status = getAlignmentStatus(diff);
+
+                                            return (
+                                                <div key={level} className="dist-level-row">
+                                                    <div className="dist-level-header">
+                                                        <span className="level-title">
+                                                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                                                        </span>
+                                                        <div className="dist-level-meta">
+                                                            <span className="diff-chip" style={{ color: status.color, backgroundColor: status.bg }}>
+                                                                {status.text}
+                                                            </span>
+                                                            <span className="actual-stat">
+                                                                Actual: <strong>{actualVal}%</strong>
+                                                            </span>
+                                                            <span className="expected-stat">
+                                                                Expected: <strong>{expectedVal}%</strong>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="dist-bar-track">
+                                                        {/* Actual progress */}
+                                                        <div 
+                                                            className="dist-bar-actual" 
+                                                            style={{ 
+                                                                width: `${Math.min(100, actualVal)}%`,
+                                                                backgroundColor: status.color
+                                                            }}
+                                                        ></div>
+                                                        {/* Expected indicator line */}
+                                                        <div 
+                                                            className="dist-bar-expected-marker" 
+                                                            style={{ left: `${Math.min(99, expectedVal)}%` }}
+                                                            title={`Expected: ${expectedVal}%`}
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
@@ -482,10 +676,24 @@ const QualityCheckPanel = () => {
                     <div className="empty-icon-ring">
                         <FiAward className="empty-main-icon" />
                     </div>
-                    <h3 className="empty-title">Select a report above to run a quality check</h3>
+                    <h3 className="empty-title">Document Quality Quantification Ready</h3>
                     <p className="empty-desc">
-                        Choose an analyzed document and document type, then click <strong>"Run Quality Check"</strong> to quantify structural completeness and Bloom's Taxonomy cognitive alignment.
+                        Select an analyzed report in <strong>Step 1</strong> and document archetype in <strong>Step 2</strong>, then click <strong>"Run Quality Check"</strong> to quantify structural completeness and Bloom's Taxonomy cognitive alignment.
                     </p>
+                    <div className="empty-features-row">
+                        <div className="empty-feature-item">
+                            <FiCheckCircle className="feat-icon" />
+                            <span>100% Automated Structural Verification</span>
+                        </div>
+                        <div className="empty-feature-item">
+                            <FiShield className="feat-icon" />
+                            <span>Cognitive Taxonomy Distribution Check</span>
+                        </div>
+                        <div className="empty-feature-item">
+                            <FiAward className="feat-icon" />
+                            <span>Rubric-Based Grade Banding & Tips</span>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
