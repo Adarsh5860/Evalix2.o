@@ -21,6 +21,7 @@ import ReportsList from './components/ReportsList';
 import LandingPage from './components/LandingPage';
 import AboutAnalysisPage from './components/AboutAnalysisPage';
 import QualityCheckPanel from './components/QualityCheckPanel';
+import CertificateView from './components/CertificateView';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 
@@ -505,6 +506,13 @@ function DashboardLayout({
                             path="/about"
                             element={
                                 <AboutAnalysisPage />
+                            }
+                        />
+
+                        <Route
+                            path="/certificate"
+                            element={
+                                <CertificateView />
                             }
                         />
 

@@ -38,3 +38,4 @@ server/uploads/*
 server/reports/*.xlsx
 !server/reports/.gitkeep
 server/cache/temp_*
+server/cache/analyses/*
