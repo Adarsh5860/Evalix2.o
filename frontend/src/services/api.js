@@ -95,6 +95,21 @@ export const runQualityCheckApi = async (filename, documentType) => {
 };
 
 /**
+ * Fetch certificate evaluation data for an analyzed report
+ */
+export const getCertificateDataApi = async (filename, documentType = 'Project Report') => {
+    try {
+        const response = await api.post(`/papers/reports/${encodeURIComponent(filename)}/certificate`, {
+            documentType
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching certificate data:', error);
+        throw error;
+    }
+};
+
+/**
  * Download an Excel report directly via API binary blob
  */
 export const downloadReportFile = async (reportUrl, filename) => {

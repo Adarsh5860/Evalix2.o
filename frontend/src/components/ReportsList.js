@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FiDownload, FiFileText, FiDatabase, FiAlertCircle, FiClock, FiHardDrive } from 'react-icons/fi';
+import { FiDownload, FiFileText, FiDatabase, FiAlertCircle, FiClock, FiHardDrive, FiAward } from 'react-icons/fi';
 import { getReportsList, downloadReportFile } from '../services/api';
+import CertificateModal from './CertificateModal';
 import '../styles/ReportsList.scss';
 
 const ReportsList = ({ currentReport }) => {
     const [reports, setReports] = useState([]);
     const [downloading, setDownloading] = useState(null);
     const [error, setError] = useState(null);
+    const [certReport, setCertReport] = useState(null);
+    const [isCertModalOpen, setIsCertModalOpen] = useState(false);
 
     useEffect(() => {
         getReportsList()
@@ -40,6 +43,11 @@ const ReportsList = ({ currentReport }) => {
         } finally {
             setDownloading(null);
         }
+    };
+
+    const handleOpenCertificate = (report) => {
+        setCertReport(report);
+        setIsCertModalOpen(true);
     };
 
     return (
@@ -118,14 +126,24 @@ const ReportsList = ({ currentReport }) => {
                                     </div>
                                 </div>
                             </div>
-                            <button
-                                className="btn-evalix-secondary"
-                                onClick={() => handleDownload(currentReport.url, currentReport.filename)}
-                                disabled={downloading === currentReport.filename}
-                            >
-                                <FiDownload className="me-2" />
-                                {downloading === currentReport.filename ? 'Downloading...' : 'Download Excel'}
-                            </button>
+                            <div className="d-flex align-items-center gap-2">
+                                <button
+                                    className="btn-cert-table-action"
+                                    onClick={() => handleOpenCertificate(currentReport)}
+                                    title="View Learning Domain Certificate"
+                                >
+                                    <FiAward className="me-1" />
+                                    Certificate
+                                </button>
+                                <button
+                                    className="btn-evalix-secondary"
+                                    onClick={() => handleDownload(currentReport.url, currentReport.filename)}
+                                    disabled={downloading === currentReport.filename}
+                                >
+                                    <FiDownload className="me-2" />
+                                    {downloading === currentReport.filename ? 'Downloading...' : 'Download Excel'}
+                                </button>
+                            </div>
                         </div>
                     )}
 
@@ -154,14 +172,24 @@ const ReportsList = ({ currentReport }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <button
-                                        className="btn-evalix-secondary"
-                                        onClick={() => handleDownload(rep.url || `/api/papers/reports/${rep.filename}`, rep.filename)}
-                                        disabled={downloading === rep.filename}
-                                    >
-                                        <FiDownload className="me-2" />
-                                        {downloading === rep.filename ? 'Downloading...' : 'Download'}
-                                    </button>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <button
+                                            className="btn-cert-table-action"
+                                            onClick={() => handleOpenCertificate(rep)}
+                                            title="View Learning Domain Certificate"
+                                        >
+                                            <FiAward className="me-1" />
+                                            Certificate
+                                        </button>
+                                        <button
+                                            className="btn-evalix-secondary"
+                                            onClick={() => handleDownload(rep.url || `/api/papers/reports/${rep.filename}`, rep.filename)}
+                                            disabled={downloading === rep.filename}
+                                        >
+                                            <FiDownload className="me-2" />
+                                            {downloading === rep.filename ? 'Downloading...' : 'Download'}
+                                        </button>
+                                    </div>
                                 </div>
                             ))
                     ) : (
@@ -175,6 +203,16 @@ const ReportsList = ({ currentReport }) => {
                     )}
                 </div>
             </div>
+
+            {/* Certificate Modal */}
+            <CertificateModal
+                isOpen={isCertModalOpen}
+                onClose={() => setIsCertModalOpen(false)}
+                data={{
+                    selectedReport: certReport,
+                    filename: certReport?.filename
+                }}
+            />
         </div>
     );
 };
