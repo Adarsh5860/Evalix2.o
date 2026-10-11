@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const paperRoutes = require('./routes/paperRoutes');
 const authRoutes = require('./routes/authRoutes');
+const certificateRoutes = require('./routes/certificateRoutes');
 const path = require('path');
 
 // Load environment variables
@@ -21,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Create required directories
 const fs = require('fs');
 
-const directories = ['./uploads', './cache', './reports'];
+const directories = ['./uploads', './cache', './reports', './data'];
 
 directories.forEach(dir => {
     if (!fs.existsSync(dir)) {
@@ -33,6 +34,7 @@ directories.forEach(dir => {
 // Routes
 app.use('/api/papers', paperRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/certificates', certificateRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

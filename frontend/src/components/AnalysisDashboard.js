@@ -12,9 +12,7 @@ import {
     FiTrendingUp,
     FiAward,
     FiCheckCircle,
-    FiAlertCircle,
-    FiLayers,
-    FiArrowRight
+    FiLayers
 } from 'react-icons/fi';
 import {
     Chart as ChartJS,
@@ -27,6 +25,7 @@ import {
     ArcElement
 } from 'chart.js';
 import { exportAnalysisToExcel } from '../services/api';
+import CertificateModal from './CertificateModal';
 import '../styles/AnalysisDashboard.scss';
 
 // Register Chart.js components
@@ -73,6 +72,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
     const [chartMode, setChartMode] = useState('doughnut'); // 'doughnut' | 'pie'
     const [isExporting, setIsExporting] = useState(false);
     const [exportError, setExportError] = useState(null);
+    const [isCertModalOpen, setIsCertModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleExportExcel = async () => {
@@ -304,6 +304,14 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                         </div>
                     </div>
                     <div className="overview-actions">
+                        <button 
+                            className="btn-evalix-certificate"
+                            onClick={() => setIsCertModalOpen(true)}
+                            title="Generate and download official Evaluation Certificate"
+                        >
+                            <FiAward className="me-2" />
+                            Generate Certificate
+                        </button>
                         <button 
                             className="btn-evalix-secondary"
                             onClick={() => navigate('/classifications')}
@@ -613,6 +621,13 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     </button>
                 </div>
             </div>
+
+            {/* Certificate Generation & Preview Modal */}
+            <CertificateModal
+                isOpen={isCertModalOpen}
+                onClose={() => setIsCertModalOpen(false)}
+                data={data}
+            />
         </div>
     );
 };
