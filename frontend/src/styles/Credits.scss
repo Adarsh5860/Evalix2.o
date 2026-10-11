@@ -1,0 +1,391 @@
+// styles/Credits.scss
+@import './designTokens.scss';
+
+.credits-page {
+  padding-top: 1.5rem;
+
+  // ── Section headers ──
+  .credits-section-header {
+    margin-bottom: 1.75rem;
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      font-family: 'Plus Jakarta Sans', var(--font-sans);
+    }
+
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+  }
+
+  // ── Faculty Guide Card ──
+  .faculty-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+
+    .faculty-icon-box {
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      background: rgba(124, 58, 237, 0.2);
+      color: #C084FC;
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      box-shadow: 0 0 18px rgba(124, 58, 237, 0.3);
+    }
+
+    .faculty-info {
+      .faculty-name {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        margin: 0 0 4px;
+      }
+
+      .faculty-designation {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #C084FC;
+        margin: 0 0 2px;
+      }
+
+      .faculty-dept {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        margin: 0 0 2px;
+      }
+
+      .faculty-inst {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin: 0;
+      }
+    }
+  }
+
+  // ── Team Grid ──
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.15);
+    }
+
+    &.border-purple { border-color: rgba(124, 58, 237, 0.35); }
+    &.border-cyan { border-color: rgba(34, 211, 238, 0.35); }
+    &.border-magenta { border-color: rgba(236, 72, 153, 0.35); }
+
+    // Card Header
+    .team-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1rem;
+
+      .team-avatar {
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+
+        &.purple {
+          background: rgba(124, 58, 237, 0.2);
+          border: 1px solid rgba(124, 58, 237, 0.4);
+          box-shadow: 0 0 14px rgba(124, 58, 237, 0.3);
+        }
+
+        &.cyan {
+          background: rgba(34, 211, 238, 0.2);
+          border: 1px solid rgba(34, 211, 238, 0.4);
+          box-shadow: 0 0 14px rgba(34, 211, 238, 0.3);
+        }
+
+        &.magenta {
+          background: rgba(236, 72, 153, 0.2);
+          border: 1px solid rgba(236, 72, 153, 0.4);
+          box-shadow: 0 0 14px rgba(236, 72, 153, 0.3);
+        }
+
+        .avatar-emoji {
+          font-size: 1.5rem;
+        }
+      }
+
+      .team-info {
+        display: flex;
+        flex-direction: column;
+
+        .team-name {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: #FFFFFF;
+          margin: 0;
+          line-height: 1.3;
+        }
+
+        .team-roll {
+          font-size: 0.72rem;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
+        .team-role {
+          font-size: 0.78rem;
+          font-weight: 600;
+          margin-top: 2px;
+
+          &.role-purple { color: #C084FC; }
+          &.role-cyan { color: #38BDF8; }
+          &.role-magenta { color: #F472B6; }
+        }
+      }
+    }
+
+    // GitHub Link
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+      width: fit-content;
+
+      svg {
+        font-size: 0.95rem;
+      }
+
+      &.github-purple {
+        background: rgba(124, 58, 237, 0.1);
+        color: #C084FC;
+        border: 1px solid rgba(124, 58, 237, 0.25);
+
+        &:hover {
+          background: rgba(124, 58, 237, 0.2);
+          border-color: rgba(124, 58, 237, 0.5);
+        }
+      }
+
+      &.github-cyan {
+        background: rgba(34, 211, 238, 0.1);
+        color: #38BDF8;
+        border: 1px solid rgba(34, 211, 238, 0.25);
+
+        &:hover {
+          background: rgba(34, 211, 238, 0.2);
+          border-color: rgba(34, 211, 238, 0.5);
+        }
+      }
+
+      &.github-magenta {
+        background: rgba(236, 72, 153, 0.1);
+        color: #F472B6;
+        border: 1px solid rgba(236, 72, 153, 0.25);
+
+        &:hover {
+          background: rgba(236, 72, 153, 0.2);
+          border-color: rgba(236, 72, 153, 0.5);
+        }
+      }
+    }
+
+    // Contributions
+    .contributions-section {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+
+      .contrib-heading {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 10px;
+
+        .contrib-icon {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+        }
+      }
+
+      .contrib-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .contrib-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: 0.8rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          padding: 3px 0;
+
+          .contrib-dot {
+            width: 6px;
+            height: 6px;
+            min-width: 6px;
+            border-radius: 50%;
+            margin-top: 6px;
+
+            &.dot-purple { background: #C084FC; box-shadow: 0 0 6px rgba(124, 58, 237, 0.5); }
+            &.dot-cyan { background: #38BDF8; box-shadow: 0 0 6px rgba(34, 211, 238, 0.5); }
+            &.dot-magenta { background: #F472B6; box-shadow: 0 0 6px rgba(236, 72, 153, 0.5); }
+          }
+        }
+      }
+    }
+  }
+
+  // ── Tech Stack Grid ──
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+  }
+
+  .tech-card {
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.25s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: rgba(124, 58, 237, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(124, 58, 237, 0.2);
+    }
+
+    .tech-icon-wrap {
+      font-size: 1.5rem;
+      color: #38BDF8;
+      margin-bottom: 0.6rem;
+    }
+
+    .tech-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .tech-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+  }
+
+  // ── Footer ──
+  .credits-footer {
+    background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.1) 0%, rgba(10, 15, 31, 0.8) 100%);
+    border: 1px solid var(--border-glow);
+
+    .footer-icon-row {
+      margin-bottom: 0.75rem;
+
+      .footer-heart {
+        font-size: 1.5rem;
+        color: #F472B6;
+        filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.5));
+      }
+    }
+
+    .footer-heading {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .footer-dept {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .footer-inst {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin: 0;
+      opacity: 0.7;
+    }
+  }
+}
+
+// ── Responsive ──
+@media (max-width: 1200px) {
+  .credits-page {
+    .tech-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .credits-page {
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tech-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .faculty-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .credits-page {
+    .tech-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
