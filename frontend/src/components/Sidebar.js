@@ -8,6 +8,7 @@ import {
     FiInfo, 
     FiBookOpen,
     FiAward,
+    FiUsers,
     FiX
 } from 'react-icons/fi';
 import '../styles/Sidebar.scss';
@@ -93,6 +94,17 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
                         </NavLink>
 
                         <NavLink 
+                            to="/reports" 
+                            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                            onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
+                        >
+                            <span className="item-icon-wrap">
+                                <FiBookOpen className="nav-icon" />
+                            </span>
+                            <span className="item-label">Reports & Certs</span>
+                        </NavLink>
+
+                        <NavLink 
                             to="/about" 
                             className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
                             onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
@@ -101,6 +113,17 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
                                 <FiInfo className="nav-icon" />
                             </span>
                             <span className="item-label">About Analysis</span>
+                        </NavLink>
+
+                        <NavLink 
+                            to="/credits" 
+                            className={({ isActive }) => `sidebar-nav-item ${isActive ? 'active' : ''}`}
+                            onClick={() => setIsMobileOpen && setIsMobileOpen(false)}
+                        >
+                            <span className="item-icon-wrap">
+                                <FiUsers className="nav-icon" />
+                            </span>
+                            <span className="item-label">Credits</span>
                         </NavLink>
                     </nav>
                 </div>

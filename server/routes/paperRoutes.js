@@ -23,6 +23,11 @@ router.post('/export-excel', paperController.exportExcel);
 router.post('/reports/:filename/quality-check', paperController.runQualityCheck);
 router.post('/quality-check', paperController.runQualityCheck);
 
+// GET & POST - Get certificate evaluation data
+router.get('/reports/:filename/certificate', paperController.getCertificateData);
+router.post('/reports/:filename/certificate', paperController.getCertificateData);
+router.post('/certificate', paperController.getCertificateData);
+
 // GET - Aggregate dashboard stats
 router.get('/stats', paperController.getStats);
 

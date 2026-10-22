@@ -27,6 +27,7 @@ import {
     ArcElement
 } from 'chart.js';
 import { exportAnalysisToExcel } from '../services/api';
+import CertificateModal from './CertificateModal';
 import '../styles/AnalysisDashboard.scss';
 
 // Register Chart.js components
@@ -73,6 +74,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
     const [chartMode, setChartMode] = useState('doughnut'); // 'doughnut' | 'pie'
     const [isExporting, setIsExporting] = useState(false);
     const [exportError, setExportError] = useState(null);
+    const [isCertModalOpen, setIsCertModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleExportExcel = async () => {
@@ -310,6 +312,15 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                         >
                             <FiList className="me-2" />
                             View Verb Table
+                        </button>
+                        <button 
+                            className="btn-cert-hero"
+                            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                            onClick={() => setIsCertModalOpen(true)}
+                            title="Generate Official Learning Domain Certificate"
+                        >
+                            <FiAward className="me-2" />
+                            Certificate
                         </button>
                         <button 
                             className="btn-evalix-primary"
@@ -613,6 +624,13 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     </button>
                 </div>
             </div>
+
+            {/* Certificate Modal */}
+            <CertificateModal
+                isOpen={isCertModalOpen}
+                onClose={() => setIsCertModalOpen(false)}
+                data={data}
+            />
         </div>
     );
 };
