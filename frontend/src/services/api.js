@@ -191,4 +191,59 @@ const triggerBlobDownload = (blobData, filename) => {
     window.URL.revokeObjectURL(downloadUrl);
 };
 
+/**
+ * Helper to trigger browser download for PDF binary Blob
+ */
+export const triggerPdfDownload = (blobData, filename) => {
+    const blob = new Blob([blobData], { type: 'application/pdf' });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = filename || 'Evalix_Certificate.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(downloadUrl);
+};
+
+/**
+ * Certificate API calls
+ */
+export const generateCertificateApi = async ({ recipientName, evaluationReference, documentTitle }) => {
+    try {
+        const response = await api.post('/certificates', {
+            recipientName,
+            evaluationReference,
+            documentTitle
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error generating certificate:', error);
+        throw error;
+    }
+};
+
+export const downloadCertificatePdfApi = async (certificateId) => {
+    try {
+        const response = await api.get(`/certificates/${encodeURIComponent(certificateId)}/download`, {
+            responseType: 'blob'
+        });
+        triggerPdfDownload(response.data, `Evalix_Certificate_${certificateId}.pdf`);
+        return true;
+    } catch (error) {
+        console.error('Error downloading certificate PDF:', error);
+        throw error;
+    }
+};
+
+export const fetchCertificatesHistoryApi = async () => {
+    try {
+        const response = await api.get('/certificates');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching certificates history:', error);
+        throw error;
+    }
+};
+
 export default api;

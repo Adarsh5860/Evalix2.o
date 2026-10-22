@@ -12,9 +12,7 @@ import {
     FiTrendingUp,
     FiAward,
     FiCheckCircle,
-    FiAlertCircle,
-    FiLayers,
-    FiArrowRight
+    FiLayers
 } from 'react-icons/fi';
 import {
     Chart as ChartJS,
@@ -306,6 +304,14 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                         </div>
                     </div>
                     <div className="overview-actions">
+                        <button 
+                            className="btn-evalix-certificate"
+                            onClick={() => setIsCertModalOpen(true)}
+                            title="Generate and download official Evaluation Certificate"
+                        >
+                            <FiAward className="me-2" />
+                            Generate Certificate
+                        </button>
                         <button 
                             className="btn-evalix-secondary"
                             onClick={() => navigate('/classifications')}

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "EVX-2026-4C85-8105",
+    "recipientName": "XYZ",
+    "documentTitle": "some-unappreciated-benefits-of-artificial-intelligence-ai--an-opinion-2889.pdf",
+    "evaluationReference": "some_unappreciated_benefits_of_artificial_intelligence_ai__an_opinion_2889_pdf_analysis_1791721512859.xlsx",
+    "issuedAt": "2026-10-11T12:28:02.315Z",
+    "metrics": {
+      "totalVerbs": 86,
+      "cognitive": {
+        "count": 48,
+        "percentage": 56
+      },
+      "affective": {
+        "count": 24,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 14,
+        "percentage": 16
+      }
+    },
+    "qualityScore": {
+      "overallScore": 43,
+      "grade": "Poor",
+      "gradeBand": "D",
+      "gradeColor": "#EF4444",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-11T12:28:02.317Z"
+  },
+  {
+    "id": "EVX-2026-D241-4C05",
+    "recipientName": "Dr. Angela M. Parker",
+    "documentTitle": "Sample_Research_Paper_Exp7.pdf",
+    "evaluationReference": "Sample_Research_Paper_Analysis.xlsx",
+    "issuedAt": "2026-10-11T12:22:23.671Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-11T12:22:23.671Z"
+  },
+  {
+    "id": "EVX-2026-6EFB-4CD6",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Research_Paper_Exp7.pdf",
+    "evaluationReference": "Sample_Research_Paper_Analysis.xlsx",
+    "issuedAt": "2026-10-11T12:20:23.562Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-11T12:20:23.563Z"
+  }
+]
