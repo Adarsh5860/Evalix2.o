@@ -19,6 +19,7 @@ import {
     FiTrendingUp
 } from 'react-icons/fi';
 import { getReportsList, runQualityCheckApi } from '../services/api';
+import CertificateModal from './CertificateModal';
 import '../styles/QualityCheckPanel.scss';
 
 const DOCUMENT_TYPES = [
@@ -73,6 +74,7 @@ const QualityCheckPanel = () => {
     const [qualityResult, setQualityResult] = useState(null);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isCertModalOpen, setIsCertModalOpen] = useState(false);
 
     // Fetch previously analyzed reports
     useEffect(() => {
@@ -457,15 +459,26 @@ const QualityCheckPanel = () => {
                                 </div>
                             </div>
 
-                            <button 
-                                className="btn-re-score"
-                                onClick={handleRunQualityCheck}
-                                disabled={runningCheck}
-                                title="Re-evaluate document"
-                            >
-                                <FiRefreshCw className={runningCheck ? 'spin' : ''} />
-                                <span>Re-evaluate</span>
-                            </button>
+                            <div className="d-flex align-items-center gap-2">
+                                <button 
+                                    className="btn-cert-hero"
+                                    onClick={() => setIsCertModalOpen(true)}
+                                    title="Generate Official Learning Domain & Quality Certificate"
+                                >
+                                    <FiAward className="cert-icon" />
+                                    <span>View Certificate</span>
+                                </button>
+
+                                <button 
+                                    className="btn-re-score"
+                                    onClick={handleRunQualityCheck}
+                                    disabled={runningCheck}
+                                    title="Re-evaluate document"
+                                >
+                                    <FiRefreshCw className={runningCheck ? 'spin' : ''} />
+                                    <span>Re-evaluate</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -696,6 +709,17 @@ const QualityCheckPanel = () => {
                     </div>
                 </div>
             )}
+
+            {/* Certificate Modal */}
+            <CertificateModal
+                isOpen={isCertModalOpen}
+                onClose={() => setIsCertModalOpen(false)}
+                data={{
+                    selectedReport,
+                    qualityResult,
+                    documentType: selectedDocType
+                }}
+            />
         </div>
     );
 };

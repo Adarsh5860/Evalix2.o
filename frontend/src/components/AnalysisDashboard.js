@@ -320,6 +320,15 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                             View Verb Table
                         </button>
                         <button 
+                            className="btn-cert-hero"
+                            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                            onClick={() => setIsCertModalOpen(true)}
+                            title="Generate Official Learning Domain Certificate"
+                        >
+                            <FiAward className="me-2" />
+                            Certificate
+                        </button>
+                        <button 
                             className="btn-evalix-primary"
                             onClick={handleExportExcel}
                             disabled={isExporting}
@@ -622,7 +631,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                 </div>
             </div>
 
-            {/* Certificate Generation & Preview Modal */}
+            {/* Certificate Modal */}
             <CertificateModal
                 isOpen={isCertModalOpen}
                 onClose={() => setIsCertModalOpen(false)}
