@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch, FiBell, FiChevronDown, FiLogOut } from 'react-icons/fi';
-import evalixLogo from '../assets/evalix-logo.png';
 import { useAuth } from '../context/AuthContext';
 import '../styles/Header.scss';
 
@@ -53,11 +52,14 @@ const Header = () => {
                 <div className="navbar-brand-section">
                     <Link to="/upload" className="brand-logo-link">
                         <div className="brand-logo-icon">
-                            <img src={evalixLogo} alt="Evalix Logo" className="brand-logo-img" />
+                            <img
+                                src={`${process.env.PUBLIC_URL}/newLogo.png`}
+                                alt="Evalix"
+                                className="brand-logo-img"
+                            />
                         </div>
                         <div className="brand-title-wrap">
                             <div className="brand-name-row">
-                                <span className="brand-name">Evalix</span>
                                 <span className="version-badge">2.0</span>
                             </div>
                             <span className="brand-tagline">Analyze • Understand • Improve</span>

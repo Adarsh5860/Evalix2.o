@@ -1,6 +1,6 @@
-# Evalix - Research Paper Analysis Tool
+# Evalix - Report Analysis Tool
 
-Evalix is a full-stack web application designed to analyze academic research papers, syllabi, and educational documents using **Bloom's Taxonomy**. It extracts action verbs, classifies them across cognitive, affective, and psychomotor domains, provides interactive visual dashboards, generates actionable pedagogical recommendations, and exports detailed Excel reports.
+Evalix is a full-stack web application designed to analyze reports, syllabi, and educational documents using **Bloom's Taxonomy**. It extracts action verbs, classifies them across cognitive, affective, and psychomotor domains, provides interactive visual dashboards, generates actionable pedagogical recommendations, and exports detailed Excel reports.
 
 ---
 
@@ -32,7 +32,7 @@ Eva-main/
 │   └── package.json          # Frontend dependencies
 │
 ├── server/                   # Node.js & Express.js backend
-│   ├── controllers/          # Request handlers (paper analysis, reports)
+│   ├── controllers/          # Request handlers (document analysis, reports)
 │   ├── routes/               # API route definitions
 │   ├── utils/                # Text extractors, classifiers, embeddings, excel generator
 │   ├── cache/                # Embedding cache

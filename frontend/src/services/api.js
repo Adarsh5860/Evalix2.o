@@ -251,7 +251,7 @@ export const generateCertificateApi = async ({ recipientName, evaluationReferenc
 
 export const downloadCertificatePdfApi = async (certificateId) => {
     try {
-        const response = await api.get(`/certificates/${encodeURIComponent(certificateId)}/download`, {
+        const response = await api.get(`/certificates/${encodeURIComponent(certificateId)}/download?t=${Date.now()}`, {
             responseType: 'blob'
         });
         triggerPdfDownload(response.data, `Evalix_Certificate_${certificateId}.pdf`);
@@ -270,6 +270,46 @@ export const fetchCertificatesHistoryApi = async () => {
         console.error('Error fetching certificates history:', error);
         throw error;
     }
+};
+
+export const fetchAdminUsersApi = async () => {
+    const response = await api.get('/admin/users');
+    return response.data;
+};
+
+export const updateUserRoleApi = async (userId, systemRole) => {
+    const response = await api.patch(`/admin/users/${encodeURIComponent(userId)}/role`, { systemRole });
+    return response.data;
+};
+
+export const deleteUserApi = async (userId) => {
+    const response = await api.delete(`/admin/users/${encodeURIComponent(userId)}`);
+    return response.data;
+};
+
+export const promoteWithSecretApi = async (secretKey) => {
+    const response = await api.post('/admin/promote-with-secret', { secretKey });
+    return response.data;
+};
+
+export const submitFeedbackApi = async (feedback) => {
+    const response = await api.post('/feedback', feedback);
+    return response.data;
+};
+
+export const fetchAllFeedbackApi = async () => {
+    const response = await api.get('/feedback');
+    return response.data;
+};
+
+export const updateFeedbackStatusApi = async (feedbackId, status) => {
+    const response = await api.patch(`/feedback/${encodeURIComponent(feedbackId)}/status`, { status });
+    return response.data;
+};
+
+export const deleteFeedbackApi = async (feedbackId) => {
+    const response = await api.delete(`/feedback/${encodeURIComponent(feedbackId)}`);
+    return response.data;
 };
 
 export default api;

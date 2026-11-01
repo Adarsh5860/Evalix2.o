@@ -10,6 +10,7 @@ import {
     FiList
 } from 'react-icons/fi';
 import { exportAnalysisToExcel } from '../services/api';
+import getDocumentDisplayName from '../utils/getDocumentDisplayName';
 import '../styles/VerbClassifications.scss';
 
 const DOMAIN_COLORS = {
@@ -189,7 +190,7 @@ const VerbClassificationsPage = ({ data, onLoadSample }) => {
                             Verb <span className="gradient-text">Classifications</span>
                         </h1>
                         <p className="header-subtitle">
-                            Detailed breakdown of action verbs extracted from {data.documentInfo?.filename || 'the document'}.
+                            Detailed breakdown of action verbs extracted from {getDocumentDisplayName(data.documentInfo?.filename || 'the document')}.
                         </p>
                     </div>
 

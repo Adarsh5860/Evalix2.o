@@ -8,7 +8,7 @@ const reportGenerator = require('../utils/reportGenerator');
 // Pre-seeded sample evaluation data for the demo sample analysis
 const SAMPLE_EVALUATION_DATA = {
     paperInfo: {
-        filename: 'Sample_Research_Paper_Exp7.pdf',
+        filename: 'Sample_Report.pdf',
         filesize: 518118,
         textLength: 14280,
         analyzedAt: new Date().toISOString()
@@ -56,7 +56,12 @@ const resolveTrustedEvaluation = async (rawRef) => {
     const cleanRef = path.basename(rawRef.trim());
 
     // 1. Check if it's the built-in demo sample
-    if (cleanRef.toLowerCase().includes('sample_research_paper') || cleanRef.toLowerCase().includes('sample_analysis')) {
+    const normalizedRef = cleanRef.toLowerCase();
+    if (
+        normalizedRef.includes('sample_report') ||
+        normalizedRef.includes('sample_research_paper') ||
+        normalizedRef.includes('sample_analysis')
+    ) {
         return SAMPLE_EVALUATION_DATA;
     }
 
@@ -241,14 +246,19 @@ exports.createCertificate = async (req, res) => {
         // Save certificate to store
         certificateStore.saveCertificate(certificateRecord);
 
-        // 5. Generate PDF buffer
-        const pdfBuffer = await certificateGenerator.generateCertificatePdfBuffer({
+        // 5. Generate PDF buffer (ensure latest generator logic is fresh)
+        try {
+            delete require.cache[require.resolve('../utils/certificateGenerator')];
+        } catch {}
+        const freshGenerator = require('../utils/certificateGenerator');
+        const pdfBuffer = await freshGenerator.generateCertificatePdfBuffer({
             certificateId,
             recipientName: trimmedName,
             documentTitle: verifiedTitle,
             issuedAt,
             metrics,
-            qualityScore
+            qualityScore,
+            reportType: trustedEval.qualityScore?.documentType || 'MINI PROJECT REPORT'
         });
 
         // If client requested direct PDF download
@@ -256,6 +266,9 @@ exports.createCertificate = async (req, res) => {
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', `attachment; filename="Evalix_Certificate_${certificateId}.pdf"`);
             res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
             return res.send(pdfBuffer);
         }
 
@@ -297,19 +310,27 @@ exports.downloadCertificate = async (req, res) => {
             });
         }
 
-        // Generate PDF on the fly from verified stored record
-        const pdfBuffer = await certificateGenerator.generateCertificatePdfBuffer({
+        // Generate PDF on the fly from verified stored record (ensure fresh generator)
+        try {
+            delete require.cache[require.resolve('../utils/certificateGenerator')];
+        } catch {}
+        const freshGenerator = require('../utils/certificateGenerator');
+        const pdfBuffer = await freshGenerator.generateCertificatePdfBuffer({
             certificateId: cert.id,
             recipientName: cert.recipientName,
             documentTitle: cert.documentTitle,
             issuedAt: cert.issuedAt,
             metrics: cert.metrics,
-            qualityScore: cert.qualityScore
+            qualityScore: cert.qualityScore,
+            reportType: cert.qualityScore?.documentType || 'MINI PROJECT REPORT'
         });
 
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="Evalix_Certificate_${cert.id}.pdf"`);
         res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
         return res.send(pdfBuffer);
 
     } catch (error) {

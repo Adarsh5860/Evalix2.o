@@ -53,7 +53,7 @@ function getReportPath(filename) {
 }
 
 /**
- * Update master report with new paper analysis
+ * Update master report with new document analysis
  */
 async function updateMasterReport(paperInfo, analysisResults) {
     try {

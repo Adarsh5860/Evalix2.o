@@ -31,7 +31,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 // Default realistic sample data for demo / instant preview
 const SAMPLE_ANALYSIS_DATA = {
     documentInfo: {
-        filename: 'Sample_Research_Paper_Exp7.pdf',
+        filename: 'Sample_Report.pdf',
         filesize: 518118,
         textLength: 14280,
         analyzedAt: new Date().toISOString()
@@ -374,7 +374,7 @@ const SAMPLE_ANALYSIS_DATA = {
     },
 
     report: {
-        filename: 'Sample_Research_Paper_Analysis.xlsx',
+        filename: 'Sample_Report_Analysis.xlsx',
         url: '/api/papers/master-report'
     }
 };

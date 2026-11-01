@@ -202,7 +202,7 @@ const FileUploadPanel = ({ onAnalysisComplete }) => {
                             Upload Document <span className="gradient-text">for Analysis</span>
                         </h1>
                         <p className="header-subtitle">
-                            Upload your research paper, syllabus or educational document to analyze action verbs using Bloom's Taxonomy.
+                            Upload your report, syllabus, or educational document to analyze action verbs using Bloom's Taxonomy.
                         </p>
                     </div>
 
@@ -386,7 +386,7 @@ const FileUploadPanel = ({ onAnalysisComplete }) => {
                     </div>
                 </div>
 
-                {/* Right Column: Research Paper Visualization & Stats */}
+                {/* Right Column: Report Visualization & Stats */}
                 <div className="visual-column">
                     <ResearchPaperVisual />
                 </div>

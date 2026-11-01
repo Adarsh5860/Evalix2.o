@@ -1,22 +1,22 @@
 // frontend/src/components/CertificateModal.js
 import React, { useState, useEffect } from 'react';
-import { 
-    FiAward, 
-    FiDownload, 
-    FiCheckCircle, 
-    FiAlertCircle, 
-    FiX, 
-    FiClock, 
-    FiFileText, 
-    FiUser, 
-    FiShield, 
+import {
+    FiAward,
+    FiDownload,
+    FiCheckCircle,
+    FiAlertCircle,
+    FiX,
+    FiClock,
+    FiFileText,
+    FiUser,
+    FiShield,
     FiLayers,
     FiRefreshCw
 } from 'react-icons/fi';
-import { 
-    generateCertificateApi, 
-    downloadCertificatePdfApi, 
-    fetchCertificatesHistoryApi 
+import {
+    generateCertificateApi,
+    downloadCertificatePdfApi,
+    fetchCertificatesHistoryApi
 } from '../services/api';
 import '../styles/CertificateModal.scss';
 
@@ -79,13 +79,13 @@ const CertificateModal = ({ isOpen, onClose, data }) => {
 
     if (!isOpen || !data) return null;
 
-    const evaluationDate = data.documentInfo?.analyzedAt 
+    const evaluationDate = data.documentInfo?.analyzedAt
         ? new Date(data.documentInfo.analyzedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
         : new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
     // Determine evaluation reference (report filename)
-    const evaluationReference = data.report?.filename || 
-                                data.documentInfo?.filename || 
+    const evaluationReference = data.report?.filename ||
+                                data.documentInfo?.filename ||
                                 'Sample_Research_Paper_Analysis.xlsx';
 
     // Domain metrics
@@ -212,7 +212,7 @@ const CertificateModal = ({ isOpen, onClose, data }) => {
                         <button 
                             className="modal-close-btn" 
                             onClick={onClose} 
-                            aria-label="Close dialog"
+                            aria-label="Close dialog" 
                             type="button"
                         >
                             <FiX />
@@ -411,7 +411,7 @@ const CertificateModal = ({ isOpen, onClose, data }) => {
 
                                                 {/* Recipient Name Highlight */}
                                                 <div className="cert-recipient-name">
-                                                    {recipientName.trim() || 'Recipient\'s Name'}
+                                                    {recipientName.trim() || "Recipient's Name"}
                                                 </div>
                                                 <div className="cert-name-underline"></div>
 

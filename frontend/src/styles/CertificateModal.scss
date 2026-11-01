@@ -196,7 +196,7 @@
                 box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
             }
 
-            &::placeholder {
+            ::placeholder {
                 color: #64748B;
             }
         }
@@ -226,7 +226,7 @@
             color: #E2E8F0;
             font-weight: 600;
 
-            &.badge-cert-id {
+            .badge-cert-id {
                 font-family: 'Courier New', Courier, monospace;
                 background: rgba(37, 99, 235, 0.15);
                 border: 1px solid rgba(37, 99, 235, 0.3);
@@ -687,10 +687,7 @@
                 color: #64748B;
                 font-weight: 700;
 
-                &.tiny {
-                    font-size: 6px;
-                    color: #2563EB;
-                }
+                &.tiny { font-size: 6px; color: #2563EB; }
             }
 
             .meta-main {
@@ -698,10 +695,7 @@
                 font-weight: 800;
                 color: #0F172A;
 
-                &.id-text {
-                    color: #1E3A8A;
-                    font-family: 'Courier New', Courier, monospace;
-                }
+                &.id-text { color: #1E3A8A; font-family: 'Courier New', Courier, monospace; }
             }
         }
     }
@@ -715,10 +709,7 @@
 
 /* History Tab Styles */
 .cert-history-pane {
-    .history-title {
-        color: #F8FAFC;
-        font-weight: 700;
-    }
+    .history-title { color: #F8FAFC; font-weight: 700; }
 
     .history-table-responsive {
         background: rgba(15, 23, 42, 0.5);
@@ -749,9 +740,7 @@
             vertical-align: middle;
         }
 
-        tr:hover td {
-            background: rgba(124, 58, 237, 0.05);
-        }
+        tr:hover td { background: rgba(124, 58, 237, 0.05); }
     }
 
     .badge-cert-id {
@@ -765,12 +754,7 @@
         font-weight: 600;
     }
 
-    .spin {
-        animation: spin 1s linear infinite;
-    }
+    .spin { animation: spin 1s linear infinite; }
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

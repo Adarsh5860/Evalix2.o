@@ -65,7 +65,7 @@ const ResearchPaperVisual = ({ currentStats }) => {
                     <div className="paper-header">
                         <div className="paper-tag">
                             <FiFileText className="paper-icon" />
-                            <span>Research Paper</span>
+                            <span>Report</span>
                         </div>
                         <div className="paper-status-dot"></div>
                     </div>
@@ -132,7 +132,7 @@ const ResearchPaperVisual = ({ currentStats }) => {
             <div className="visual-stats-card glass-panel">
                 <div className="stat-col">
                     <div className="stat-number gradient-text">{stats.papersAnalyzed}+</div>
-                    <div className="stat-label-primary">Papers</div>
+                    <div className="stat-label-primary">Reports</div>
                     <div className="stat-label-sub">Analyzed</div>
                 </div>
                 <div className="stat-divider"></div>

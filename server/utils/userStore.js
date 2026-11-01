@@ -168,14 +168,6 @@ const createUser = ({ email, password, name, role, verificationCode }) => {
         throw new Error('An account with this email already exists.');
     }
 
-    // Determine systemRole
-    let assignedSystemRole = 'user';
-    if (adminSecret && adminSecret.trim() === SUPERADMIN_SECRET) {
-        assignedSystemRole = 'superadmin';
-    } else if (systemRole) {
-        assignedSystemRole = normalizeSystemRole(systemRole);
-    }
-
     const salt = crypto.randomBytes(16).toString('hex');
     const passwordHash = hashPassword(password, salt);
     const code = verificationCode || generateVerificationCode();
@@ -186,7 +178,7 @@ const createUser = ({ email, password, name, role, verificationCode }) => {
         email: cleanEmail,
         name: name ? name.trim() : cleanEmail.split('@')[0],
         role: role ? role.trim() : 'Researcher / Analyst',
-        systemRole: assignedSystemRole,
+        systemRole: 'user',
         salt,
         passwordHash,
         isEmailVerified: false,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  LuLayers,
   LuSparkles,
   LuArrowRight,
   LuLogIn,
@@ -294,19 +293,13 @@ const LandingPage = () => {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
 
-              <div className="logo-icon">
-                <LuLayers size={22} />
-              </div>
+              <img
+                src={`${process.env.PUBLIC_URL}/newLogo.png`}
+                alt="Evalix"
+                className="landing-logo"
+              />
 
               <div className="d-flex align-items-baseline gap-2">
-
-                <span
-                  className="fw-bold fs-4 tracking-tight"
-                  style={{ letterSpacing: '-0.03em' }}
-                >
-                  Evalix
-                </span>
-
                 <span
                   className="badge rounded-pill px-2 py-1 text-xs fw-semibold"
                   style={{
@@ -594,7 +587,7 @@ const LandingPage = () => {
                         className="ms-2 font-monospace text-xs"
                         style={{ color: isDarkMode ? '#94a3b8' : '#64748b' }}
                       >
-                        research_paper_analysis.pdf
+                        sample_report_analysis.pdf
                       </span>
 
                     </div>

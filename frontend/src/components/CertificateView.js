@@ -40,7 +40,7 @@ const CertificateView = () => {
         } else if (!certData) {
             // Default sample certificate if accessed directly
             setCertData(formatCertificateData({
-                documentTitle: 'Sample Research Paper Analysis Exp7',
+                documentTitle: 'Sample Report Analysis Exp7',
                 overallScore: 88.5,
                 grade: 'Exemplary',
                 gradeBand: 'A',

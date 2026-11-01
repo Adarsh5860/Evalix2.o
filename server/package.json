@@ -1,7 +1,7 @@
 {
     "name": "verb-taxonomy-analyzer-server",
     "version": "1.0.0",
-    "description": "Backend for verb taxonomy analysis from research papers",
+    "description": "Backend for verb taxonomy analysis from reports",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
@@ -24,6 +24,7 @@
         "nodemailer": "^10.3.1",
         "pdf-parse": "^1.1.1",
         "pdfkit": "^0.20.2",
+        "qrcode": "^1.5.4",
         "wordpos": "^2.1.0"
     },
     "devDependencies": {

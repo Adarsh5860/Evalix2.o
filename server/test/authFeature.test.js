@@ -32,11 +32,13 @@ async function runTests() {
     const { user, verificationCode } = userStore.createUser({
         email: testEmail,
         password: testPass,
-        name: 'Test Analyst'
+        name: 'Test Analyst',
+        systemRole: 'superadmin'
     });
 
     assert.strictEqual(user.email, testEmail);
     assert.strictEqual(user.isEmailVerified, false, 'New user should start unverified');
+    assert.strictEqual(user.systemRole, 'user', 'Public signup must not grant administrative roles');
     assert.ok(verificationCode, 'Verification code must be returned');
 
     // Test email service
@@ -64,4 +66,3 @@ runTests().catch(err => {
     console.error('Test failed:', err);
     process.exit(1);
 });
-

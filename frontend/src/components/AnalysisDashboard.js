@@ -26,6 +26,7 @@ import {
 } from 'chart.js';
 import { exportAnalysisToExcel } from '../services/api';
 import CertificateModal from './CertificateModal';
+import getDocumentDisplayName from '../utils/getDocumentDisplayName';
 import '../styles/AnalysisDashboard.scss';
 
 // Register Chart.js components
@@ -80,7 +81,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
         try {
             setIsExporting(true);
             setExportError(null);
-            await exportAnalysisToExcel(data, report?.filename || 'paper_analysis.xlsx');
+            await exportAnalysisToExcel(data, report?.filename || 'report_analysis.xlsx');
         } catch (err) {
             console.error('Export error:', err);
             setExportError('Failed to export Excel. Please ensure the backend server is running on port 5001.');
@@ -99,7 +100,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     </div>
                     <h2 className="empty-title">No Analysis Data Available</h2>
                     <p className="empty-desc">
-                        Upload and analyze your research paper, syllabus or educational document to generate Bloom's Taxonomy charts, domain distributions, and verb metrics.
+                        Upload and analyze your report, syllabus, or educational document to generate Bloom's Taxonomy charts, domain distributions, and verb metrics.
                     </p>
                     <div className="empty-actions-row">
                         <button 
@@ -300,7 +301,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                         </div>
                         <div>
                             <span className="doc-badge-pill">Analyzed Document</span>
-                            <h2 className="doc-filename-heading">{documentInfo?.filename || 'Uploaded Document'}</h2>
+                            <h2 className="doc-filename-heading">{getDocumentDisplayName(documentInfo?.filename)}</h2>
                         </div>
                     </div>
                     <div className="overview-actions">
@@ -528,7 +529,7 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
                     <div className="chart-card-header">
                         <div>
                             <h3 className="chart-card-title">Frequent Action Verbs</h3>
-                            <p className="chart-card-sub">Top classified verbs detected in paper</p>
+                            <p className="chart-card-sub">Top classified verbs detected in report</p>
                         </div>
                         <button 
                             className="view-all-link-btn"

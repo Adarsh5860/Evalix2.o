@@ -25,7 +25,7 @@ const RecommendationsDashboard = ({ recommendations, report, onLoadSample }) => 
                     </div>
                     <h2 className="empty-title">No Recommendations Available</h2>
                     <p className="empty-desc">
-                        Upload and analyze a research paper or syllabus to receive AI-powered educational recommendations and Bloom's Taxonomy gap analyses.
+                        Upload and analyze a report or syllabus to receive AI-powered educational recommendations and Bloom's Taxonomy gap analyses.
                     </p>
                     <div className="empty-actions-row">
                         <button className="btn-evalix-primary" onClick={() => navigate('/upload')}>

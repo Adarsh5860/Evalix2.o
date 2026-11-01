@@ -1,26 +1,15 @@
-// utils/certificateGenerator.js
+// frontend/src/utils/certificateGenerator.js
+import QRCode from 'qrcode';
+
 /**
  * Evalix 2.0 - Academic Report Quality & Learning Domain Certificate Generator
- * Modeled after the prestigious diploma aesthetic from QMetric with full Bloom's Taxonomy & OBE accreditation.
+ * Corporate Award & Pedagogical Domain Verification Landscape A4 Certificate
  */
 
-// Format date helper
-export const formatCertDate = (isoOrDate) => {
-    if (!isoOrDate) {
-        return new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-    const d = new Date(isoOrDate);
-    if (isNaN(d.getTime())) {
-        return new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
+export const formatCertDate = (dateVal) => {
+    if (!dateVal) return new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     return d.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -28,16 +17,16 @@ export const formatCertDate = (isoOrDate) => {
     });
 };
 
-// Generates persistent, professional certificate ID
-export const generateVerificationId = (filename = '', score = 80) => {
+// Generates persistent, professional certificate ID (e.g. EVA-2026-XXXX)
+export const generateVerificationId = (filename = '', score = 85) => {
     let hash = 0;
     const str = `${filename}_${score}_evalix_2026`;
     for (let i = 0; i < str.length; i++) {
         hash = ((hash << 5) - hash) + str.charCodeAt(i);
         hash |= 0;
     }
-    const hex = Math.abs(hash).toString(16).toUpperCase().padStart(8, '0').slice(0, 8);
-    return `EVX-2026-CERT-${hex}`;
+    const hex = Math.abs(hash).toString(16).toUpperCase().padStart(4, '0').slice(0, 4);
+    return `EVA-2026-${hex}`;
 };
 
 // Clean display title
@@ -52,6 +41,28 @@ export const cleanDocumentTitle = (filename) => {
         .trim();
 };
 
+/**
+ * Synchronously generates an authentic scannable SVG QR Code
+ */
+export const generateQrSvgMarkup = (text, size = 64) => {
+    try {
+        const qr = QRCode.create(text, { errorCorrectionLevel: 'M' });
+        const count = qr.modules.size;
+        const cell = size / count;
+        let cells = '';
+        for (let row = 0; row < count; row++) {
+            for (let col = 0; col < count; col++) {
+                if (qr.modules.get(row, col)) {
+                    cells += `<rect x="${(col * cell).toFixed(2)}" y="${(row * cell).toFixed(2)}" width="${cell.toFixed(2)}" height="${cell.toFixed(2)}" fill="#0B1F3A" />`;
+                }
+            }
+        }
+        return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg"><rect width="${size}" height="${size}" fill="#FFFFFF"/>${cells}</svg>`;
+    } catch {
+        return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" fill="#FFFFFF"/><text x="12" y="38" font-size="12" fill="#0B1F3A" font-weight="bold">QR</text></svg>`;
+    }
+};
+
 // Normalize and build certificate payload from any analysis or quality check source
 export const formatCertificateData = (source = {}) => {
     const quality = source.qualityScore || source.qualityResult || source.quality || {};
@@ -62,17 +73,8 @@ export const formatCertificateData = (source = {}) => {
         ? quality.overallScore 
         : (source.overallScore || 85);
 
-    const structuralScore = typeof quality.structuralScore === 'number'
-        ? quality.structuralScore
-        : (source.structuralScore || 88);
-
-    const bloomsScore = typeof quality.bloomsAlignmentScore === 'number'
-        ? quality.bloomsAlignmentScore
-        : (source.bloomsAlignmentScore || 82);
-
     const gradeBand = quality.gradeBand || source.gradeBand || (overallScore >= 85 ? 'A' : overallScore >= 70 ? 'B' : 'C');
     const grade = quality.grade || source.grade || (overallScore >= 85 ? 'Exemplary' : overallScore >= 70 ? 'Proficient' : 'Developing');
-    const gradeColor = quality.gradeColor || source.gradeColor || (overallScore >= 85 ? '#10B981' : overallScore >= 70 ? '#3B82F6' : '#F59E0B');
 
     let totalVerbs = source.totalVerbCount || 0;
     if (!totalVerbs && source.domains) {
@@ -83,679 +85,728 @@ export const formatCertificateData = (source = {}) => {
     if (!totalVerbs && quality.totalVerbs) {
         totalVerbs = quality.totalVerbs;
     }
-    if (!totalVerbs) totalVerbs = 142;
+    if (!totalVerbs) totalVerbs = 164;
 
-    const certId = source.certificateId || generateVerificationId(filename, overallScore);
+    const cognitiveCount = source.metrics?.cognitive?.count || source.domains?.cognitive?.count || source.cognitiveCount || 104;
+    const cognitivePct = source.metrics?.cognitive?.percentage !== undefined 
+        ? source.metrics.cognitive.percentage 
+        : (source.cognitivePct !== undefined ? source.cognitivePct : Math.round((cognitiveCount / totalVerbs) * 100) || 62);
+
+    const affectiveCount = source.metrics?.affective?.count || source.domains?.affective?.count || source.affectiveCount || 36;
+    const affectivePct = source.metrics?.affective?.percentage !== undefined 
+        ? source.metrics.affective.percentage 
+        : (source.affectivePct !== undefined ? source.affectivePct : Math.round((affectiveCount / totalVerbs) * 100) || 21);
+
+    const psychomotorCount = source.metrics?.psychomotor?.count || source.domains?.psychomotor?.count || source.psychomotorCount || 24;
+    const psychomotorPct = source.metrics?.psychomotor?.percentage !== undefined 
+        ? source.metrics.psychomotor.percentage 
+        : (source.psychomotorPct !== undefined ? source.psychomotorPct : Math.round((psychomotorCount / totalVerbs) * 100) || 14);
+
+    const uniqueVerbs = source.metrics?.uniqueVerbs || source.uniqueVerbCount || source.uniqueVerbsCount || source.uniqueVerbs || Math.round(totalVerbs * 0.72) || 48;
+    const certId = source.certificateId || source.id || generateVerificationId(filename, overallScore);
+    const reportType = (source.reportType || source.documentType || quality.documentType || 'MINI PROJECT REPORT').toUpperCase();
+    const recipientName = source.recipientName || source.candidateName || 'Adarsh Patil';
+    const documentTitle = source.documentTitle || cleanDocumentTitle(filename);
+    const qrCodeUrl = source.qrCodeUrl || '';
 
     return {
         certificateId: certId,
         filename: filename,
-        documentTitle: source.documentTitle || cleanDocumentTitle(filename),
-        documentType: source.documentType || quality.documentType || 'Project Report',
-        candidateName: source.candidateName || 'Mr. Adarsh Patil, Mr. Om Virulkar, Mr. Tejas Buddhewar',
-        institution: source.institution || 'Walchand College of Engineering, Sangli',
-        department: source.department || 'Department of Information Technology',
-        facultyGuide: source.facultyGuide || 'Dr. A. J. Umbarkar',
-        academicYear: source.academicYear || '2026 – 2027',
-        overallScore: Math.round(overallScore * 10) / 10,
+        documentTitle: documentTitle,
+        recipientName: recipientName,
+        reportType: reportType,
+        overallScore: Math.round(overallScore),
         gradeBand,
         grade,
-        gradeColor,
-        structuralScore: Math.round(structuralScore),
-        bloomsAlignmentScore: Math.round(bloomsScore),
+        cognitiveCount,
+        cognitivePct,
+        affectiveCount,
+        affectivePct,
+        psychomotorCount,
+        psychomotorPct,
         totalVerbs,
-        evaluatedAt: formatCertDate(quality.evaluatedAt || source.evaluatedAt || docInfo.analyzedAt || new Date()),
-        status: 'Verified & Accredited'
+        uniqueVerbs,
+        qrCodeUrl,
+        evaluatedAt: formatCertDate(quality.evaluatedAt || source.evaluatedAt || docInfo.analyzedAt || new Date())
     };
 };
 
 /**
  * Generates the complete HTML string for the certificate with high-res vector SVGs,
- * luxury watermark, gold seal, and print-ready styles.
+ * luxury watermark, gold seal, and print-ready styles in Landscape A4.
  */
 export const generateCertificateHtml = (data = {}, autoPrint = true) => {
     const cert = formatCertificateData(data);
+    const qrMarkup = cert.qrCodeUrl 
+        ? `<img src="${cert.qrCodeUrl}" alt="Scan to verify QR Code" style="width: 100%; height: 100%; object-fit: contain; display: block;" />`
+        : generateQrSvgMarkup(`https://evalix.education/verify?id=${encodeURIComponent(cert.certificateId)}&recipient=${encodeURIComponent(cert.recipientName)}&score=${cert.overallScore}`, 58);
 
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quality & Learning Domain Certificate - ${cert.documentTitle}</title>
+  <title>Certificate of Evaluation - ${cert.documentTitle}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
     body {
-      font-family: 'Libre Baskerville', Georgia, serif;
-      background: #cfccc6;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0b1329;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       min-height: 100vh;
-      padding: 30px 20px;
-      color: #1a1a24;
+      padding: 24px;
+      color: #0B1F3A;
       -webkit-font-smoothing: antialiased;
     }
 
-    .certificate-container {
-      width: 794px;
-      min-height: 1120px;
-      background: #faf7f2;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-      overflow: hidden;
-      border: 1px solid #e2ddd3;
-    }
-
-    /* Crosshatch / Diamond Security Watermark */
-    .cert-watermark {
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(45deg,  rgba(190, 160, 90, 0.065) 0, rgba(190, 160, 90, 0.065) 1px, transparent 1px, transparent 18px),
-        repeating-linear-gradient(-45deg, rgba(190, 160, 90, 0.065) 0, rgba(190, 160, 90, 0.065) 1px, transparent 1px, transparent 18px);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Fine Inner Border */
-    .cert-inner-frame {
-      position: absolute;
-      inset: 16px;
-      border: 1.5px solid rgba(201, 168, 76, 0.55);
-      pointer-events: none;
-      z-index: 2;
-    }
-    .cert-inner-frame::after {
-      content: '';
-      position: absolute;
-      inset: 3px;
-      border: 0.5px solid rgba(13, 27, 75, 0.25);
-    }
-
-    /* Wave SVGs */
-    .wave-tr {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 340px;
-      height: 290px;
-      z-index: 2;
-      display: block;
-    }
-    .wave-bl {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 340px;
-      height: 290px;
-      z-index: 2;
-      display: block;
-    }
-
-    /* Main Content Layer */
-    .cert-body {
-      position: relative;
-      z-index: 3;
-      padding: 50px 68px 46px 68px;
-    }
-
-    /* Header Row */
-    .header-row {
+    .cert-print-bar {
+      position: fixed;
+      top: 14px;
+      right: 20px;
+      z-index: 1000;
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 2px;
+      gap: 10px;
     }
 
-    .title-block {
-      flex: 1;
-      padding-right: 20px;
-    }
-
-    .cert-title {
-      font-family: 'Dancing Script', cursive;
-      font-size: 50px;
+    .cert-btn-print {
+      background: linear-gradient(135deg, #7C3AED, #2563EB);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-weight: 700;
-      color: #0d1b4b;
-      line-height: 1.15;
-      margin: 0;
-      text-shadow: 0 1px 1px rgba(0,0,0,0.05);
-    }
-
-    .by-evalix {
-      font-family: 'Montserrat', sans-serif;
       font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 3.5px;
-      color: #0d1b4b;
-      margin-top: 10px;
-      text-transform: uppercase;
-      display: flex;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-    }
-    .by-evalix .evalix-accent {
-      color: #7c3aed;
-    }
-    .by-evalix .sub-badge {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      background: rgba(124, 58, 237, 0.1);
-      color: #6d28d9;
-      padding: 2px 7px;
-      border-radius: 4px;
-      border: 1px solid rgba(124, 58, 237, 0.25);
+      font-family: 'Inter', sans-serif;
     }
 
-    .badge-wrap {
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
-
-    /* Certification Intro Statement */
-    .intro-para {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 12.5px;
-      line-height: 1.9;
-      color: #22222b;
-      text-align: center;
-      margin-top: 26px;
-      margin-bottom: 20px;
-    }
-
-    /* Detailed Dynamic Credentials Paragraph */
-    .detail-para {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 12px;
-      line-height: 2.05;
-      color: #1a1a24;
-      text-align: center;
-      margin-bottom: 22px;
-      padding: 0 8px;
-    }
-
-    .blank {
-      display: inline-block;
-      min-width: 70px;
-      border-bottom: 1.5px solid #222;
-      vertical-align: bottom;
-      padding: 0 6px 1px 6px;
-      font-style: italic;
-      font-weight: 700;
-      color: #0d1b4b;
-    }
-
-    /* Assessment Matrix Block */
-    .assessment-block {
-      background: rgba(255, 255, 255, 0.55);
-      border: 1px solid rgba(201, 168, 76, 0.45);
-      border-radius: 8px;
-      padding: 14px 20px 12px 20px;
-      margin-bottom: 22px;
-      font-family: 'Libre Baskerville', serif;
-      font-size: 11.5px;
-      color: #1a1a24;
-    }
-    .assessment-block-title {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: #0d1b4b;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .assessment-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 16px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .assessment-grid li {
-      font-weight: 600;
-      line-height: 1.5;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #2d3748;
-    }
-    .assessment-grid li::before {
-      content: '✦';
-      color: #c9a84c;
-      font-size: 9px;
-    }
-
-    /* Score Showcase Center Box */
-    .score-center-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 22px;
-    }
-
-    .score-box {
-      border: 2px solid #c9a84c;
-      background: rgba(255, 255, 255, 0.85);
-      padding: 16px 42px 14px 42px;
-      text-align: center;
-      border-radius: 6px;
-      box-shadow: 0 6px 18px rgba(201, 168, 76, 0.15);
+    /* Standard A4 Landscape: 297mm x 210mm (~1122px x 793px at 96dpi) */
+    .certificate-container {
+      width: 1122px;
+      height: 793px;
+      background: #FFFFFF;
       position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+      border-radius: 4px;
     }
 
-    .score-box-title {
-      font-family: 'Dancing Script', cursive;
-      font-size: 27px;
-      font-weight: 700;
-      color: #0d1b4b;
+    /* Outer Multi-Line Gold Frame & Corner Florets */
+    .cert-frame-border {
+      position: absolute;
+      inset: 18px;
+      border: 2px solid #C9A227;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .cert-frame-inner {
+      position: absolute;
+      inset: 4px;
+      border: 0.8px solid #CBD5E1;
+    }
+    .frame-pip {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #C9A227;
+    }
+    .pip-tl { top: -4px; left: -4px; }
+    .pip-tr { top: -4px; right: -4px; }
+    .pip-bl { bottom: -4px; left: -4px; }
+    .pip-br { bottom: -4px; right: -4px; }
+
+    /* Fine light gold guilloche line pattern layer */
+    .cert-guilloche-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Web App Logo Watermark in Background */
+    .cert-watermark-container {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .cert-watermark-img {
+      max-width: 42%;
+      max-height: 42%;
+      opacity: 0.055;
+      filter: grayscale(100%);
+      object-fit: contain;
+    }
+
+    /* Top Wave-shaped Header SVG */
+    .cert-header-wave-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Top-Left Header Content */
+    .cert-top-left-header {
+      position: absolute;
+      top: 26px;
+      left: 36px;
+      z-index: 5;
+      text-align: left;
+      max-width: 580px;
+      color: #FFFFFF;
+    }
+    .cert-logo-reserved-box {
+      width: 120px;
+      height: 34px;
+      border: 1.5px dashed rgba(255, 255, 255, 0.45);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      margin-bottom: 8px;
+    }
+    .cert-gold-serif-title {
+      font-family: 'Cinzel', Trajan, 'Times New Roman', serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: #F5D77A;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      line-height: 1.2;
+    }
+    .cert-white-domain-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #FFFFFF;
+      letter-spacing: 1px;
+      margin-top: 3px;
+      opacity: 0.95;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Left Side: Vertical Navy Ribbon & Seal */
+    .cert-vertical-ribbon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 76px;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 30px;
+    }
+    .cert-ribbon-stripe {
+      position: absolute;
+      inset: 0;
+      background: #0B1F3A;
+      box-shadow: 3px 0 14px rgba(11, 31, 58, 0.35);
+    }
+    .cert-seal-assembly {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .cert-round-gold-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #F5D77A 0%, #C9A227 60%, #8F6B12 100%);
+      border: 2px solid #FDF3C7;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .seal-ring-emboss {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1px dashed #785408;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .seal-text-top {
+      font-family: 'Cinzel', serif;
+      font-size: 7.5px;
+      font-weight: 900;
+      color: #0B1F3A;
+      letter-spacing: 0.8px;
+    }
+    .seal-gold-star {
+      font-size: 8px;
+      color: #0B1F3A;
+      margin: 2px 0;
+    }
+    .seal-text-bottom {
+      font-family: 'Cinzel', serif;
+      font-size: 8.5px;
+      font-weight: 900;
+      color: #0B1F3A;
+      letter-spacing: 0.6px;
+    }
+    .cert-gold-tails {
+      display: flex;
+      gap: 5px;
+      margin-top: -5px;
+    }
+    .tail-strip {
+      width: 14px;
+      height: 24px;
+      background: linear-gradient(180deg, #F5D77A 0%, #C9A227 50%, #8F6B12 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Main Certificate Content */
+    .cert-body-layout {
+      position: relative;
+      z-index: 3;
+      margin-left: 95px;
+      margin-right: 32px;
+      margin-top: 155px;
+      height: 615px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 16px;
+    }
+
+    .cert-presented-row {
+      text-align: right;
+      margin-right: 40px;
+      margin-bottom: 2px;
+    }
+    .presented-phrase {
+      font-family: 'Cinzel', 'Times New Roman', serif;
+      font-size: 13.5px;
+      font-style: italic;
+      color: #475569;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .cert-student-block {
+      text-align: center;
+      width: 85%;
+      margin: 0 auto;
+    }
+    .cert-student-cursive-name {
+      font-family: 'Great Vibes', 'Pinyon Script', cursive;
+      font-size: 48px;
+      font-weight: 500;
+      color: #0B1F3A;
+      line-height: 1.15;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+    .cert-student-underline {
+      width: 78%;
+      height: 1.5px;
+      background: #000000;
+      opacity: 0.9;
+      margin: 0 auto 10px auto;
+    }
+
+    .cert-report-block {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .cert-report-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 12.5px;
+      color: #64748B;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .cert-report-cursive-title {
+      font-family: 'Great Vibes', 'Pinyon Script', cursive;
+      font-size: 26px;
+      color: #1E293B;
+      line-height: 1.2;
+    }
+
+    /* 4 Stat Boxes */
+    .cert-four-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 95%;
+      margin: 0 auto 10px auto;
+    }
+    .stat-pill-box {
+      border-radius: 9px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+    .stat-pill-box.box-cognitive {
+      background: #F5F3FF;
+      border: 1.5px solid #DDD6FE;
+      .pill-title { color: #7C3AED; }
+      .pill-data { color: #5B21B6; }
+    }
+    .stat-pill-box.box-affective {
+      background: #FDF2F8;
+      border: 1.5px solid #FBCFE8;
+      .pill-title { color: #DB2777; }
+      .pill-data { color: #9D174D; }
+    }
+    .stat-pill-box.box-psychomotor {
+      background: #ECFEFF;
+      border: 1.5px solid #A5F3FC;
+      .pill-title { color: #0891B2; }
+      .pill-data { color: #155E75; }
+    }
+    .stat-pill-box.box-quality {
+      background: #FEFCE8;
+      border: 1.5px solid #FDE047;
+      .pill-title { color: #854D0E; }
+      .pill-data { color: #713F12; }
+    }
+    .pill-title {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 3px;
     }
-
-    .score-value-row {
-      font-family: 'Dancing Script', cursive;
-      font-size: 32px;
-      font-weight: 700;
-      color: #0d1b4b;
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .score-underline {
-      display: inline-block;
-      min-width: 80px;
-      border-bottom: 2.5px solid #0d1b4b;
-      text-align: center;
-      vertical-align: bottom;
-      padding: 0 4px;
-    }
-
-    .score-badges-row {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .score-mini-pill {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      text-transform: uppercase;
-      background: rgba(13, 27, 75, 0.08);
-      color: #0d1b4b;
-    }
-    .score-mini-pill.grade {
-      background: rgba(16, 185, 129, 0.15);
-      color: #065f46;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-    }
-
-    /* Three Dimensions Breakdown Strip */
-    .dimensions-strip {
-      display: flex;
-      justify-content: space-around;
-      background: rgba(13, 27, 75, 0.035);
-      border-top: 1px dashed rgba(201, 168, 76, 0.5);
-      border-bottom: 1px dashed rgba(201, 168, 76, 0.5);
-      padding: 9px 12px;
-      margin-bottom: 24px;
-    }
-    .dim-stat-item {
-      text-align: center;
-    }
-    .dim-stat-val {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 13px;
+    .pill-data {
+      font-size: 13.5px;
       font-weight: 800;
-      color: #0d1b4b;
-    }
-    .dim-stat-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9.5px;
-      font-weight: 600;
-      letter-spacing: 0.6px;
-      color: #64748b;
-      text-transform: uppercase;
-      margin-top: 1px;
     }
 
-    /* Footer Row */
-    .footer-row {
+    /* Details Line */
+    .cert-single-details-line {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Inter', monospace;
+      font-size: 11px;
+      color: #475569;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .dot-sep {
+      color: #CBD5E1;
+    }
+
+    .cert-blooms-description {
+      text-align: center;
+      font-size: 11px;
+      color: #64748B;
+      font-style: italic;
+      margin: 0 auto 10px auto;
+      max-width: 92%;
+      line-height: 1.35;
+    }
+
+    /* Bottom Triad */
+    .cert-bottom-triad {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-top: 6px;
-      padding-top: 6px;
+      padding: 0 16px;
+      width: 100%;
     }
-
-    .date-block {
-      text-align: center;
-      min-width: 170px;
-    }
-    .date-line {
-      width: 170px;
-      border-bottom: 1.5px solid #222;
-      margin-bottom: 5px;
-      padding-bottom: 3px;
-      font-family: 'Libre Baskerville', serif;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #0d1b4b;
-      text-align: center;
-      min-height: 20px;
-    }
-    .date-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #4b5563;
-      text-transform: uppercase;
-    }
-
-    .cert-id-block {
-      text-align: center;
-    }
-    .cert-id-tag {
-      font-family: 'Montserrat', monospace, sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      color: #475569;
-      background: rgba(255, 255, 255, 0.7);
-      padding: 3px 9px;
-      border: 1px solid rgba(201, 168, 76, 0.4);
-      border-radius: 4px;
-      display: inline-block;
-    }
-    .cert-id-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      color: #64748b;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-top: 3px;
-    }
-
-    .evalix-logo-block {
-      text-align: right;
-    }
-
-    /* Action bar for screen view */
-    .screen-actions-bar {
-      position: fixed;
-      top: 16px;
-      right: 20px;
+    .cert-signature-col {
       display: flex;
-      gap: 10px;
-      z-index: 9999;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 220px;
     }
-    .action-btn {
-      background: #0d1b4b;
-      color: white;
-      border: 1px solid #c9a84c;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 12px;
+    .sig-handwritten-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: 24px;
+      color: #0B1F3A;
+      padding-left: 10px;
+      line-height: 1;
+    }
+    .sig-rule-line {
+      width: 200px;
+      height: 1.5px;
+      background: #0B1F3A;
+      margin: 4px 0;
+    }
+    .sig-label-text {
+      font-size: 10.5px;
       font-weight: 700;
-      cursor: pointer;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-center-badge-col {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+    }
+    .cert-report-type-gold-badge {
+      background: #0B1F3A;
+      border: 2px solid #C9A227;
+      color: #FFFFFF;
+      font-family: 'Cinzel', sans-serif;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      padding: 7px 22px;
+      border-radius: 6px;
+      box-shadow: 0 3px 8px rgba(11, 31, 58, 0.3);
+      text-transform: uppercase;
+    }
+
+    .cert-qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 110px;
+    }
+    .cert-qr-reserved-square {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-      transition: all 0.2s ease;
+      justify-content: center;
+      overflow: hidden;
     }
-    .action-btn:hover {
-      background: #1a2f6b;
-      transform: translateY(-1px);
-    }
-    .action-btn.secondary {
-      background: #ffffff;
-      color: #0d1b4b;
-      border: 1px solid #cbd5e1;
+    .qr-caption-text {
+      font-size: 9.5px;
+      color: #64748B;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* Print Media Rules - Single Pristine A4 Sheet */
     @media print {
       body {
-        background: white !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+        background: none;
+        padding: 0;
       }
-      .screen-actions-bar {
+      .cert-print-bar {
         display: none !important;
       }
       .certificate-container {
-        box-shadow: none !important;
-        border: none !important;
-        width: 100% !important;
-        min-height: 100vh !important;
-        page-break-after: avoid !important;
-        page-break-inside: avoid !important;
-      }
-      @page {
-        size: A4 portrait;
-        margin: 0;
+        box-shadow: none;
+        border: none;
+        width: 100vw;
+        height: 100vh;
+        page-break-inside: avoid;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating screen buttons -->
-  <div class="screen-actions-bar">
-    <button class="action-btn" onclick="window.print()">
-      🖨️ Print / Save as PDF
-    </button>
-    <button class="action-btn secondary" onclick="window.close()">
-      ✕ Close Window
+  <div class="cert-print-bar">
+    <button class="cert-btn-print" onclick="window.print()">
+      Print Certificate
     </button>
   </div>
 
   <div class="certificate-container">
-    <!-- Diamond Watermark -->
-    <div class="cert-watermark"></div>
+    <!-- Outer Gold Frame with Corner Florets -->
+    <div class="cert-frame-border">
+      <div class="cert-frame-inner"></div>
+      <div class="frame-pip pip-tl"></div>
+      <div class="frame-pip pip-tr"></div>
+      <div class="frame-pip pip-bl"></div>
+      <div class="frame-pip pip-br"></div>
+    </div>
 
-    <!-- Fine Inner Frame -->
-    <div class="cert-inner-frame"></div>
-
-    <!-- TOP-RIGHT DECORATIVE WAVE SVG -->
-    <svg class="wave-tr" viewBox="0 0 340 290" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M340,0 L340,290 Q200,250 170,155 Q120,40 340,0 Z" fill="#0d1b4b"/>
-      <path d="M340,0 Q305,75 258,128 Q210,178 170,155 Q200,250 340,290" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
-      <path d="M340,0 Q295,65 248,118 Q202,168 180,150 Q208,245 340,290 L340,0 Z" fill="#1a2f6b" opacity="0.45"/>
+    <!-- Fine light gold guilloche line pattern layer -->
+    <svg class="cert-guilloche-bg" viewBox="0 0 1122 793" preserveAspectRatio="none">
+      <defs>
+        <pattern id="guillochePattern" width="140" height="140" patternUnits="userSpaceOnUse">
+          <path d="M0,70 C35,25 70,115 105,70 C122,45 140,70 140,70 M0,35 C45,105 95,0 140,35 M0,105 C45,35 95,140 140,105" fill="none" stroke="#C9A227" stroke-width="0.6" opacity="0.14"/>
+          <circle cx="70" cy="70" r="52" fill="none" stroke="#C9A227" stroke-width="0.5" opacity="0.09"/>
+          <ellipse cx="70" cy="70" rx="65" ry="30" fill="none" stroke="#C9A227" stroke-width="0.4" opacity="0.07"/>
+        </pattern>
+        <linearGradient id="goldCurveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#C9A227"/>
+          <stop offset="50%" stop-color="#F5D77A"/>
+          <stop offset="100%" stop-color="#C9A227"/>
+        </linearGradient>
+      </defs>
+      <rect width="1122" height="793" fill="url(#guillochePattern)" />
     </svg>
 
-    <!-- BOTTOM-LEFT DECORATIVE WAVE SVG -->
-    <svg class="wave-bl" viewBox="0 0 340 290" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,290 L0,0 Q140,40 170,135 Q220,250 0,290 Z" fill="#0d1b4b"/>
-      <path d="M0,290 Q35,215 82,162 Q130,112 170,135 Q140,40 0,0" fill="none" stroke="#c9a84c" stroke-width="2.5"/>
-      <path d="M0,290 Q45,225 92,172 Q138,122 160,140 Q132,45 0,0 L0,290 Z" fill="#1a2f6b" opacity="0.45"/>
+    <!-- Web App Logo Watermark in Background -->
+    <div class="cert-watermark-container">
+      <img src="/evalix-logo.png" alt="Evalix Logo Watermark" class="cert-watermark-img" />
+    </div>
+
+    <!-- Top Wave Header SVG: Deep Navy (#0B1F3A) + Sweeping Gold Curve + Thin Neon Accents -->
+    <svg class="cert-header-wave-svg" viewBox="0 0 1122 195" preserveAspectRatio="none">
+      <!-- Upper Right Sweeping Gold Metallic Curve -->
+      <path d="M 660,0 Q 850,52 970,18 Q 1050,-8 1122,52 L 1122,0 Z" fill="url(#goldCurveGrad)" />
+      <path d="M 750,0 Q 910,58 1030,28 Q 1080,16 1122,62 L 1122,0 Z" fill="#F5D77A" opacity="0.35" />
+
+      <!-- Deep Navy Blue (#0B1F3A) Wave-shaped Header at Top and Left -->
+      <path d="M 0,0 L 710,0 C 625,52 545,98 440,110 C 310,125 170,92 0,195 Z" fill="#0B1F3A" />
+
+      <!-- Thin Neon Accents along wave edge: violet (#7C3AED), pink (#EC4899), cyan (#22D3EE) -->
+      <path d="M 0,193 C 170,90 310,123 440,108 C 545,96 625,50 710,0" fill="none" stroke="#7C3AED" stroke-width="2.6" />
+      <path d="M 0,195 C 170,92 310,125 440,110 C 545,98 625,52 712,0" fill="none" stroke="#EC4899" stroke-width="1.8" opacity="0.9" />
+      <path d="M 0,197 C 170,94 310,127 440,112 C 545,100 625,54 714,0" fill="none" stroke="#22D3EE" stroke-width="1.4" opacity="0.85" />
     </svg>
 
-    <div class="cert-body">
+    <!-- Top-Left Header Content (on navy header) -->
+    <div class="cert-top-left-header">
+      <!-- Empty clean rectangular space reserved for Evalix 2.0 logo (leave blank) -->
+      <div class="cert-logo-reserved-box" title="Reserved for Evalix 2.0 Logo"></div>
 
-      <!-- HEADER ROW -->
-      <div class="header-row">
-        <div class="title-block">
-          <h1 class="cert-title">Academic Report<br>Quality Certificate</h1>
-          <div class="by-evalix">
-            BY EVALIX <span class="evalix-accent">2.0</span>
-            <span class="sub-badge">LEARNING DOMAINS & OBE</span>
+      <!-- In gold serif small-caps: CERTIFICATE OF EVALUATION -->
+      <div class="cert-gold-serif-title">CERTIFICATE OF EVALUATION</div>
+
+      <!-- Under it in white: Bloom's Taxonomy Educational Domain Analysis -->
+      <div class="cert-white-domain-subtitle">Bloom's Taxonomy Educational Domain Analysis</div>
+    </div>
+
+    <!-- Left Side: Vertical Navy Ribbon with round gold seal badge reading VERIFIED / EVALIX 2.0, with two gold tails -->
+    <div class="cert-vertical-ribbon">
+      <div class="cert-ribbon-stripe"></div>
+      <div class="cert-seal-assembly">
+        <div class="cert-round-gold-badge">
+          <div class="seal-ring-emboss">
+            <span class="seal-text-top">VERIFIED</span>
+            <div class="seal-gold-star">✦</div>
+            <span class="seal-text-bottom">EVALIX 2.0</span>
           </div>
         </div>
+        <!-- Two gold ribbon tails -->
+        <div class="cert-gold-tails">
+          <div class="tail-strip tail-l"></div>
+          <div class="tail-strip tail-r"></div>
+        </div>
+      </div>
+    </div>
 
-        <!-- Gold Medal Badge SVG with Ribbons and Gradients -->
-        <div class="badge-wrap">
-          <svg width="96" height="108" viewBox="0 0 96 108" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="outerGoldRing" cx="35%" cy="30%" r="65%">
-                <stop offset="0%" stop-color="#ffe270"/>
-                <stop offset="45%" stop-color="#d4a017"/>
-                <stop offset="100%" stop-color="#7a5500"/>
-              </radialGradient>
-              <radialGradient id="goldMedalFace" cx="35%" cy="30%" r="65%">
-                <stop offset="0%" stop-color="#ffd55c"/>
-                <stop offset="55%" stop-color="#c99010"/>
-                <stop offset="100%" stop-color="#8a5c00"/>
-              </radialGradient>
-            </defs>
-            <!-- Left Ribbon -->
-            <polygon points="22,56 38,56 33,108 16,98" fill="#c9a84c"/>
-            <!-- Right Ribbon -->
-            <polygon points="74,56 58,56 63,108 80,98" fill="#b8932a"/>
-            <!-- Outer Gold Coin Ring -->
-            <circle cx="48" cy="46" r="41" fill="url(#outerGoldRing)"/>
-            <!-- Embossed Groove -->
-            <circle cx="48" cy="46" r="35" fill="none" stroke="#a07820" stroke-width="2" opacity="0.65"/>
-            <!-- Medal Center Face -->
-            <circle cx="48" cy="46" r="32" fill="url(#goldMedalFace)"/>
-            <!-- Radial Stripe Lines -->
-            <line x1="48" y1="17" x2="48" y2="75" stroke="rgba(255,255,255,0.18)" stroke-width="1.3"/>
-            <line x1="19" y1="46" x2="77" y2="46" stroke="rgba(255,255,255,0.18)" stroke-width="1.3"/>
-            <line x1="28" y1="26" x2="68" y2="66" stroke="rgba(255,255,255,0.12)" stroke-width="1.3"/>
-            <line x1="68" y1="26" x2="28" y2="66" stroke="rgba(255,255,255,0.12)" stroke-width="1.3"/>
-            <!-- Star in Center -->
-            <path d="M48,34 L51,42 L59,42 L53,47 L55,55 L48,50 L41,55 L43,47 L37,42 L45,42 Z" fill="#fff" opacity="0.88"/>
-            <!-- Curved Gloss Highlight -->
-            <ellipse cx="40" cy="38" rx="10" ry="8" fill="rgba(255,255,255,0.25)" transform="rotate(-30 40 38)"/>
-          </svg>
+    <!-- Certificate Main Body Content -->
+    <div class="cert-body-layout">
+      <!-- Right-centre text, right-aligned: "This certificate is proudly presented to" -->
+      <div class="cert-presented-row">
+        <span class="presented-phrase">This certificate is proudly presented to</span>
+      </div>
+
+      <!-- Student name in large, elegant flowing CURSIVE calligraphy script, dark navy, on a thin black underline -->
+      <div class="cert-student-block">
+        <div class="cert-student-cursive-name">${cert.recipientName}</div>
+        <div class="cert-student-underline"></div>
+      </div>
+
+      <!-- "for the successful evaluation of the report titled" then report title in smaller flowing cursive calligraphy -->
+      <div class="cert-report-block">
+        <div class="cert-report-caption">for the successful evaluation of the report titled</div>
+        <div class="cert-report-cursive-title">${cert.documentTitle}</div>
+      </div>
+
+      <!-- A row of four clean rounded stat boxes -->
+      <div class="cert-four-stats-grid">
+        <div class="stat-pill-box box-cognitive">
+          <span class="pill-title">Cognitive:</span>
+          <span class="pill-data">${cert.cognitiveCount} verbs (${cert.cognitivePct}%)</span>
+        </div>
+        <div class="stat-pill-box box-affective">
+          <span class="pill-title">Affective:</span>
+          <span class="pill-data">${cert.affectiveCount} verbs (${cert.affectivePct}%)</span>
+        </div>
+        <div class="stat-pill-box box-psychomotor">
+          <span class="pill-title">Psychomotor:</span>
+          <span class="pill-data">${cert.psychomotorCount} verbs (${cert.psychomotorPct}%)</span>
+        </div>
+        <div class="stat-pill-box box-quality">
+          <span class="pill-title">Quality Score:</span>
+          <span class="pill-data">${cert.overallScore} / 100 – Grade [${cert.gradeBand}]</span>
         </div>
       </div>
 
-      <!-- ACCREDITATION INTRO STATEMENT -->
-      <p class="intro-para">
-        This is to certify that the Pedagogical & Learning Domain Quality Assessment for the<br>
-        academic report identified below has been systematically evaluated and validated in<br>
-        accordance with Bloom's Revised Taxonomy (Cognitive, Affective, Psychomotor) and recognized<br>
-        Outcome-Based Education (OBE) curriculum quality frameworks.
+      <!-- Small single line of details -->
+      <div class="cert-single-details-line">
+        <span>Total Verbs: [${cert.totalVerbs}]</span>
+        <span class="dot-sep">|</span>
+        <span>Unique Verbs: [${cert.uniqueVerbs}]</span>
+        <span class="dot-sep">|</span>
+        <span>Evaluated on: [${cert.evaluatedAt}]</span>
+        <span class="dot-sep">|</span>
+        <span>Certificate ID: [${cert.certificateId}]</span>
+      </div>
+
+      <!-- A short sentence -->
+      <p class="cert-blooms-description">
+        This report was analysed using Bloom's Taxonomy across the cognitive, affective and psychomotor domains.
       </p>
 
-      <!-- DETAIL PARAGRAPH WITH REPORT CREDENTIALS -->
-      <p class="detail-para">
-        The Quality Evaluation was conducted for the document titled<br>
-        <span class="blank">${cert.documentTitle}</span>, categorized under the
-        <span class="blank">${cert.documentType}</span> archetype, submitted by candidate(s)<br>
-        <span class="blank">${cert.candidateName}</span>, Department of
-        <span class="blank">${cert.department}</span>,<br>
-        <span class="blank">${cert.institution}</span>, for academic session
-        <span class="blank">${cert.academicYear}</span>,<br>
-        under the faculty guidance and mentorship of
-        <span class="blank">${cert.facultyGuide}</span>.
-      </p>
-
-      <!-- SYSTEMATIC ASSESSMENT RUBRIC BLOCK -->
-      <div class="assessment-block">
-        <div class="assessment-block-title">
-          <span>Systematic Quantification & Alignment Framework</span>
+      <!-- Bottom triad: Faculty Signature (left), Report Type Badge (center), QR Code (right) -->
+      <div class="cert-bottom-triad">
+        <!-- Bottom left: Faculty / Guide Signature -->
+        <div class="cert-signature-col">
+          <div class="sig-handwritten-text">Faculty Guide</div>
+          <div class="sig-rule-line"></div>
+          <div class="sig-label-text">Faculty / Guide Signature</div>
         </div>
-        <ul class="assessment-grid">
-          <li>Course Outcome & Taxonomy Alignment</li>
-          <li>Structural Completeness & Section Rubric</li>
-          <li>Bloom's Cognitive Depth (L1–L6 Levels)</li>
-          <li>Action Verb Distribution & Verification</li>
-        </ul>
-      </div>
 
-      <!-- FINAL QUALITY SCORE SHOWCASE BOX -->
-      <div class="score-center-row">
-        <div class="score-box">
-          <div class="score-box-title">Final Quality Score:</div>
-          <div class="score-value-row">
-            <span class="score-underline">${Number(cert.overallScore).toFixed(1)}</span>%
-          </div>
-          <div class="score-badges-row">
-            <span class="score-mini-pill grade" style="color: ${cert.gradeColor}; border-color: ${cert.gradeColor};">
-              Grade ${cert.gradeBand} • ${cert.grade}
-            </span>
-            <span class="score-mini-pill">OBE Validated</span>
+        <!-- Bottom centre: Bold gold-outlined navy badge with white text -->
+        <div class="cert-center-badge-col">
+          <div class="cert-report-type-gold-badge">
+            REPORT TYPE: [${cert.reportType}]
           </div>
         </div>
-      </div>
 
-      <!-- THREE DIMENSIONS METRICS STRIP -->
-      <div class="dimensions-strip">
-        <div class="dim-stat-item">
-          <div class="dim-stat-val">${cert.structuralScore}%</div>
-          <div class="dim-stat-label">Structural Completeness</div>
-        </div>
-        <div class="dim-stat-item">
-          <div class="dim-stat-val">${cert.bloomsAlignmentScore}%</div>
-          <div class="dim-stat-label">Bloom's Taxonomy Alignment</div>
-        </div>
-        <div class="dim-stat-item">
-          <div class="dim-stat-val">${cert.totalVerbs} Verbs</div>
-          <div class="dim-stat-label">Action Verbs Quantified</div>
+        <!-- Bottom right: REAL SCANNABLE QR CODE, caption "Scan to verify" -->
+        <div class="cert-qr-col">
+          <div class="cert-qr-reserved-square" title="Scannable Verification QR Code">
+            ${qrMarkup}
+          </div>
+          <div class="qr-caption-text">Scan to verify</div>
         </div>
       </div>
-
-      <!-- FOOTER ROW -->
-      <div class="footer-row">
-        <!-- Date Block -->
-        <div class="date-block">
-          <div class="date-line">${cert.evaluatedAt}</div>
-          <div class="date-label">Date of Evaluation</div>
-        </div>
-
-        <!-- Verification ID -->
-        <div class="cert-id-block">
-          <div class="cert-id-tag">${cert.certificateId}</div>
-          <div class="cert-id-label">Official Verification ID</div>
-        </div>
-
-        <!-- Official Evalix Logo & Stamp SVG -->
-        <div class="evalix-logo-block">
-          <svg width="150" height="58" viewBox="0 0 150 58" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="evalixGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#7c3aed"/>
-                <stop offset="50%" stop-color="#3b82f6"/>
-                <stop offset="100%" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <!-- Stylized Monogram E/Q -->
-            <text x="2" y="44" font-family="Georgia, 'Times New Roman', serif"
-                  font-size="48" font-style="italic" font-weight="700"
-                  fill="url(#evalixGrad)">E</text>
-            <!-- Orbit/Crest dot -->
-            <circle cx="34" cy="10" r="3.5" fill="url(#evalixGrad)"/>
-            <!-- Evalix Wordmark -->
-            <text x="36" y="38" font-family="'Montserrat', sans-serif"
-                  font-size="20" font-weight="800" fill="#0d1b4b" letter-spacing="1.5">valix</text>
-            <text x="96" y="38" font-family="'Montserrat', sans-serif"
-                  font-size="14" font-weight="700" fill="#7c3aed">2.0</text>
-            <!-- Micro Subtitle -->
-            <text x="36" y="50" font-family="'Montserrat', sans-serif"
-                  font-size="8" font-weight="600" fill="#64748b" letter-spacing="1">ACADEMIC AUDIT</text>
-          </svg>
-        </div>
-      </div>
-
-    </div><!-- /.cert-body -->
-  </div><!-- /.certificate-container -->
+    </div>
+  </div>
 
   ${autoPrint ? `
   <script>
     window.onload = function() {
-      // Focus and trigger print dialog with smooth buffer
       setTimeout(function() {
         try {
           window.focus();
@@ -772,10 +823,6 @@ export const generateCertificateHtml = (data = {}, autoPrint = true) => {
 </html>`;
 };
 
-/**
- * Opens a print-ready new browser window with the rendered certificate,
- * exactly matching the QMetric workflow.
- */
 export const openCertificatePrintWindow = (certData = {}) => {
     try {
         const printWindow = window.open('', '_blank');
@@ -797,9 +844,6 @@ export const openCertificatePrintWindow = (certData = {}) => {
     }
 };
 
-/**
- * Opens the certificate in a new tab without triggering auto-print immediately.
- */
 export const openCertificateViewWindow = (certData = {}) => {
     try {
         const viewWindow = window.open('', '_blank');
