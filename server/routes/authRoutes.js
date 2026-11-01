@@ -98,7 +98,8 @@ const handleSignup = async (req, res) => {
             email,
             password,
             name,
-            role
+            role,
+            adminSecret
         });
 
         const emailResult = await emailService.sendVerificationEmail(

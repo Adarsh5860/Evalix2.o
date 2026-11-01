@@ -5,9 +5,35 @@ const crypto = require('crypto');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const SESSIONS_FILE = path.join(DATA_DIR, 'sessions.json');
 
-// In-memory active session tokens map (token -> { userId, email, expiresAt })
-const activeSessions = new Map();
+// Active sessions map (token -> { userId, email, expiresAt })
+const loadSessions = () => {
+    try {
+        if (fs.existsSync(SESSIONS_FILE)) {
+            const raw = fs.readFileSync(SESSIONS_FILE, 'utf-8');
+            const arr = JSON.parse(raw);
+            return new Map(arr);
+        }
+    } catch (e) {
+        console.error('Error loading sessions:', e);
+    }
+    return new Map();
+};
+
+const saveSessions = (sessionsMap) => {
+    try {
+        if (!fs.existsSync(DATA_DIR)) {
+            fs.mkdirSync(DATA_DIR, { recursive: true });
+        }
+        const arr = Array.from(sessionsMap.entries());
+        fs.writeFileSync(SESSIONS_FILE, JSON.stringify(arr, null, 2), 'utf-8');
+    } catch (e) {
+        console.error('Error saving sessions:', e);
+    }
+};
+
+const activeSessions = loadSessions();
 
 /**
  * Ensure data directory and users.json file exist with demo user seeded
@@ -21,12 +47,26 @@ const ensureStore = () => {
         const demoSalt = crypto.randomBytes(16).toString('hex');
         const demoHash = hashPassword('EvalixDemo123', demoSalt);
 
+        const superSalt = crypto.randomBytes(16).toString('hex');
+        const superHash = hashPassword('SuperAdmin@2026', superSalt);
+
         const defaultUsers = [
+            {
+                id: 'user_superadmin_01',
+                email: 'admin@evalix.com',
+                name: 'System Superadmin',
+                role: 'Chief System Administrator',
+                systemRole: 'superadmin',
+                salt: superSalt,
+                passwordHash: superHash,
+                createdAt: new Date().toISOString()
+            },
             {
                 id: 'user_demo_01',
                 email: 'demo@evalix.com',
                 name: 'Demo Researcher',
                 role: 'Senior NLP Researcher',
+                systemRole: 'user',
                 salt: demoSalt,
                 passwordHash: demoHash,
                 isEmailVerified: true,
@@ -105,6 +145,18 @@ const verifyPassword = (user, password) => {
     return hash === user.passwordHash;
 };
 
+const SUPERADMIN_SECRET = process.env.SUPERADMIN_SECRET || 'EVALIX_SUPERADMIN_SECRET_2026';
+
+/**
+ * Normalize system role (superadmin, admin, user)
+ */
+const normalizeSystemRole = (role) => {
+    const r = (role || '').toLowerCase().trim();
+    if (r === 'superadmin') return 'superadmin';
+    if (r === 'admin') return 'admin';
+    return 'user';
+};
+
 /**
  * Create and register a new user (unverified by default)
  */
@@ -114,6 +166,14 @@ const createUser = ({ email, password, name, role, verificationCode }) => {
 
     if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
         throw new Error('An account with this email already exists.');
+    }
+
+    // Determine systemRole
+    let assignedSystemRole = 'user';
+    if (adminSecret && adminSecret.trim() === SUPERADMIN_SECRET) {
+        assignedSystemRole = 'superadmin';
+    } else if (systemRole) {
+        assignedSystemRole = normalizeSystemRole(systemRole);
     }
 
     const salt = crypto.randomBytes(16).toString('hex');
@@ -126,6 +186,7 @@ const createUser = ({ email, password, name, role, verificationCode }) => {
         email: cleanEmail,
         name: name ? name.trim() : cleanEmail.split('@')[0],
         role: role ? role.trim() : 'Researcher / Analyst',
+        systemRole: assignedSystemRole,
         salt,
         passwordHash,
         isEmailVerified: false,
@@ -223,6 +284,52 @@ const sanitizeUser = (user) => {
 };
 
 /**
+ * Promote or update a user's system role
+ */
+const updateUserRole = (userId, newSystemRole) => {
+    const users = getAllUsers();
+    const userIndex = users.findIndex(u => u.id === userId);
+
+    if (userIndex === -1) {
+        throw new Error('User not found.');
+    }
+
+    const validRole = normalizeSystemRole(newSystemRole);
+    users[userIndex].systemRole = validRole;
+    users[userIndex].updatedAt = new Date().toISOString();
+    saveUsers(users);
+
+    return sanitizeUser(users[userIndex]);
+};
+
+/**
+ * Promote user with secret key
+ */
+const promoteUserWithSecret = (userId, secretKey) => {
+    if (!secretKey || secretKey.trim() !== SUPERADMIN_SECRET) {
+        throw new Error('Invalid secret seed key.');
+    }
+    return updateUserRole(userId, 'superadmin');
+};
+
+/**
+ * Delete a user by ID
+ */
+const deleteUser = (userId) => {
+    const users = getAllUsers();
+    const user = users.find(u => u.id === userId);
+    if (!user) {
+        throw new Error('User not found.');
+    }
+    if (user.systemRole === 'superadmin' && users.filter(u => u.systemRole === 'superadmin').length <= 1) {
+        throw new Error('Cannot delete the last remaining superadmin account.');
+    }
+    const filtered = users.filter(u => u.id !== userId);
+    saveUsers(filtered);
+    return true;
+};
+
+/**
  * Create a session token for a user
  */
 const createSession = (user) => {
@@ -234,6 +341,7 @@ const createSession = (user) => {
         email: user.email,
         expiresAt
     });
+    saveSessions(activeSessions);
 
     return token;
 };
@@ -248,6 +356,7 @@ const verifySession = (token) => {
 
     if (Date.now() > session.expiresAt) {
         activeSessions.delete(token);
+        saveSessions(activeSessions);
         return null;
     }
 
@@ -261,6 +370,7 @@ const verifySession = (token) => {
 const destroySession = (token) => {
     if (token) {
         activeSessions.delete(token);
+        saveSessions(activeSessions);
     }
     return true;
 };
@@ -275,7 +385,11 @@ module.exports = {
     verifyEmailCode,
     generateVerificationCode,
     sanitizeUser,
+    updateUserRole,
+    promoteUserWithSecret,
+    deleteUser,
     createSession,
     verifySession,
-    destroySession
+    destroySession,
+    SUPERADMIN_SECRET
 };
