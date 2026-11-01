@@ -26,7 +26,7 @@
 }
 
 .evalix-cert-modal {
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     box-shadow: 0 25px 60px rgba(28, 25, 23, 0.18), 0 4px 16px rgba(28, 25, 23, 0.06);
     border-radius: 18px;
@@ -56,7 +56,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 18px 24px;
-    background: #FAF8F5;
+    background: var(--bg-well);
     border-bottom: 1px solid var(--border-subtle);
 
     .header-left {
@@ -107,7 +107,7 @@
     }
 
     .modal-close-btn {
-        background: #F4F0E8;
+        background: var(--bg-sidebar-hover);
         border: 1px solid var(--border-subtle);
         color: var(--text-secondary);
         width: 36px;
@@ -142,7 +142,7 @@
 
 /* Left Configuration Drawer */
 .cert-config-drawer {
-    background: #FAF8F5;
+    background: var(--bg-well);
     border-right: 1px solid var(--border-subtle);
     padding: 22px;
     display: flex;
@@ -176,7 +176,7 @@
         input,
         select {
             width: 100%;
-            background: #FFFFFF;
+            background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 8px;
             padding: 8px 12px;
@@ -193,7 +193,7 @@
     }
 
     .cert-score-summary-card {
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         border-radius: 10px;
         padding: 14px;
@@ -254,7 +254,7 @@
         }
 
         .btn-view-tab {
-            background: #FFFFFF;
+            background: var(--bg-card);
             color: var(--text-primary);
             font-weight: 600;
             font-size: 0.85rem;
@@ -269,7 +269,7 @@
             transition: all 0.2s;
 
             &:hover {
-                background: #F4F0E8;
+                background: var(--bg-sidebar-hover);
                 border-color: #D3CDC0;
             }
         }

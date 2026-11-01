@@ -6,7 +6,7 @@
 
   .assessment-hero-card {
     padding: 2rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: var(--shadow-card);
@@ -38,7 +38,7 @@
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
-      background: #FFFFFF;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       box-shadow: var(--shadow-card);
@@ -108,7 +108,7 @@
   /* Implementation Strategies Card */
   .implementation-card {
     padding: 2rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: var(--shadow-card);

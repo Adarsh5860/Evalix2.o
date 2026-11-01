@@ -17,7 +17,7 @@
 .evalix-feedback-modal {
   width: 100%;
   max-width: 580px;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 18px;
   box-shadow: 0 25px 60px rgba(28, 25, 23, 0.18), 0 4px 16px rgba(28, 25, 23, 0.06);
@@ -63,7 +63,7 @@
     }
 
     .modal-close-btn {
-      background: #F4F0E8;
+      background: var(--bg-sidebar-hover);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-size: 1.15rem;
@@ -118,7 +118,7 @@
     gap: 8px;
 
     .category-chip {
-      background: #FAF8F5;
+      background: var(--bg-well);
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-size: 0.78rem;
@@ -131,7 +131,7 @@
       &:hover {
         border-color: #D3CDC0;
         color: var(--text-primary);
-        background: #FFFFFF;
+        background: var(--bg-card);
       }
 
       &.selected {
@@ -145,7 +145,7 @@
 
   .evalix-input {
     width: 100%;
-    background: #FAF8F5;
+    background: var(--bg-well);
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
     padding: 10px 14px;
@@ -161,7 +161,7 @@
       outline: none;
       border-color: var(--brand-primary);
       box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.12);
-      background: #FFFFFF;
+      background: var(--bg-card);
     }
   }
 
@@ -173,7 +173,7 @@
   .document-context-note {
     font-size: 0.78rem;
     color: var(--text-secondary);
-    background: #FAF8F5;
+    background: var(--bg-well);
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px dashed var(--border-subtle);

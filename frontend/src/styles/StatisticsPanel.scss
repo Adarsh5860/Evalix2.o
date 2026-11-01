@@ -3,7 +3,7 @@
 
 .statistics-panel {
     height: 100%;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 14px;
     box-shadow: var(--shadow-card);
@@ -13,7 +13,7 @@
         padding: 20px;
         text-align: center;
         border-bottom: 1px solid var(--border-subtle);
-        background: #FAF8F5;
+        background: var(--bg-well);
 
         .stat-value {
             font-size: 2.5rem;
@@ -91,7 +91,7 @@
 
         .percentage-bar {
             height: 6px;
-            background-color: #F4F0E8;
+            background-color: var(--bg-sidebar-hover);
             border-radius: 9999px;
             margin-top: 10px;
             overflow: hidden;

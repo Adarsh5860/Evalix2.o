@@ -18,23 +18,24 @@
         &:hover {
             border-color: var(--border-subtle) var(--border-subtle) transparent;
             color: var(--text-primary);
-            background-color: #FAF8F5;
+            background-color: var(--bg-well);
         }
 
         &.active {
             color: var(--brand-primary);
-            background-color: #FFFFFF;
-            border-color: var(--border-subtle) var(--border-subtle) #FFFFFF;
+            background-color: var(--bg-card);
+            border-color: var(--border-subtle) var(--border-subtle) var(--bg-card);
             font-weight: 700;
         }
     }
 }
 
 .card {
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
     box-shadow: var(--shadow-card);
+    color: var(--text-primary);
     transition: box-shadow 0.25s ease, transform 0.25s ease;
 
     &:hover {

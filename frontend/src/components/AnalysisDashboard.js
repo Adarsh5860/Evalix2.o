@@ -1,5 +1,6 @@
 // components/AnalysisDashboard.js
 import React, { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -69,6 +70,7 @@ const DOMAIN_COLORS = {
 };
 
 const AnalysisDashboard = ({ data, onLoadSample }) => {
+    const { isDarkMode } = useTheme();
     const [chartMode, setChartMode] = useState('doughnut'); // 'doughnut' | 'pie'
     const [isExporting, setIsExporting] = useState(false);
     const [exportError, setExportError] = useState(null);
@@ -212,7 +214,15 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
         }]
     };
 
-    // Dark theme chart options
+    const chartTextColor = isDarkMode ? '#F5F2EB' : '#1C1917';
+    const chartSubtextColor = isDarkMode ? '#B5AFA4' : '#57534E';
+    const chartGridColor = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(28, 25, 23, 0.08)';
+    const chartTooltipBg = isDarkMode ? 'rgba(26, 24, 21, 0.96)' : 'rgba(255, 255, 255, 0.96)';
+    const chartTooltipTitle = isDarkMode ? '#F5F2EB' : '#1C1917';
+    const chartTooltipBody = isDarkMode ? '#B5AFA4' : '#57534E';
+    const chartTooltipBorder = isDarkMode ? 'rgba(224, 93, 53, 0.4)' : 'rgba(194, 74, 38, 0.3)';
+
+    // Dynamic chart options based on active theme
     const darkChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -220,16 +230,16 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
             legend: {
                 position: 'bottom',
                 labels: {
-                    color: '#CBD5E1',
+                    color: chartTextColor,
                     font: { family: 'Inter', size: 12 },
                     padding: 16
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(10, 15, 31, 0.95)',
-                titleColor: '#FFFFFF',
-                bodyColor: '#CBD5E1',
-                borderColor: 'rgba(124, 58, 237, 0.4)',
+                backgroundColor: chartTooltipBg,
+                titleColor: chartTooltipTitle,
+                bodyColor: chartTooltipBody,
+                borderColor: chartTooltipBorder,
                 borderWidth: 1,
                 padding: 12,
                 cornerRadius: 8,
@@ -260,23 +270,23 @@ const AnalysisDashboard = ({ data, onLoadSample }) => {
         maintainAspectRatio: false,
         scales: {
             x: {
-                ticks: { color: '#94A3B8', font: { family: 'Inter', size: 11 } },
-                grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                ticks: { color: chartSubtextColor, font: { family: 'Inter', size: 11 } },
+                grid: { color: chartGridColor }
             },
             y: {
                 beginAtZero: true,
-                ticks: { color: '#94A3B8', font: { family: 'Inter', size: 11 } },
-                grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                ticks: { color: chartSubtextColor, font: { family: 'Inter', size: 11 } },
+                grid: { color: chartGridColor }
             }
         },
         plugins: {
             legend: { display: false },
             datalabels: { display: false },
             tooltip: {
-                backgroundColor: 'rgba(10, 15, 31, 0.95)',
-                titleColor: '#FFFFFF',
-                bodyColor: '#CBD5E1',
-                borderColor: 'rgba(124, 58, 237, 0.4)',
+                backgroundColor: chartTooltipBg,
+                titleColor: chartTooltipTitle,
+                bodyColor: chartTooltipBody,
+                borderColor: chartTooltipBorder,
                 borderWidth: 1,
                 padding: 10
             }

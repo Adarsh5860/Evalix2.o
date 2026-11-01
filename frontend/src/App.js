@@ -26,6 +26,7 @@ import CreditsPage from './components/CreditsPage';
 import AdminDashboard from './components/AdminDashboard';
 import FeedbackModal from './components/FeedbackModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 
 // Default realistic sample data for demo / instant preview
@@ -389,9 +390,11 @@ function DashboardLayout({
     setIsMobileSidebarOpen
 }) {
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+    const { isDarkMode, toggleTheme } = useTheme();
 
     return (
-        <div className="evalix-app-root evalix-grid-bg">
+        <div className={`evalix-app-root evalix-grid-bg ${isDarkMode ? "dark-theme" : ""}`}>
+
 
             <Header />
 
@@ -405,9 +408,12 @@ function DashboardLayout({
                     <span>☰</span> Menu & Tools
                 </button>
 
-                <span className="mobile-brand-title">
-                    Evalix 2.0
-                </span>
+                <div className="d-flex align-items-center gap-2">
+                    <button className="mobile-theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle theme">
+                        {isDarkMode ? "☀️ Light" : "🌙 Dark"}
+                    </button>
+                    <span className="mobile-brand-title">Evalix 2.0</span>
+                </div>
             </div>
 
             <div className="evalix-main-layout">
@@ -628,7 +634,8 @@ function RootRoute() {
 }
 
     return (
-        <AuthProvider>
+        <ThemeProvider>
+            <AuthProvider>
             <Router>
 
                 <Routes>
@@ -664,6 +671,7 @@ function RootRoute() {
 
             </Router>
         </AuthProvider>
+        </ThemeProvider>
     );
 
 }

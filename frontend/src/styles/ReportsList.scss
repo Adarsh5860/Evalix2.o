@@ -6,7 +6,7 @@
 
   .master-report-card {
     padding: 1.75rem 2rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: var(--shadow-card);
@@ -50,7 +50,7 @@
 
   .available-reports-card {
     padding: 1.5rem 2rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: var(--shadow-card);
@@ -74,7 +74,7 @@
       .reports-count-pill {
         font-size: 0.74rem;
         font-weight: 600;
-        background: #FAF8F4;
+        background: var(--bg-well);
         border: 1px solid var(--border-subtle);
         padding: 4px 10px;
         border-radius: var(--radius-pill);
@@ -93,20 +93,20 @@
         align-items: center;
         justify-content: space-between;
         padding: 14px 18px;
-        background: #FAF8F4;
-        border: 1px solid #EBE5D9;
+        background: var(--bg-well);
+        border: 1px solid var(--border-subtle);
         border-radius: 12px;
         transition: all 0.2s ease;
         flex-wrap: wrap;
         gap: 1rem;
 
         &:hover {
-          background: #F4EFE6;
+          background: var(--bg-card-hover);
           border-color: #DDD7CB;
         }
 
         &.active-current {
-          background: #FFFFFF;
+          background: var(--bg-card);
           border-color: var(--brand-primary);
           box-shadow: 0 2px 8px rgba(194, 74, 38, 0.12);
         }

@@ -74,7 +74,7 @@
         width: 100%;
         box-sizing: border-box;
         border-radius: 16px;
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         box-shadow: var(--shadow-card);
 
@@ -125,7 +125,7 @@
                 font-size: 0.75rem;
                 font-weight: 600;
                 padding: 0.25rem 0.6rem;
-                background: #FAF8F5;
+                background: var(--bg-well);
                 border: 1px solid var(--border-subtle);
                 border-radius: 6px;
                 color: var(--text-secondary);
@@ -158,7 +158,7 @@
 
         .reports-search-input {
             width: 100%;
-            background: #FAF8F5;
+            background: var(--bg-well);
             border: 1px solid var(--border-subtle);
             border-radius: 8px;
             padding: 0.55rem 2.2rem 0.55rem 2.4rem;
@@ -174,7 +174,7 @@
                 outline: none;
                 border-color: var(--brand-primary);
                 box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.12);
-                background: #FFFFFF;
+                background: var(--bg-card);
             }
         }
 
@@ -218,7 +218,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.7rem 0.85rem;
-            background: #FAF8F5;
+            background: var(--bg-well);
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             cursor: pointer;
@@ -226,7 +226,7 @@
             min-width: 0;
 
             &:hover {
-                background: #F4F0E8;
+                background: var(--bg-sidebar-hover);
                 border-color: #D3CDC0;
                 transform: translateX(2px);
             }
@@ -334,7 +334,7 @@
         }
 
         .doctype-pill {
-            background: #FAF8F5;
+            background: var(--bg-well);
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
             padding: 0.9rem 1rem;
@@ -348,7 +348,7 @@
             box-sizing: border-box;
 
             &:hover {
-                background: #FFFFFF;
+                background: var(--bg-card);
                 border-color: #D3CDC0;
                 transform: translateY(-1px);
                 box-shadow: 0 4px 12px rgba(28, 25, 23, 0.05);
@@ -380,7 +380,7 @@
                     width: 32px;
                     height: 32px;
                     border-radius: 8px;
-                    background: #F4F0E8;
+                    background: var(--bg-sidebar-hover);
                     border: 1px solid var(--border-subtle);
                     display: flex;
                     align-items: center;
@@ -399,7 +399,7 @@
                         font-size: 0.68rem;
                         font-weight: 600;
                         padding: 0.15rem 0.45rem;
-                        background: #FFFFFF;
+                        background: var(--bg-card);
                         border: 1px solid var(--border-subtle);
                         border-radius: 4px;
                         color: var(--text-secondary);
@@ -466,7 +466,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 1.15rem 1.5rem;
-        background: #FAF8F5;
+        background: var(--bg-well);
         border: 1px solid var(--border-subtle);
         border-radius: 14px;
         gap: 1.25rem;
@@ -613,7 +613,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 1.75rem 2rem;
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         border-radius: 16px;
         gap: 1.5rem;
@@ -642,7 +642,7 @@
                 justify-content: center;
                 flex-shrink: 0;
                 transition: all 0.3s ease;
-                background: #FAF8F5;
+                background: var(--bg-well);
 
                 .grade-letter {
                     font-size: 2.15rem;
@@ -734,7 +734,7 @@
                     flex-direction: column;
                     align-items: center;
                     padding: 0.5rem 0.85rem;
-                    background: #FAF8F5;
+                    background: var(--bg-well);
                     border: 1px solid var(--border-subtle);
                     border-radius: 8px;
 
@@ -763,13 +763,13 @@
                 font-size: 0.88rem;
                 font-weight: 600;
                 color: var(--text-primary);
-                background: #FAF8F5;
+                background: var(--bg-well);
                 border: 1px solid var(--border-subtle);
                 cursor: pointer;
                 transition: all 0.2s ease;
 
                 &:hover {
-                    background: #F4F0E8;
+                    background: var(--bg-sidebar-hover);
                     border-color: #D3CDC0;
                 }
 
@@ -796,7 +796,7 @@
             padding: 1.5rem;
             min-width: 0;
             box-sizing: border-box;
-            background: #FFFFFF;
+            background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
             box-shadow: var(--shadow-card);
@@ -867,7 +867,7 @@
             .dim-progress-track {
                 width: 100%;
                 height: 8px;
-                background: #F4F0E8;
+                background: var(--bg-sidebar-hover);
                 border-radius: 9999px;
                 overflow: hidden;
                 margin-bottom: 1.15rem;
@@ -983,7 +983,7 @@
                 align-items: flex-start;
                 gap: 0.6rem;
                 padding: 0.7rem 0.85rem;
-                background: #FAF8F5;
+                background: var(--bg-well);
                 border: 1px solid var(--border-subtle);
                 border-radius: 8px;
 
@@ -1087,7 +1087,7 @@
                         position: relative;
                         width: 100%;
                         height: 7px;
-                        background: #F4F0E8;
+                        background: var(--bg-sidebar-hover);
                         border-radius: 9999px;
                         overflow: visible;
 
@@ -1116,7 +1116,7 @@
     // Empty Placeholder State
     .qc-empty-placeholder {
         padding: 4rem 2rem;
-        background: #FAF8F5;
+        background: var(--bg-well);
         border: 1px dashed var(--border-subtle);
         border-radius: 16px;
         box-sizing: border-box;
@@ -1170,7 +1170,7 @@
                 gap: 0.45rem;
                 font-size: 0.82rem;
                 color: var(--text-secondary);
-                background: #FFFFFF;
+                background: var(--bg-card);
                 border: 1px solid var(--border-subtle);
                 padding: 0.4rem 0.85rem;
                 border-radius: 9999px;

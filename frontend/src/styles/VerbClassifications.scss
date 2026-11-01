@@ -13,7 +13,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.25rem;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 14px;
   box-shadow: var(--shadow-card);
@@ -26,7 +26,7 @@
     flex-wrap: wrap;
 
     .filter-pill {
-      background: #FAF8F4;
+      background: var(--bg-well);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-pill);
       color: var(--text-secondary);
@@ -50,7 +50,7 @@
       }
 
       &:hover {
-        background: #F4EFE6;
+        background: var(--bg-sidebar-hover);
         color: var(--text-primary);
         border-color: #D6CFC2;
       }
@@ -63,7 +63,7 @@
         box-shadow: 0 2px 8px rgba(194, 74, 38, 0.25);
 
         .dot {
-          background: #FFFFFF;
+          background: var(--bg-card);
         }
       }
     }
@@ -73,7 +73,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
     padding: 0 12px;
@@ -122,7 +122,7 @@
 /* Glass Table Card */
 .verb-table-card {
   overflow: hidden;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
   box-shadow: var(--shadow-card);
@@ -137,7 +137,7 @@
     font-size: 0.88rem;
 
     thead {
-      background: #FAF8F4;
+      background: var(--bg-well);
       border-bottom: 1px solid var(--border-subtle);
 
       th {
@@ -155,7 +155,7 @@
 
           &:hover {
             color: var(--text-primary);
-            background: #F4EFE6;
+            background: var(--bg-sidebar-hover);
           }
 
           .th-content {
@@ -178,7 +178,7 @@
         transition: all 0.15s ease;
 
         &:hover {
-          background: #FAF7F2;
+          background: var(--bg-table-row-hover);
         }
 
         td {
@@ -277,7 +277,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 20px;
-    background: #FAF8F4;
+    background: var(--bg-well);
     border-top: 1px solid var(--border-subtle);
     flex-wrap: wrap;
     gap: 1rem;
@@ -294,7 +294,7 @@
       gap: 10px;
 
       .page-btn {
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         border-radius: 6px;
         color: var(--text-primary);
@@ -304,7 +304,7 @@
         transition: all 0.15s ease;
 
         &:hover:not(:disabled) {
-          background: #FAF7F2;
+          background: var(--bg-table-row-hover);
           border-color: var(--brand-primary);
           color: var(--brand-primary);
         }

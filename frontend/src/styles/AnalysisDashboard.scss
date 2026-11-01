@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
   box-shadow: var(--shadow-card);
@@ -64,7 +64,7 @@
 /* Document Overview Card */
 .document-overview-card {
   padding: 1.5rem 1.75rem;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
   box-shadow: var(--shadow-card);
@@ -137,7 +137,7 @@
         box-shadow: 0 1px 3px rgba(46, 92, 78, 0.2);
 
         &:hover {
-          background: #23473C;
+          background: var(--brand-secondary-hover);
           box-shadow: 0 4px 12px rgba(46, 92, 78, 0.3);
           color: #FFFFFF;
         }
@@ -157,8 +157,8 @@
     .metric-box {
       display: flex;
       flex-direction: column;
-      background: #FAF8F4;
-      border: 1px solid #EBE5D9;
+      background: var(--bg-well);
+      border: 1px solid var(--border-subtle);
       border-radius: 10px;
       padding: 0.85rem 1rem;
 
@@ -190,7 +190,7 @@
 
   .chart-card, .frequent-verbs-card {
     padding: 1.5rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     box-shadow: var(--shadow-card);
@@ -218,7 +218,7 @@
 
     .chart-type-toggle {
       display: flex;
-      background: #FAF7F2;
+      background: var(--bg-well);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
       padding: 3px;
@@ -235,9 +235,9 @@
         transition: all 0.15s ease;
 
         &.active {
-          background: #FFFFFF;
+          background: var(--bg-card);
           color: var(--brand-primary);
-          box-shadow: 0 1px 3px rgba(27, 25, 23, 0.08);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           font-weight: 700;
         }
       }
@@ -274,14 +274,14 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 12px;
-      background: #FAF8F4;
-      border: 1px solid #EBE5D9;
+      background: var(--bg-well);
+      border: 1px solid var(--border-subtle);
       border-radius: 8px;
       transition: all 0.15s ease;
 
       &:hover {
-        background: #F4EFE6;
-        border-color: #DDD7CB;
+        background: var(--bg-card-hover);
+        border-color: var(--brand-primary-border);
       }
 
       .verb-info {
@@ -338,10 +338,11 @@
 
   .subdomain-card {
     padding: 1.25rem 1.25rem 1.5rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 14px;
     box-shadow: var(--shadow-card);
+    transition: all 0.25s ease;
 
     &.border-purple {
       border-color: var(--brand-secondary-border);
@@ -397,7 +398,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.5rem;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 14px;
   box-shadow: var(--shadow-card);

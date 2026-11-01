@@ -51,7 +51,7 @@
   .main-paper-card {
     position: relative;
     width: 290px;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     padding: 1.25rem;
@@ -62,7 +62,7 @@
     transition: all 0.25s ease;
 
     &:hover {
-      border-color: #D6CFC2;
+      border-color: var(--border-glow);
       box-shadow: 
         0 2px 6px rgba(27, 25, 23, 0.06),
         0 16px 36px -4px rgba(27, 25, 23, 0.1);
@@ -106,7 +106,7 @@
 
         .line-title-1 {
           height: 10px;
-          background: #E5E0D5;
+          background: var(--border-subtle);
           border-radius: 5px;
           margin-bottom: 6px;
           width: 85%;
@@ -114,7 +114,7 @@
 
         .line-title-2 {
           height: 10px;
-          background: #EDE8DE;
+          background: var(--bg-well);
           border-radius: 5px;
           width: 55%;
         }
@@ -155,7 +155,7 @@
         .line {
           height: 5px;
           border-radius: 3px;
-          background: #F0EAE1;
+          background: var(--bg-well);
 
           &.short {
             width: 50%;
@@ -216,7 +216,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 12px;
     padding: 8px 14px;
@@ -259,7 +259,7 @@
       .sat-title {
         font-size: 0.69rem;
         font-weight: 700;
-        color: var(--text-muted);
+        color: var(--text-secondary);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         font-family: var(--font-mono);
@@ -374,11 +374,12 @@
     align-items: center;
     justify-content: space-around;
     padding: 1.25rem 1rem;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 14px;
     box-shadow: var(--shadow-card);
     z-index: 1;
+    transition: all 0.25s ease;
 
     .stat-col {
       display: flex;
@@ -390,20 +391,23 @@
         font-size: 1.6rem;
         font-weight: 800;
         line-height: 1;
-        margin-bottom: 4px;
+        margin-bottom: 5px;
         color: var(--text-primary);
         font-family: var(--font-sans);
       }
 
       .stat-label-primary {
-        font-size: 0.82rem;
-        font-weight: 600;
+        font-size: 0.85rem;
+        font-weight: 700;
         color: var(--text-primary);
+        letter-spacing: -0.01em;
       }
 
       .stat-label-sub {
-        font-size: 0.74rem;
-        color: var(--text-muted);
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-top: 2px;
       }
     }
 

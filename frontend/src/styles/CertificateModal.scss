@@ -27,7 +27,7 @@
     width: 100%;
     max-width: 1200px;
     max-height: 92vh;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: 18px;
     box-shadow: 0 25px 60px rgba(28, 25, 23, 0.18), 0 4px 16px rgba(28, 25, 23, 0.06);
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #FAF8F5;
+    background: var(--bg-well);
     flex-wrap: wrap;
     gap: 1rem;
 
@@ -74,7 +74,7 @@
 
     .cert-tab-toggle {
         display: flex;
-        background: #F4F0E8;
+        background: var(--bg-sidebar-hover);
         border: 1px solid var(--border-subtle);
         border-radius: 10px;
         padding: 3px;
@@ -105,7 +105,7 @@
     }
 
     .modal-close-btn {
-        background: #F4F0E8;
+        background: var(--bg-sidebar-hover);
         border: 1px solid var(--border-subtle);
         color: var(--text-secondary);
         width: 36px;
@@ -131,7 +131,7 @@
     padding: 1.75rem;
     overflow-y: auto;
     flex: 1;
-    background: #FFFFFF;
+    background: var(--bg-card);
 
     &::-webkit-scrollbar {
         width: 6px;
@@ -156,7 +156,7 @@
 
 /* Form Styles */
 .cert-form-pane {
-    background: #FAF8F5;
+    background: var(--bg-well);
     border: 1px solid var(--border-subtle);
     border-radius: 16px;
     padding: 1.5rem;
@@ -184,7 +184,7 @@
 
         .evalix-input {
             width: 100%;
-            background: #FFFFFF;
+            background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             padding: 10px 14px 10px 40px;
@@ -212,7 +212,7 @@
     }
 
     .meta-info-card {
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         border-radius: 12px;
 
@@ -307,7 +307,7 @@
         margin-bottom: 0.6rem;
 
         .preview-scale-tag {
-            background: #FAF8F5;
+            background: var(--bg-well);
             border: 1px solid var(--border-subtle);
             padding: 2px 8px;
             border-radius: 6px;
@@ -481,7 +481,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #F4F0E8;
+        background: var(--bg-sidebar-hover);
 
         .seal-inner-ring {
             width: 40px;
@@ -597,7 +597,7 @@
 
     .cert-doc-pill {
         display: inline-block;
-        background: #FAF8F5;
+        background: var(--bg-well);
         border: 1px solid #E8E3D8;
         padding: 3px 12px;
         border-radius: 4px;
@@ -668,14 +668,14 @@
             }
 
             &.chip-quality {
-                background: #FAF8F5;
+                background: var(--bg-well);
                 border: 1px solid #E8E3D8;
                 .chip-name { color: #2E5C4E; }
                 .chip-val { color: #1E3D34; }
             }
 
             &.chip-scope {
-                background: #FAF8F5;
+                background: var(--bg-well);
                 border: 1px solid #E8E3D8;
                 .chip-name { color: #57534E; }
                 .chip-val { color: #1C1917; }
@@ -735,7 +735,7 @@
     }
 
     .history-table-responsive {
-        background: #FFFFFF;
+        background: var(--bg-card);
         border: 1px solid var(--border-subtle);
         border-radius: 14px;
         overflow-x: auto;
@@ -746,7 +746,7 @@
         border-collapse: collapse;
 
         th {
-            background: #FAF8F5;
+            background: var(--bg-well);
             padding: 12px 16px;
             font-size: 0.8rem;
             font-weight: 700;
@@ -765,7 +765,7 @@
         }
 
         tr:hover td {
-            background: #FAF8F5;
+            background: var(--bg-well);
         }
     }
 

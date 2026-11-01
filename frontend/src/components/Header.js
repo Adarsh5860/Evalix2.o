@@ -1,13 +1,15 @@
 // components/Header.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell, FiChevronDown, FiLogOut } from 'react-icons/fi';
+import { FiSearch, FiBell, FiChevronDown, FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import evalixLogo from '../assets/evalix-logo.png';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import '../styles/Header.scss';
 
 const Header = () => {
     const { user, logout } = useAuth();
+    const { isDarkMode, toggleTheme } = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -91,6 +93,20 @@ const Header = () => {
 
                 {/* Right: Actions & Profile */}
                 <div className="navbar-actions-section">
+                    {/* Theme Toggle Button */}
+                    <button
+                        className="action-icon-btn theme-toggle-btn"
+                        onClick={toggleTheme}
+                        title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                        aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                    >
+                        {isDarkMode ? (
+                            <FiSun className="action-svg theme-sun-icon" />
+                        ) : (
+                            <FiMoon className="action-svg theme-moon-icon" />
+                        )}
+                    </button>
+
                     {/* Notification Icon */}
                     <div className="notification-wrapper">
                         <button
@@ -168,6 +184,14 @@ const Header = () => {
                                     </Link>
                                 )}
                                 <div className="dropdown-divider"></div>
+                                <button
+                                    type="button"
+                                    className="dropdown-link"
+                                    onClick={toggleTheme}
+                                >
+                                    {isDarkMode ? <FiSun /> : <FiMoon />}
+                                    <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+                                </button>
                                 <button
                                     type="button"
                                     className="dropdown-link signout-btn"

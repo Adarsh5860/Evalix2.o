@@ -3,7 +3,7 @@
 
 .evalix-sidebar {
   width: 260px;
-  background: #F7F4EE;
+  background: var(--bg-sidebar);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   top: 65px;
   flex-shrink: 0;
   z-index: 99;
-  transition: transform 0.25s ease, width 0.25s ease;
+  transition: transform 0.25s ease, width 0.25s ease, background-color 0.25s ease;
 
   .sidebar-mobile-header {
     display: none;
@@ -54,7 +54,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #DDD7CB;
+      background: var(--border-subtle);
       border-radius: 4px;
     }
   }
@@ -101,7 +101,7 @@
       }
 
       &:hover {
-        background: #EFEAE0;
+        background: var(--bg-sidebar-hover);
         color: var(--text-primary);
 
         .item-icon-wrap {
@@ -110,10 +110,10 @@
       }
 
       &.active {
-        background: #FFFFFF;
+        background: var(--bg-sidebar-active);
         color: var(--brand-primary);
         font-weight: 600;
-        box-shadow: 0 1px 3px rgba(27, 25, 23, 0.06), 0 0 0 1px rgba(194, 74, 38, 0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(194, 74, 38, 0.2);
 
         .item-icon-wrap {
           color: var(--brand-primary);
@@ -188,7 +188,7 @@
       }
 
       &:hover {
-        background: #EFEAE0;
+        background: var(--bg-sidebar-hover);
         color: var(--text-primary);
 
         .domain-dot {
@@ -197,11 +197,11 @@
       }
 
       &.selected {
-        background: #FFFFFF;
+        background: var(--bg-sidebar-active);
         border-color: rgba(194, 74, 38, 0.25);
         color: var(--text-primary);
         font-weight: 600;
-        box-shadow: 0 1px 3px rgba(27, 25, 23, 0.04);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       }
     }
   }
@@ -212,19 +212,19 @@
     margin-top: auto;
     padding: 1rem 0.85rem 1.15rem;
     border-top: 1px solid var(--border-subtle);
-    background: #F4F0E7;
+    background: var(--bg-sidebar);
 
     .sidebar-promo-card {
-      background: #FFFFFF;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
       padding: 0.9rem;
-      box-shadow: 0 1px 3px rgba(27, 25, 23, 0.04);
+      box-shadow: var(--shadow-card);
       transition: all 0.2s ease;
 
       &:hover {
-        border-color: rgba(194, 74, 38, 0.3);
-        box-shadow: 0 3px 8px rgba(27, 25, 23, 0.06);
+        border-color: var(--brand-primary-border);
+        box-shadow: var(--shadow-card-hover);
       }
 
       .promo-icon-box {
@@ -282,7 +282,7 @@
     height: 100vh;
     z-index: 1050;
     transform: translateX(-100%);
-    box-shadow: 10px 0 30px rgba(27, 25, 23, 0.2);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
 
     &.mobile-open {
       transform: translateX(0);

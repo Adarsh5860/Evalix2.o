@@ -76,13 +76,13 @@
   font-size: 0.9rem;
 
   &.alert-error {
-    background: #FEF2F2;
-    border: 1px solid #FECACA;
-    color: #991B1B;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #F87171;
 
     .alert-icon {
       font-size: 1.2rem;
-      color: #DC2626;
+      color: #EF4444;
       flex-shrink: 0;
     }
   }
@@ -110,7 +110,7 @@
 /* Hero Upload Card */
 .evalix-upload-card {
   position: relative;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
   padding: 1.5rem;
@@ -118,13 +118,13 @@
   transition: all 0.25s ease;
 
   &:hover {
-    border-color: #D6CFC2;
+    border-color: var(--brand-primary-border);
     box-shadow: var(--shadow-card-hover);
   }
 
   &.drag-over {
     border-color: var(--brand-primary);
-    background: #FAF7F2;
+    background: var(--bg-card-hover);
     box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.15);
     transform: scale(1.005);
 
@@ -143,10 +143,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #D6CFC2;
+    border: 2px dashed var(--border-subtle);
     border-radius: 12px;
     padding: 2.75rem 1.5rem 2.25rem;
-    background: #FAF8F4;
+    background: var(--bg-well);
     transition: all 0.2s ease;
     text-align: center;
   }
@@ -211,7 +211,7 @@
     &:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(194, 74, 38, 0.32);
-      background: linear-gradient(135deg, #B13E1B 0%, #C24A26 100%);
+      background: linear-gradient(135deg, var(--brand-primary-hover) 0%, var(--brand-primary) 100%);
     }
   }
 
@@ -272,7 +272,7 @@
 
         &:hover {
           opacity: 1;
-          color: #b91c1c;
+          color: #EF4444;
         }
       }
     }
@@ -282,7 +282,7 @@
 /* Loading State Card */
 .analysis-loading-card {
   padding: 1.5rem;
-  background: #FFFFFF;
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 14px;
   box-shadow: var(--shadow-card);
@@ -326,15 +326,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #F4F0E8;
-        border: 1px solid #D6CFC2;
+        background: var(--bg-well);
+        border: 1px solid var(--border-subtle);
         font-size: 0.75rem;
 
         .step-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #8C857B;
+          background: var(--text-muted);
         }
       }
 
@@ -367,7 +367,7 @@
   .loading-progress-bar {
     width: 100%;
     height: 6px;
-    background: #EDE8DE;
+    background: var(--bg-well);
     border-radius: 3px;
     overflow: hidden;
 
@@ -414,7 +414,7 @@
     &:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: 0 4px 16px rgba(194, 74, 38, 0.35);
-      background: linear-gradient(135deg, #B13E1B 0%, #C24A26 100%);
+      background: linear-gradient(135deg, var(--brand-primary-hover) 0%, var(--brand-primary) 100%);
 
       .arrow-icon {
         transform: translateX(3px);
@@ -450,7 +450,7 @@
     align-items: center;
     gap: 10px;
     padding: 9px 12px;
-    background: #FFFFFF;
+    background: var(--bg-card);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-pill);
     font-size: 0.82rem;
@@ -474,8 +474,8 @@
     }
 
     &:hover {
-      background: #FAF8F4;
-      border-color: #D6CFC2;
+      background: var(--bg-card-hover);
+      border-color: var(--brand-primary-border);
       color: var(--text-primary);
     }
   }

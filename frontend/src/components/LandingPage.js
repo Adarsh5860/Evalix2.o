@@ -21,6 +21,7 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import {
   loginUser,
   signupUser,
@@ -44,7 +45,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { login: setAuthUser } = useAuth();
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -92,10 +93,7 @@ const LandingPage = () => {
     return () => clearInterval(interval);
   }, [resendCooldown]);
 
-  // Theme toggle handler
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  // Theme toggle is provided by useTheme hook
 
   // Fetch a fresh CAPTCHA challenge
   const loadCaptcha = async () => {

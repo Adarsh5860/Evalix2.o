@@ -1,15 +1,21 @@
 /* Evalix 2.0 Artisanal Editorial Design Tokens */
-/* Handcrafted with unique warm mineral, terracotta, and linen light shades */
+/* Handcrafted with unique warm mineral, terracotta, and linen light/dark shades */
 
 :root {
-  /* Warm Architectural Canvas & Surfaces */
+  /* Warm Architectural Canvas & Surfaces (Light Mode) */
   --bg-darkest: #FAF8F5;          /* Warm oat linen page canvas */
   --bg-dark: #F4F0E8;             /* Subtle deeper stone well */
   --bg-card: #FFFFFF;             /* Crisp archival paper card */
   --bg-card-hover: #FDFBF8;       /* Soft elevated paper hover */
   --bg-card-glass: rgba(255, 255, 255, 0.94);
   --bg-input: #FFFFFF;
-  --bg-well: #F5F1E9;             /* Inset sunken panel */
+  --bg-well: #FAF8F4;             /* Inset sunken panel */
+  --bg-navbar: rgba(250, 248, 245, 0.94);
+  --bg-sidebar: #F7F4EE;
+  --bg-sidebar-hover: #EFEAE0;
+  --bg-sidebar-active: #FFFFFF;
+  --bg-table-header: #FAF8F5;
+  --bg-table-row-hover: #FAF8F5;
 
   /* Bespoke Editorial Brand Accents (NOT generic AI purple/cyan) */
   --brand-primary: #C24A26;       /* Warm Kyoto Terracotta / Sienna */
@@ -51,7 +57,7 @@
   --gradient-accent: linear-gradient(135deg, #2E5C4E 0%, #3D7262 100%);
   --gradient-glow: radial-gradient(circle at 50% 0%, rgba(194, 74, 38, 0.08) 0%, transparent 70%);
 
-  /* Physical Paper Shadows (no cheesy neon outer glows) */
+  /* Physical Paper Shadows */
   --shadow-card: 0 1px 3px rgba(27, 25, 23, 0.04), 0 4px 14px -2px rgba(27, 25, 23, 0.04), 0 0 0 1px var(--border-subtle);
   --shadow-card-hover: 0 3px 8px rgba(27, 25, 23, 0.06), 0 12px 24px -4px rgba(27, 25, 23, 0.06), 0 0 0 1px rgba(194, 74, 38, 0.25);
   --shadow-glow: 0 2px 10px rgba(194, 74, 38, 0.12);
@@ -69,6 +75,76 @@
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
 }
 
+/* ==========================================================================
+   Dark Architectural Mode (Obsidian / Mineral Charcoal Paper)
+   ========================================================================== */
+[data-theme="dark"],
+body.dark-theme,
+.dark-theme {
+  /* Warm Architectural Dark Paper & Mineral Obsidian Surfaces */
+  --bg-darkest: #131210;          /* Deep warm obsidian paper canvas */
+  --bg-dark: #181614;             /* Inset dark stone well */
+  --bg-card: #1E1C19;             /* Archival dark paper card */
+  --bg-card-hover: #26231F;       /* Soft elevated dark hover */
+  --bg-card-glass: rgba(30, 28, 25, 0.94);
+  --bg-input: #171513;
+  --bg-well: #161412;             /* Inset sunken panel */
+  --bg-navbar: rgba(19, 18, 16, 0.94);
+  --bg-sidebar: #171513;
+  --bg-sidebar-hover: #23201C;
+  --bg-sidebar-active: #201E1A;
+  --bg-table-header: #191714;
+  --bg-table-row-hover: #23201C;
+
+  /* Luminous Mineral Brand Accents in Dark Mode */
+  --brand-primary: #E05D35;       /* Luminous warm persimmon */
+  --brand-primary-hover: #F06E45;
+  --brand-primary-tint: rgba(224, 93, 53, 0.16);
+  --brand-primary-border: rgba(224, 93, 53, 0.38);
+
+  --brand-secondary: #488E7C;     /* Luminous juniper celadon */
+  --brand-secondary-hover: #5AA591;
+  --brand-secondary-tint: rgba(72, 142, 124, 0.16);
+  --brand-secondary-border: rgba(72, 142, 124, 0.38);
+
+  --brand-tertiary: #C98226;      /* Luminous warm amber */
+  --brand-tertiary-tint: rgba(201, 130, 38, 0.16);
+  --brand-tertiary-border: rgba(201, 130, 38, 0.38);
+
+  --brand-ink: #FAF6EE;
+
+  /* Legacy variable mappings */
+  --purple-primary: #E05D35;
+  --purple-secondary: #EB6E47;
+  --blue-primary: #488E7C;
+  --cyan-primary: #5AA591;
+  --magenta-primary: #C98226;
+
+  /* Typography in Dark Mode */
+  --text-primary: #F5F2EB;        /* Warm parchment ivory */
+  --text-secondary: #B5AFA4;      /* Warm muted stone */
+  --text-muted: #7E776D;          /* Deep dust */
+
+  /* Hairlines & Dividers in Dark Mode */
+  --border-subtle: #2D2924;       /* Warm graphite hairline */
+  --border-glow: #3E3832;
+  --border-active: #E05D35;
+
+  /* Gradients in Dark Mode */
+  --gradient-primary: linear-gradient(135deg, #E05D35 0%, #C24A26 100%);
+  --gradient-horizontal: linear-gradient(90deg, #FAF6EE 0%, #E05D35 100%);
+  --gradient-accent: linear-gradient(135deg, #488E7C 0%, #2E5C4E 100%);
+  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(224, 93, 53, 0.12) 0%, transparent 70%);
+
+  /* Shadows in Dark Mode */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-subtle);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.5), 0 14px 28px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(224, 93, 53, 0.4);
+  --shadow-glow: 0 2px 12px rgba(224, 93, 53, 0.25);
+  --shadow-glow-blue: 0 2px 12px rgba(72, 142, 124, 0.25);
+  --shadow-glow-cyan: 0 2px 12px rgba(90, 165, 145, 0.25);
+  --shadow-button: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 /* Subtle Architectural drafting millimeter grid */
 .evalix-grid-bg {
   background-color: var(--bg-darkest);
@@ -77,6 +153,16 @@
     linear-gradient(to bottom, rgba(27, 25, 23, 0.045) 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: center center;
+  transition: background-color 0.25s ease;
+}
+
+[data-theme="dark"] .evalix-grid-bg,
+body.dark-theme .evalix-grid-bg,
+.dark-theme.evalix-grid-bg {
+  background-color: var(--bg-darkest);
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
 }
 
 /* Glassmorphism helpers - refined to subtle paper acrylic */
@@ -100,6 +186,11 @@
   box-shadow: var(--shadow-card-hover);
 }
 
+[data-theme="dark"] .glass-panel:hover,
+body.dark-theme .glass-panel:hover {
+  border-color: rgba(224, 93, 53, 0.4);
+}
+
 /* Gradient text */
 .gradient-text {
   background: var(--gradient-horizontal);
@@ -109,7 +200,7 @@
 }
 
 .gradient-text-cyan {
-  background: linear-gradient(90deg, #2E5C4E, #3D7262);
+  background: linear-gradient(90deg, var(--brand-secondary), #5AA591);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -135,8 +226,8 @@
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    background: linear-gradient(135deg, #B13E1B 0%, #C24A26 100%);
-    box-shadow: 0 4px 14px rgba(194, 74, 38, 0.32);
+    background: linear-gradient(135deg, var(--brand-primary-hover) 0%, var(--brand-primary) 100%);
+    box-shadow: 0 4px 14px rgba(194, 74, 38, 0.35);
     filter: none;
   }
 
@@ -153,7 +244,7 @@
 }
 
 .btn-evalix-secondary {
-  background: #FFFFFF;
+  background: var(--bg-card);
   color: var(--text-primary) !important;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -170,8 +261,8 @@
   box-shadow: 0 1px 2px rgba(27, 25, 23, 0.04);
 
   &:hover {
-    background: #FAF7F2;
-    border-color: #D6CFC2;
+    background: var(--bg-card-hover);
+    border-color: var(--brand-primary-border);
     color: var(--brand-primary) !important;
   }
 }
@@ -206,7 +297,7 @@
   font-family: var(--font-mono);
 }
 
-/* Subtle, authentic micro-animations (no neon strobing) */
+/* Subtle, authentic micro-animations */
 @keyframes softLift {
   0%, 100% {
     transform: translateY(0);
