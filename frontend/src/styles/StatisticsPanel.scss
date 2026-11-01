@@ -1,47 +1,64 @@
 // styles/StatisticsPanel.scss
+@import './designTokens.scss';
+
 .statistics-panel {
     height: 100%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
 
     .main-stat {
         padding: 20px;
         text-align: center;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 1px solid var(--border-subtle);
+        background: #FAF8F5;
 
         .stat-value {
             font-size: 2.5rem;
-            font-weight: 600;
-            color: #343a40;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            color: #6c757d;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 2px;
         }
     }
 
     .domain-stat {
         position: relative;
-        padding: 15px;
+        padding: 16px;
+        border-bottom: 1px solid var(--border-subtle);
+
+        &:last-child {
+            border-bottom: none;
+        }
 
         .stat-icon {
             font-size: 1.2rem;
             margin-right: 12px;
 
             &.cognitive {
-                color: #007bff;
+                color: #C24A26;
             }
 
             &.affective {
-                color: #dc3545;
+                color: #2E5C4E;
             }
 
             &.psychomotor {
-                color: #20c997;
+                color: #B4731E;
             }
 
             &.unclassified {
-                color: #6c757d;
+                color: #8C827A;
             }
         }
 
@@ -50,50 +67,54 @@
         }
 
         .domain-name {
-            font-weight: 500;
-            color: #343a40;
+            font-weight: 600;
+            color: var(--text-primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
 
             .domain-count {
-                font-weight: 600;
+                font-weight: 700;
+                color: var(--text-primary);
             }
         }
 
         .top-subdomain {
             font-size: 0.8rem;
-            color: #6c757d;
+            color: var(--text-secondary);
 
             .subdomain-name {
-                color: #495057;
+                color: var(--text-primary);
+                font-weight: 500;
             }
         }
 
         .percentage-bar {
-            height: 4px;
-            background-color: #e9ecef;
-            border-radius: 2px;
+            height: 6px;
+            background-color: #F4F0E8;
+            border-radius: 9999px;
             margin-top: 10px;
             overflow: hidden;
 
             .percentage-fill {
                 height: 100%;
+                border-radius: 9999px;
+                transition: width 0.4s ease;
 
                 &.cognitive {
-                    background-color: #007bff;
+                    background-color: #C24A26;
                 }
 
                 &.affective {
-                    background-color: #dc3545;
+                    background-color: #2E5C4E;
                 }
 
                 &.psychomotor {
-                    background-color: #20c997;
+                    background-color: #B4731E;
                 }
 
                 &.unclassified {
-                    background-color: #6c757d;
+                    background-color: #8C827A;
                 }
             }
         }

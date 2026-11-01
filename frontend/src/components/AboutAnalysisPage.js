@@ -41,12 +41,13 @@ const AboutAnalysisPage = () => {
 
             <div className="domains-overview-grid mb-5">
                 {/* Cognitive Domain */}
-                <div className="about-domain-card glass-panel border-purple">
-                    <div className="domain-card-top">
-                        <div className="domain-icon-box purple">
+                <div className="about-domain-card domain-overview-card domain-cognitive border-purple">
+                    <div className="domain-card-accent-strip" />
+                    <div className="domain-card-top domain-card-header">
+                        <div className="domain-icon-box purple cognitive">
                             <FiBookOpen />
                         </div>
-                        <div>
+                        <div className="domain-header-meta">
                             <span className="domain-author">Bloom (1956), Anderson & Krathwohl (2001)</span>
                             <h3 className="domain-name">Cognitive Domain</h3>
                         </div>
@@ -55,22 +56,29 @@ const AboutAnalysisPage = () => {
                         Focuses on intellectual skills, knowledge acquisition, mental processing, and critical thinking progression from foundational recall to creative synthesis.
                     </p>
                     <div className="levels-ladder">
-                        <div className="ladder-step"><span className="step-num">1</span> Remember</div>
-                        <div className="ladder-step"><span className="step-num">2</span> Understand</div>
-                        <div className="ladder-step"><span className="step-num">3</span> Apply</div>
-                        <div className="ladder-step"><span className="step-num">4</span> Analyze</div>
-                        <div className="ladder-step"><span className="step-num">5</span> Evaluate</div>
-                        <div className="ladder-step highlight-purple"><span className="step-num">6</span> Create</div>
+                        <div className="ladder-header">
+                            <span className="ladder-label">Cognitive Ascent</span>
+                            <span className="ladder-count">6 Levels</span>
+                        </div>
+                        <div className="ladder-steps-list">
+                            <div className="ladder-step"><span className="step-num">1</span> <span className="step-label">Remember</span></div>
+                            <div className="ladder-step"><span className="step-num">2</span> <span className="step-label">Understand</span></div>
+                            <div className="ladder-step"><span className="step-num">3</span> <span className="step-label">Apply</span></div>
+                            <div className="ladder-step"><span className="step-num">4</span> <span className="step-label">Analyze</span></div>
+                            <div className="ladder-step"><span className="step-num">5</span> <span className="step-label">Evaluate</span></div>
+                            <div className="ladder-step highlight-purple highlight-apex"><span className="step-num">6</span> <span className="step-label">Create</span> <span className="apex-pill">Apex</span></div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Affective Domain */}
-                <div className="about-domain-card glass-panel border-magenta">
-                    <div className="domain-card-top">
-                        <div className="domain-icon-box magenta">
+                <div className="about-domain-card domain-overview-card domain-affective border-magenta">
+                    <div className="domain-card-accent-strip" />
+                    <div className="domain-card-top domain-card-header">
+                        <div className="domain-icon-box magenta affective">
                             <FiHeart />
                         </div>
-                        <div>
+                        <div className="domain-header-meta">
                             <span className="domain-author">Krathwohl, Bloom, Masia (1964)</span>
                             <h3 className="domain-name">Affective Domain</h3>
                         </div>
@@ -79,21 +87,28 @@ const AboutAnalysisPage = () => {
                         Encompasses emotional intelligence, attitudes, appreciation, empathy, values internalization, and ethical behavioral commitments in educational settings.
                     </p>
                     <div className="levels-ladder">
-                        <div className="ladder-step"><span className="step-num">1</span> Receiving</div>
-                        <div className="ladder-step"><span className="step-num">2</span> Responding</div>
-                        <div className="ladder-step"><span className="step-num">3</span> Valuing</div>
-                        <div className="ladder-step"><span className="step-num">4</span> Organizing</div>
-                        <div className="ladder-step highlight-magenta"><span className="step-num">5</span> Characterizing</div>
+                        <div className="ladder-header">
+                            <span className="ladder-label">Internalization Hierarchy</span>
+                            <span className="ladder-count">5 Levels</span>
+                        </div>
+                        <div className="ladder-steps-list">
+                            <div className="ladder-step"><span className="step-num">1</span> <span className="step-label">Receiving</span></div>
+                            <div className="ladder-step"><span className="step-num">2</span> <span className="step-label">Responding</span></div>
+                            <div className="ladder-step"><span className="step-num">3</span> <span className="step-label">Valuing</span></div>
+                            <div className="ladder-step"><span className="step-num">4</span> <span className="step-label">Organizing</span></div>
+                            <div className="ladder-step highlight-magenta highlight-apex"><span className="step-num">5</span> <span className="step-label">Characterizing</span> <span className="apex-pill">Apex</span></div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Psychomotor Domain */}
-                <div className="about-domain-card glass-panel border-cyan">
-                    <div className="domain-card-top">
-                        <div className="domain-icon-box cyan">
+                <div className="about-domain-card domain-overview-card domain-psychomotor border-cyan">
+                    <div className="domain-card-accent-strip" />
+                    <div className="domain-card-top domain-card-header">
+                        <div className="domain-icon-box cyan psychomotor">
                             <FiActivity />
                         </div>
-                        <div>
+                        <div className="domain-header-meta">
                             <span className="domain-author">Simpson (1972), Harrow (1972)</span>
                             <h3 className="domain-name">Psychomotor Domain</h3>
                         </div>
@@ -102,11 +117,17 @@ const AboutAnalysisPage = () => {
                         Addresses physical skills, coordination, dexterity, technical manipulation, kinesthetic execution, and neuromuscular motor mastery.
                     </p>
                     <div className="levels-ladder">
-                        <div className="ladder-step"><span className="step-num">1</span> Perception</div>
-                        <div className="ladder-step"><span className="step-num">2</span> Set & Guided Response</div>
-                        <div className="ladder-step"><span className="step-num">3</span> Mechanism</div>
-                        <div className="ladder-step"><span className="step-num">4</span> Complex Response</div>
-                        <div className="ladder-step highlight-cyan"><span className="step-num">5</span> Origination</div>
+                        <div className="ladder-header">
+                            <span className="ladder-label">Kinesthetic Progression</span>
+                            <span className="ladder-count">5 Levels</span>
+                        </div>
+                        <div className="ladder-steps-list">
+                            <div className="ladder-step"><span className="step-num">1</span> <span className="step-label">Perception</span></div>
+                            <div className="ladder-step"><span className="step-num">2</span> <span className="step-label">Set & Guided Response</span></div>
+                            <div className="ladder-step"><span className="step-num">3</span> <span className="step-label">Mechanism</span></div>
+                            <div className="ladder-step"><span className="step-num">4</span> <span className="step-label">Complex Response</span></div>
+                            <div className="ladder-step highlight-cyan highlight-apex"><span className="step-num">5</span> <span className="step-label">Origination</span> <span className="apex-pill">Apex</span></div>
+                        </div>
                     </div>
                 </div>
             </div>

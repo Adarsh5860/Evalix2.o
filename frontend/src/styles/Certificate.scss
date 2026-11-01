@@ -5,29 +5,30 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(10, 12, 22, 0.82);
-    backdrop-filter: blur(10px);
+    background: rgba(28, 25, 23, 0.65);
+    backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     overflow-y: auto;
-    animation: certFadeIn 0.25s ease-out;
+    animation: certFadeIn 0.22s ease-out;
 }
 
 @keyframes certFadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
 }
 
 .evalix-cert-modal {
-    background: #111526;
-    border: 1px solid rgba(201, 168, 76, 0.35);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(201, 168, 76, 0.15);
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 25px 60px rgba(28, 25, 23, 0.18), 0 4px 16px rgba(28, 25, 23, 0.06);
     border-radius: 18px;
     width: 100%;
     max-width: 1140px;
@@ -35,14 +36,15 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: certScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: certScaleUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes certScaleUp {
     from {
-        transform: scale(0.96) translateY(12px);
+        transform: scale(0.97) translateY(8px);
         opacity: 0;
     }
+
     to {
         transform: scale(1) translateY(0);
         opacity: 1;
@@ -54,8 +56,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 18px 24px;
-    background: rgba(17, 21, 38, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #FAF8F5;
+    border-bottom: 1px solid var(--border-subtle);
 
     .header-left {
         display: flex;
@@ -66,12 +68,12 @@
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: linear-gradient(135deg, rgba(201, 168, 76, 0.25), rgba(212, 160, 23, 0.1));
-            border: 1px solid rgba(201, 168, 76, 0.4);
+            background: rgba(194, 74, 38, 0.08);
+            border: 1px solid rgba(194, 74, 38, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffd24d;
+            color: var(--brand-primary);
             font-size: 1.25rem;
         }
 
@@ -79,7 +81,7 @@
             margin: 0;
             font-size: 1.2rem;
             font-weight: 700;
-            color: #f1f5f9;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -89,9 +91,9 @@
                 font-weight: 700;
                 letter-spacing: 0.8px;
                 text-transform: uppercase;
-                background: rgba(16, 185, 129, 0.15);
-                color: #10b981;
-                border: 1px solid rgba(16, 185, 129, 0.3);
+                background: rgba(46, 92, 78, 0.1);
+                color: #2E5C4E;
+                border: 1px solid rgba(46, 92, 78, 0.25);
                 padding: 2px 8px;
                 border-radius: 12px;
             }
@@ -99,15 +101,15 @@
 
         .cert-modal-sub {
             font-size: 0.82rem;
-            color: #94a3b8;
+            color: var(--text-secondary);
             margin: 2px 0 0 0;
         }
     }
 
     .modal-close-btn {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        color: #94a3b8;
+        background: #F4F0E8;
+        border: 1px solid var(--border-subtle);
+        color: var(--text-secondary);
         width: 36px;
         height: 36px;
         border-radius: 10px;
@@ -119,9 +121,9 @@
         transition: all 0.2s;
 
         &:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border-color: rgba(239, 68, 68, 0.3);
+            background: #B91C1C;
+            color: #FFFFFF;
+            border-color: #B91C1C;
         }
     }
 }
@@ -140,8 +142,8 @@
 
 /* Left Configuration Drawer */
 .cert-config-drawer {
-    background: #0f1322;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background: #FAF8F5;
+    border-right: 1px solid var(--border-subtle);
     padding: 22px;
     display: flex;
     flex-direction: column;
@@ -153,7 +155,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1px;
-        color: #c9a84c;
+        color: var(--brand-primary);
         margin-bottom: 14px;
         display: flex;
         align-items: center;
@@ -167,32 +169,32 @@
             display: block;
             font-size: 0.78rem;
             font-weight: 600;
-            color: #cbd5e1;
+            color: var(--text-primary);
             margin-bottom: 5px;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
             padding: 8px 12px;
-            color: #f8fafc;
+            color: var(--text-primary);
             font-size: 0.85rem;
             transition: all 0.2s;
 
             &:focus {
                 outline: none;
-                border-color: #c9a84c;
-                background: rgba(255, 255, 255, 0.08);
-                box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+                border-color: var(--brand-primary);
+                box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.12);
             }
         }
     }
 
     .cert-score-summary-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(201, 168, 76, 0.25);
+        background: #FFFFFF;
+        border: 1px solid var(--border-subtle);
         border-radius: 10px;
         padding: 14px;
         margin-top: 10px;
@@ -210,12 +212,12 @@
             }
 
             .summary-label {
-                color: #94a3b8;
+                color: var(--text-secondary);
             }
 
             .summary-val {
                 font-weight: 700;
-                color: #f1f5f9;
+                color: var(--text-primary);
             }
         }
     }
@@ -226,11 +228,11 @@
         gap: 10px;
         margin-top: auto;
         padding-top: 16px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid var(--border-subtle);
 
         .btn-print-cert {
-            background: linear-gradient(135deg, #d4a017, #c9a84c);
-            color: #0b1335;
+            background: var(--brand-primary);
+            color: #FFFFFF;
             font-weight: 700;
             font-size: 0.9rem;
             padding: 12px 18px;
@@ -241,24 +243,24 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 6px 18px rgba(212, 160, 23, 0.35);
+            box-shadow: 0 4px 14px rgba(194, 74, 38, 0.25);
             transition: all 0.2s;
 
             &:hover {
                 transform: translateY(-1px);
-                box-shadow: 0 8px 22px rgba(212, 160, 23, 0.45);
-                filter: brightness(1.06);
+                box-shadow: 0 6px 18px rgba(194, 74, 38, 0.35);
+                background: #B03E1C;
             }
         }
 
         .btn-view-tab {
-            background: rgba(255, 255, 255, 0.06);
-            color: #f1f5f9;
+            background: #FFFFFF;
+            color: var(--text-primary);
             font-weight: 600;
             font-size: 0.85rem;
             padding: 10px 16px;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--border-subtle);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -267,8 +269,8 @@
             transition: all 0.2s;
 
             &:hover {
-                background: rgba(255, 255, 255, 0.1);
-                border-color: rgba(255, 255, 255, 0.25);
+                background: #F4F0E8;
+                border-color: #D3CDC0;
             }
         }
     }
@@ -276,7 +278,7 @@
 
 /* Right Live Preview Area */
 .cert-preview-viewport {
-    background: #090c17;
+    background: #EFECE6;
     padding: 24px;
     display: flex;
     justify-content: center;
@@ -296,8 +298,8 @@
             height: 1120px;
             border: none;
             border-radius: 4px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-            background: #faf7f2;
+            box-shadow: 0 15px 40px rgba(28, 25, 23, 0.15);
+            background: #FFFFFF;
         }
     }
 }
@@ -307,22 +309,22 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(212, 160, 23, 0.35));
-    border: 1.5px solid #c9a84c;
-    color: #ffe066;
+    background: rgba(194, 74, 38, 0.08);
+    border: 1.5px solid var(--brand-primary);
+    color: var(--brand-primary);
     padding: 10px 20px;
     border-radius: 12px;
     font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.25);
+    box-shadow: 0 2px 8px rgba(194, 74, 38, 0.15);
 
     &:hover {
-        background: linear-gradient(135deg, #c9a84c, #d4a017);
-        color: #0d1b4b;
+        background: var(--brand-primary);
+        color: #FFFFFF;
         transform: translateY(-2px);
-        box-shadow: 0 6px 22px rgba(201, 168, 76, 0.45);
+        box-shadow: 0 6px 20px rgba(194, 74, 38, 0.3);
     }
 
     .cert-icon {
@@ -334,9 +336,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.35);
-    color: #ffd24d;
+    background: rgba(194, 74, 38, 0.08);
+    border: 1px solid rgba(194, 74, 38, 0.3);
+    color: var(--brand-primary);
     padding: 6px 14px;
     border-radius: 8px;
     font-size: 0.8rem;
@@ -345,9 +347,9 @@
     transition: all 0.2s;
 
     &:hover {
-        background: rgba(201, 168, 76, 0.25);
-        color: #fff;
-        border-color: #ffd24d;
+        background: var(--brand-primary);
+        color: #FFFFFF;
+        border-color: var(--brand-primary);
         transform: translateY(-1px);
     }
 }

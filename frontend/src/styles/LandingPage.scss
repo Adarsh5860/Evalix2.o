@@ -1,88 +1,93 @@
 // LandingPage.scss
-// Modern, sleek SaaS styling inspired by Linear, Vercel & Notion
+// Artisanal, bespoke editorial styling for Evalix 2.0
+// Inspired by warm architectural drafting, high-end Swiss typography & Monocle aesthetic
 
 .landing-page-root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
   position: relative;
   overflow-x: hidden;
 
-  // Light Theme Defaults
-  background-color: #f8fafc;
-  color: #0f172a;
+  // Handcrafted Warm Linen Canvas
+  background-color: #FAF8F5;
+  color: #1C1917;
 
-  // Grid background
+  // Architectural Millimeter Grid
   .grid-bg-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background-size: 32px 32px;
     background-image: 
-      linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(27, 25, 23, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(27, 25, 23, 0.045) 1px, transparent 1px);
   }
 
-  // Sticky Glass Navbar
+  // Sticky Architectural Glass Navbar
   .landing-nav {
     position: sticky;
     top: 0;
     z-index: 50;
     width: 100%;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     border-bottom: 1px solid transparent;
 
     &.scrolled {
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      background-color: rgba(255, 255, 255, 0.85);
-      border-bottom-color: rgba(226, 232, 240, 0.8);
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background-color: rgba(250, 248, 245, 0.92);
+      border-bottom-color: #E8E3D8;
+      box-shadow: 0 1px 4px rgba(27, 25, 23, 0.04);
     }
   }
 
-  // Brand Logo Gradient
+  // Brand Logo: Warm Kyoto Persimmon / Terracotta
   .logo-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #C24A26 0%, #D45B34 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.35);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(194, 74, 38, 0.25);
+    border: 1px solid rgba(194, 74, 38, 0.3);
   }
 
-  // Hero headline gradients
+  // Headline Typography
   .gradient-text {
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #a855f7 100%);
+    background: linear-gradient(135deg, #1C1917 0%, #C24A26 65%, #B4731E 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  // Primary Gradient Button
+  // Primary Terracotta Button
   .btn-primary-gradient {
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-    color: #ffffff;
+    background: linear-gradient(135deg, #C24A26 0%, #D45B34 100%);
+    color: #FFFFFF;
     font-weight: 600;
-    border-radius: 14px;
-    padding: 12px 26px;
+    border-radius: 10px;
+    padding: 11px 24px;
     border: none;
-    box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.35);
-    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(194, 74, 38, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     text-decoration: none;
+    font-size: 0.92rem;
+    letter-spacing: -0.01em;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.45);
-      color: white;
+      transform: translateY(-1px);
+      background: linear-gradient(135deg, #B13E1B 0%, #C24A26 100%);
+      box-shadow: 0 4px 14px rgba(194, 74, 38, 0.35);
+      color: #FFFFFF;
     }
 
     &:active {
@@ -90,52 +95,54 @@
     }
   }
 
-  // Secondary Outlined Button
+  // Secondary Sandstone Outlined Button
   .btn-secondary-ghost {
-    background-color: rgba(255, 255, 255, 0.85);
-    color: #334155;
-    font-weight: 600;
-    border-radius: 14px;
-    padding: 12px 22px;
-    border: 1px solid #cbd5e1;
-    transition: all 0.25s ease;
+    background-color: #FFFFFF;
+    color: #1C1917;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: 1px solid #E2DDD2;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     text-decoration: none;
+    font-size: 0.92rem;
+    box-shadow: 0 1px 2px rgba(27, 25, 23, 0.04);
 
     &:hover {
-      border-color: #6366f1;
-      background-color: #f1f5f9;
-      color: #4f46e5;
-      transform: translateY(-2px);
+      border-color: #C24A26;
+      background-color: #FAF7F2;
+      color: #C24A26;
+      transform: translateY(-1px);
     }
   }
 
-  // Ambient Glow Orbs
+  // Soft Ambient Atmosphere
   .glow-orb-1 {
     position: absolute;
-    top: 20%;
-    left: 25%;
+    top: 15%;
+    left: 20%;
     transform: translate(-50%, -50%);
-    width: 450px;
-    height: 450px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, rgba(79, 70, 229, 0) 70%);
-    filter: blur(50px);
+    background: radial-gradient(circle, rgba(194, 74, 38, 0.04) 0%, transparent 70%);
+    filter: blur(60px);
     pointer-events: none;
   }
 
   .glow-orb-2 {
     position: absolute;
-    top: 30%;
-    right: 20%;
-    width: 480px;
-    height: 480px;
+    top: 25%;
+    right: 15%;
+    width: 520px;
+    height: 520px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0) 70%);
-    filter: blur(50px);
+    background: radial-gradient(circle, rgba(46, 92, 78, 0.04) 0%, transparent 70%);
+    filter: blur(60px);
     pointer-events: none;
   }
 
@@ -144,48 +151,50 @@
     position: relative;
   }
 
-  // Mockup Card
+  // Archival Research Document Card
   .mockup-card {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #E7E2D7;
+    border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+    box-shadow: 
+      0 1px 3px rgba(27, 25, 23, 0.04), 
+      0 10px 30px -5px rgba(27, 25, 23, 0.07);
     position: relative;
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
 
     .stat-card-item {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
+      background-color: #FAF8F4;
+      border: 1px solid #EBE5D9;
+      border-radius: 10px;
       padding: 10px 12px;
       transition: all 0.2s ease;
     }
 
     .progress-track {
-      background-color: #e2e8f0;
+      background-color: #EFEAE0;
       border-radius: 9999px;
       height: 6px;
     }
 
     .verb-pill {
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: 0.74rem;
+      font-weight: 600;
       padding: 4px 10px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      transition: all 0.2s ease;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      transition: all 0.15s ease;
 
       &.primary {
-        background-color: #eef2ff;
-        color: #4f46e5;
-        border-color: #c7d2fe;
+        background-color: #EEF5F2;
+        color: #2E5C4E;
+        border: 1px solid #C8DDD6;
       }
 
       &.secondary {
-        background-color: #f1f5f9;
-        color: #475569;
-        border-color: #e2e8f0;
+        background-color: #FDF1EB;
+        color: #C24A26;
+        border: 1px solid #F3C9BA;
       }
     }
   }
@@ -193,27 +202,25 @@
   // Floating Micro Badge
   .floating-badge {
     position: absolute;
-    bottom: -14px;
+    bottom: -12px;
     right: 18px;
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 8px 14px;
+    background-color: #FFFFFF;
+    border: 1px solid #E7E2D7;
+    border-radius: 10px;
+    padding: 7px 14px;
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
-    animation: floatBadge 5s ease-in-out infinite;
+    box-shadow: 0 4px 16px rgba(27, 25, 23, 0.08);
     z-index: 10;
-    color: #0f172a;
-    backdrop-filter: blur(8px);
+    color: #1C1917;
   }
 
   // CAPTCHA and Verification UI
   .captcha-wrapper {
-    background-color: rgba(241, 245, 249, 0.6);
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
+    background-color: #FAF8F4;
+    border: 1px solid #E2DDD2;
+    border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 16px;
     transition: all 0.2s ease;
@@ -231,10 +238,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #ffffff;
+      background: #FFFFFF;
       border-radius: 8px;
       overflow: hidden;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #E5E0D5;
       min-height: 52px;
 
       svg {
@@ -246,22 +253,22 @@
     }
 
     .btn-captcha-refresh {
-      background: transparent;
-      border: 1px solid #cbd5e1;
+      background: #FFFFFF;
+      border: 1px solid #E2DDD2;
       border-radius: 8px;
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #64748b;
+      color: #78716C;
       cursor: pointer;
       transition: all 0.2s ease;
 
       &:hover {
-        background: #f1f5f9;
-        color: #4f46e5;
-        border-color: #a5b4fc;
+        background: #FAF7F2;
+        color: #C24A26;
+        border-color: #C24A26;
       }
 
       &.spinning svg {
@@ -275,140 +282,145 @@
     font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    font-family: monospace;
+    font-family: var(--font-mono);
     padding: 10px 14px;
-    border-radius: 10px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    border: 1px solid #E2DDD2;
+    color: #1C1917;
+
+    &:focus {
+      border-color: #C24A26;
+      box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.12);
+      outline: none;
+    }
   }
 
   .dev-code-chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background-color: rgba(99, 102, 241, 0.12);
-    border: 1px dashed rgba(99, 102, 241, 0.4);
-    color: #4f46e5;
+    background-color: #FDF1EB;
+    border: 1px dashed #F3C9BA;
+    color: #C24A26;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.75rem;
     cursor: pointer;
+    font-family: var(--font-mono);
     transition: all 0.2s ease;
 
     &:hover {
-      background-color: rgba(99, 102, 241, 0.2);
+      background-color: #FAE8E0;
     }
   }
 
   // =========================================================================
-  // DARK THEME OVERRIDES
-  // Properly nested under &.dark so selectors compile accurately
+  // DARK THEME OVERRIDES (Warm Obsidian & Amber, not neon blue)
   // =========================================================================
   &.dark {
-    background-color: #090d16;
-    color: #f1f5f9;
+    background-color: #141312;
+    color: #F5F3EF;
 
     .grid-bg-overlay {
       background-image: 
-        linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     }
 
     .landing-nav.scrolled {
-      background-color: rgba(9, 13, 22, 0.85);
-      border-bottom-color: rgba(30, 41, 59, 0.8);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      background-color: rgba(20, 19, 18, 0.92);
+      border-bottom-color: #292524;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
 
     .gradient-text {
-      background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 50%, #c084fc 100%);
+      background: linear-gradient(135deg, #FFFFFF 0%, #E87A54 60%, #E5A84B 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .btn-secondary-ghost {
-      background-color: rgba(15, 23, 42, 0.7);
-      color: #e2e8f0;
-      border-color: #334155;
+      background-color: #1C1917;
+      color: #E7E5E4;
+      border-color: #292524;
 
       &:hover {
-        background-color: #1e293b;
-        color: #ffffff;
-        border-color: #475569;
+        background-color: #292524;
+        color: #FFFFFF;
+        border-color: #44403C;
       }
     }
 
     .mockup-card {
-      background-color: #0f172a;
-      border-color: #1e293b;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background-color: #1C1917;
+      border-color: #292524;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 
       .stat-card-item {
-        background-color: #1e293b;
-        border-color: #334155;
+        background-color: #22201D;
+        border-color: #292524;
       }
 
       .progress-track {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.08);
       }
 
       .verb-pill {
         &.primary {
-          background-color: rgba(99, 102, 241, 0.15);
-          color: #a5b4fc;
-          border-color: rgba(99, 102, 241, 0.3);
+          background-color: rgba(46, 92, 78, 0.25);
+          color: #76B39D;
+          border-color: rgba(46, 92, 78, 0.5);
         }
 
         &.secondary {
-          background-color: rgba(51, 65, 85, 0.5);
-          color: #cbd5e1;
-          border-color: #334155;
+          background-color: rgba(194, 74, 38, 0.2);
+          color: #F39C7D;
+          border-color: rgba(194, 74, 38, 0.4);
         }
       }
     }
 
     .floating-badge {
-      background-color: #1e293b;
-      border-color: #334155;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-      color: #f8fafc;
+      background-color: #1C1917;
+      border-color: #292524;
+      color: #F5F3EF;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
     }
 
     .captcha-wrapper {
-      background-color: rgba(15, 23, 42, 0.6);
-      border-color: #334155;
+      background-color: #1C1917;
+      border-color: #292524;
 
       .captcha-svg-container {
-        background: #0f172a;
-        border-color: #334155;
+        background: #22201D;
+        border-color: #292524;
       }
 
       .btn-captcha-refresh {
-        border-color: #334155;
-        color: #94a3b8;
+        background: #22201D;
+        border-color: #292524;
+        color: #A8A29E;
 
         &:hover {
-          background: #1e293b;
-          color: #818cf8;
-          border-color: #6366f1;
+          background: #292524;
+          color: #E87A54;
+          border-color: #E87A54;
         }
       }
     }
 
     .verification-code-input {
-      background-color: #0f172a;
-      border-color: #334155;
-      color: #a5b4fc;
+      background-color: #22201D;
+      border-color: #292524;
+      color: #E87A54;
     }
 
     .dev-code-chip {
-      background-color: rgba(99, 102, 241, 0.2);
-      border-color: rgba(99, 102, 241, 0.5);
-      color: #a5b4fc;
+      background-color: rgba(194, 74, 38, 0.25);
+      border-color: rgba(194, 74, 38, 0.5);
+      color: #F39C7D;
     }
-  }
-
-  @keyframes floatBadge {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
   }
 
   @keyframes spin {

@@ -49,7 +49,8 @@ const TEAM_MEMBERS = [
             'Recommendations Dashboard layout',
             'Document type profile integration',
             'Responsive sidebar navigation',
-            'Frontend component architecture'
+            'Frontend component architecture',
+            'Authentication & CAPTCHA UI flows'
         ]
     },
     {

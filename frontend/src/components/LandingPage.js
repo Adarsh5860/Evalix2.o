@@ -44,7 +44,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { login: setAuthUser } = useAuth();
 
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -310,11 +310,10 @@ const LandingPage = () => {
                 <span
                   className="badge rounded-pill px-2 py-1 text-xs fw-semibold"
                   style={{
-                    backgroundColor: isDarkMode ? '#1e1b4b' : '#e0e7ff',
-                    color: isDarkMode ? '#a5b4fc' : '#4338ca',
-                    border: isDarkMode
-                      ? '1px solid #3730a3'
-                      : '1px solid #c7d2fe'
+                    backgroundColor: isDarkMode ? '#292524' : '#FDF1EB',
+                    color: isDarkMode ? '#F39C7D' : '#C24A26',
+                    border: isDarkMode ? '1px solid #44403C' : '1px solid #F3C9BA',
+                    fontFamily: 'monospace'
                   }}
                 >
                   2.0
@@ -450,15 +449,13 @@ const LandingPage = () => {
               <div
                 className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-4"
                 style={{
-                  backgroundColor: isDarkMode
-                    ? 'rgba(30, 27, 75, 0.7)'
-                    : '#eef2ff',
-                  border: isDarkMode
-                    ? '1px solid rgba(99, 102, 241, 0.3)'
-                    : '1px solid #c7d2fe',
-                  color: isDarkMode ? '#a5b4fc' : '#4f46e5',
-                  fontSize: '0.85rem',
-                  fontWeight: 600
+                  backgroundColor: isDarkMode ? 'rgba(194, 74, 38, 0.15)' : '#FDF1EB',
+                  border: isDarkMode ? '1px solid rgba(194, 74, 38, 0.35)' : '1px solid #F3C9BA',
+                  color: isDarkMode ? '#F39C7D' : '#C24A26',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  fontFamily: 'monospace',
+                  letterSpacing: '0.04em'
                 }}
               >
                 <span
@@ -466,11 +463,11 @@ const LandingPage = () => {
                   style={{
                     width: '8px',
                     height: '8px',
-                    backgroundColor: '#6366f1'
+                    backgroundColor: '#C24A26'
                   }}
                 ></span>
 
-                <span>AI-Powered Evaluation Platform</span>
+                <span>TAXONOMY INTELLIGENCE LAB</span>
 
                 <LuSparkles size={14} />
 
@@ -480,10 +477,10 @@ const LandingPage = () => {
                 className="display-4 fw-bolder tracking-tight mb-4"
                 style={{ lineHeight: 1.15 }}
               >
-                Next-Gen Evaluation.<br />
+                Scholarly Precision.<br />
 
                 <span className="gradient-text">
-                  Driven by Precision AI.
+                  Bloom's Taxonomy NLP.
                 </span>
 
               </h1>
@@ -497,7 +494,7 @@ const LandingPage = () => {
                   color: isDarkMode ? '#94a3b8' : '#475569'
                 }}
               >
-                Evalix 2.0 helps you evaluate, analyze, and improve with AI-driven precision — fast, accurate, and effortless.
+                Evalix 2.0 extracts and classifies cognitive, affective, and psychomotor action verbs with contextual NLP embeddings — rigorous, auditable, and beautifully structured.
               </p>
 
               <div className="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3 mb-4">
@@ -528,18 +525,18 @@ const LandingPage = () => {
               >
 
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCircleCheck size={16} color="#10b981" />
-                  <span>Bloom's Taxonomy Framework</span>
+                  <LuCircleCheck size={16} color="#2E5C4E" />
+                  <span>Bloom's 3-Domain Taxonomy</span>
                 </div>
 
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCircleCheck size={16} color="#10b981" />
-                  <span>Semantic Vector Embeddings</span>
+                  <LuCircleCheck size={16} color="#2E5C4E" />
+                  <span>Contextual Vector Embeddings</span>
                 </div>
 
                 <div className="d-flex align-items-center gap-1.5">
-                  <LuCircleCheck size={16} color="#10b981" />
-                  <span>Instant Excel Audit Reports</span>
+                  <LuCircleCheck size={16} color="#2E5C4E" />
+                  <span>Audit-Ready Excel Reports</span>
                 </div>
 
               </div>
@@ -602,9 +599,10 @@ const LandingPage = () => {
                     <span
                       className="badge rounded-pill px-2.5 py-1 text-xs"
                       style={{
-                        backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.15)' : '#ecfdf5',
-                        color: isDarkMode ? '#34d399' : '#059669',
-                        border: isDarkMode ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid #a7f3d0'
+                        backgroundColor: isDarkMode ? 'rgba(46, 92, 78, 0.2)' : '#EEF5F2',
+                        color: isDarkMode ? '#76B39D' : '#2E5C4E',
+                        border: isDarkMode ? '1px solid rgba(46, 92, 78, 0.4)' : '1px solid #C8DDD6',
+                        fontFamily: 'monospace'
                       }}
                     >
                       ● Analyzed
@@ -646,7 +644,7 @@ const LandingPage = () => {
 
                         <span
                           className="fw-bold fs-6"
-                          style={{ color: isDarkMode ? '#818cf8' : '#4f46e5' }}
+                          style={{ color: isDarkMode ? '#76B39D' : '#2E5C4E' }}
                         >
                           Cognitive
                         </span>
@@ -709,7 +707,7 @@ const LandingPage = () => {
                           className="progress-bar"
                           style={{
                             width: '68%',
-                            backgroundColor: '#6366f1'
+                            backgroundColor: '#2E5C4E'
                           }}
                         ></div>
                       </div>
@@ -731,7 +729,7 @@ const LandingPage = () => {
                           className="progress-bar"
                           style={{
                             width: '21%',
-                            backgroundColor: '#a855f7'
+                            backgroundColor: '#C24A26'
                           }}
                         ></div>
                       </div>
@@ -753,7 +751,7 @@ const LandingPage = () => {
                           className="progress-bar"
                           style={{
                             width: '11%',
-                            backgroundColor: '#06b6d4'
+                            backgroundColor: '#B4731E'
                           }}
                         ></div>
                       </div>
@@ -808,10 +806,10 @@ const LandingPage = () => {
                 {/* Micro Badge floating cleanly outside card overflow */}
                 <div className="floating-badge">
 
-                  <LuShieldCheck color="#10b981" size={18} />
+                  <LuShieldCheck color="#2E5C4E" size={18} />
 
                   <span className="text-xs fw-semibold">
-                    AI Confidence: High
+                    Audited: High Confidence
                   </span>
 
                 </div>
@@ -1250,14 +1248,10 @@ const LandingPage = () => {
               <div
                 className="mt-4 p-2.5 rounded-3 text-center"
                 style={{
-                  backgroundColor: isDarkMode
-                    ? 'rgba(30, 27, 75, 0.4)'
-                    : '#eef2ff',
-                  border: isDarkMode
-                    ? '1px solid rgba(99, 102, 241, 0.2)'
-                    : '1px solid #c7d2fe',
-                  fontSize: '0.75rem',
-                  color: isDarkMode ? '#a5b4fc' : '#4338ca'
+                  backgroundColor: isDarkMode ? '#22201D' : '#FAF8F4',
+                border: isDarkMode ? '1px solid #44403C' : '1px solid #E8E3D8',
+                fontSize: '0.75rem',
+                color: isDarkMode ? '#F39C7D' : '#A83B1B'
                 }}
               >
                 💡 <strong>Demo Login:</strong> demo@evalix.com / EvalixDemo123 (or register any new email).

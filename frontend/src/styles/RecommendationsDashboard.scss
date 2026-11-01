@@ -6,14 +6,17 @@
 
   .assessment-hero-card {
     padding: 2rem;
-    border-color: rgba(124, 58, 237, 0.4);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
 
     .assessment-title {
       font-size: 1.6rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--text-primary);
       margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
     }
 
     .assessment-lead-text {
@@ -35,10 +38,20 @@
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s ease;
 
-      &.border-purple { border-color: rgba(124, 58, 237, 0.35); }
-      &.border-magenta { border-color: rgba(236, 72, 153, 0.35); }
-      &.border-cyan { border-color: rgba(34, 211, 238, 0.35); }
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-card-hover);
+      }
+
+      &.border-purple { border-color: var(--brand-secondary-border); }
+      &.border-magenta { border-color: var(--brand-primary-border); }
+      &.border-cyan { border-color: var(--brand-tertiary-border); }
 
       .card-rec-header {
         display: flex;
@@ -56,29 +69,30 @@
           font-size: 1.2rem;
 
           &.purple {
-            background: rgba(124, 58, 237, 0.2);
-            color: #C084FC;
-            border: 1px solid rgba(124, 58, 237, 0.4);
+            background: var(--brand-secondary-tint);
+            color: var(--brand-secondary);
+            border: 1px solid var(--brand-secondary-border);
           }
 
           &.magenta {
-            background: rgba(236, 72, 153, 0.2);
-            color: #F472B6;
-            border: 1px solid rgba(236, 72, 153, 0.4);
+            background: var(--brand-primary-tint);
+            color: var(--brand-primary);
+            border: 1px solid var(--brand-primary-border);
           }
 
           &.cyan {
-            background: rgba(34, 211, 238, 0.2);
-            color: #38BDF8;
-            border: 1px solid rgba(34, 211, 238, 0.4);
+            background: var(--brand-tertiary-tint);
+            color: var(--brand-tertiary);
+            border: 1px solid var(--brand-tertiary-border);
           }
         }
 
         .rec-title {
           font-size: 1.15rem;
           font-weight: 700;
-          color: #FFFFFF;
+          color: var(--text-primary);
           margin: 0;
+          letter-spacing: -0.015em;
         }
       }
 
@@ -94,13 +108,18 @@
   /* Implementation Strategies Card */
   .implementation-card {
     padding: 2rem;
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
 
     .impl-header {
       .impl-title {
         font-size: 1.35rem;
         font-weight: 700;
-        color: #FFFFFF;
+        color: var(--text-primary);
         margin-bottom: 4px;
+        letter-spacing: -0.015em;
       }
 
       .impl-sub {
@@ -128,9 +147,9 @@
             font-size: 1.1rem;
           }
 
-          &.purple-text { color: #C084FC; }
-          &.magenta-text { color: #F472B6; }
-          &.cyan-text { color: #38BDF8; }
+          &.purple-text { color: var(--brand-secondary); }
+          &.magenta-text { color: var(--brand-primary); }
+          &.cyan-text { color: var(--brand-tertiary); }
         }
 
         .strategy-list {

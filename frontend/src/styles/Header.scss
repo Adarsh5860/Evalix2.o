@@ -5,12 +5,12 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(7, 11, 23, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(250, 248, 245, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.75rem 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 
   .navbar-container {
     display: flex;
@@ -42,11 +42,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(124, 58, 237, 0.15);
-      border: 1px solid rgba(124, 58, 237, 0.35);
-      box-shadow: 0 0 16px rgba(124, 58, 237, 0.35);
+      background: var(--brand-primary);
+      border: 1px solid rgba(194, 74, 38, 0.3);
+      box-shadow: 0 2px 8px rgba(194, 74, 38, 0.2);
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
 
       .brand-logo-img {
         width: 100%;
@@ -57,8 +57,8 @@
       }
 
       &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 24px rgba(124, 58, 237, 0.6);
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(194, 74, 38, 0.3);
       }
     }
 
@@ -77,27 +77,28 @@
     .brand-name {
       font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
       color: var(--text-primary);
-      font-family: 'Plus Jakarta Sans', var(--font-sans);
+      font-family: var(--font-sans);
     }
 
     .version-badge {
-      background: var(--gradient-primary);
-      color: #FFFFFF;
+      background: var(--brand-primary-tint);
+      color: var(--brand-primary);
+      border: 1px solid var(--brand-primary-border);
       font-size: 0.7rem;
       font-weight: 700;
       padding: 1px 7px;
       border-radius: 6px;
       letter-spacing: 0.04em;
-      box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+      font-family: var(--font-mono);
     }
 
     .brand-tagline {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
       font-weight: 400;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
     }
   }
 
@@ -110,16 +111,17 @@
       position: relative;
       display: flex;
       align-items: center;
-      background: rgba(15, 23, 42, 0.6);
+      background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 0 14px;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(27, 25, 23, 0.03);
 
       &:focus-within {
-        border-color: rgba(124, 58, 237, 0.5);
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15), 0 0 20px rgba(124, 58, 237, 0.1);
-        background: rgba(15, 23, 42, 0.85);
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 3px rgba(194, 74, 38, 0.12);
+        background: #FFFFFF;
       }
 
       .search-icon {
@@ -138,7 +140,7 @@
         font-size: 0.88rem;
 
         &::placeholder {
-          color: #64748B;
+          color: var(--text-muted);
         }
       }
 
@@ -169,7 +171,7 @@
       width: 38px;
       height: 38px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
+      background: #FFFFFF;
       border: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       display: flex;
@@ -178,11 +180,12 @@
       cursor: pointer;
       position: relative;
       transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(27, 25, 23, 0.03);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: var(--text-primary);
-        border-color: rgba(255, 255, 255, 0.15);
+        background: #FAF7F2;
+        color: var(--brand-primary);
+        border-color: #D6CFC2;
       }
 
       .action-svg {
@@ -200,8 +203,8 @@
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #38BDF8;
-        box-shadow: 0 0 8px #38BDF8;
+        background: var(--brand-primary);
+        box-shadow: 0 0 4px rgba(194, 74, 38, 0.5);
       }
     }
 
@@ -213,30 +216,32 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        background: rgba(255, 255, 255, 0.03);
+        background: #FFFFFF;
         border: 1px solid var(--border-subtle);
         border-radius: 10px;
         padding: 4px 12px 4px 6px;
         cursor: pointer;
         transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(27, 25, 23, 0.03);
 
         &:hover {
-          background: rgba(255, 255, 255, 0.07);
-          border-color: rgba(255, 255, 255, 0.15);
+          background: #FAF7F2;
+          border-color: #D6CFC2;
         }
 
         .user-avatar {
           width: 30px;
           height: 30px;
           border-radius: 8px;
-          background: var(--gradient-primary);
+          background: var(--brand-primary);
           color: #FFFFFF;
           display: flex;
           align-items: center;
           justify-content: center;
           font-weight: 700;
           font-size: 0.78rem;
-          box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+          font-family: var(--font-mono);
+          box-shadow: 0 1px 3px rgba(194, 74, 38, 0.2);
         }
 
         .user-name {
@@ -263,12 +268,10 @@
       top: calc(100% + 8px);
       right: 0;
       width: 260px;
-      background: rgba(10, 15, 31, 0.95);
-      border: 1px solid var(--border-glow);
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+      box-shadow: 0 10px 30px -5px rgba(27, 25, 23, 0.12), 0 0 0 1px rgba(27, 25, 23, 0.04);
       padding: 8px 0;
       z-index: 1010;
       animation: fadeIn 0.15s ease-out;
@@ -285,20 +288,21 @@
 
         .badge-count {
           font-size: 0.7rem;
-          background: rgba(124, 58, 237, 0.2);
-          color: #C084FC;
+          background: var(--brand-secondary-tint);
+          color: var(--brand-secondary);
           padding: 2px 8px;
           border-radius: 999px;
-          border: 1px solid rgba(124, 58, 237, 0.3);
+          border: 1px solid var(--brand-secondary-border);
+          font-family: var(--font-mono);
         }
       }
 
       .dropdown-item {
         padding: 10px 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid var(--border-subtle);
 
         &.unread {
-          background: rgba(124, 58, 237, 0.06);
+          background: #FAF7F2;
         }
 
         .item-title {
@@ -358,13 +362,13 @@
         transition: all 0.15s ease;
 
         &:hover {
-          background: rgba(124, 58, 237, 0.1);
-          color: #FFFFFF;
+          background: #FAF7F2;
+          color: var(--brand-primary);
           padding-left: 20px;
         }
 
         &.signout-btn {
-          color: #f87171;
+          color: #dc2626;
           display: flex;
           align-items: center;
           gap: 8px;
@@ -375,8 +379,8 @@
           cursor: pointer;
 
           &:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
+            background: #FEF2F2;
+            color: #b91c1c;
             padding-left: 20px;
           }
         }

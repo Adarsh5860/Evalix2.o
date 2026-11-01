@@ -1,63 +1,89 @@
-/* Evalix 2.0 Design Tokens & Global System */
+/* Evalix 2.0 Artisanal Editorial Design Tokens */
+/* Handcrafted with unique warm mineral, terracotta, and linen light shades */
+
 :root {
-  --bg-darkest: #050816;
-  --bg-dark: #070B17;
-  --bg-card: rgba(10, 15, 31, 0.75);
-  --bg-card-hover: rgba(15, 23, 42, 0.85);
-  --bg-card-glass: rgba(13, 20, 41, 0.65);
-  --bg-input: rgba(15, 23, 42, 0.6);
+  /* Warm Architectural Canvas & Surfaces */
+  --bg-darkest: #FAF8F5;          /* Warm oat linen page canvas */
+  --bg-dark: #F4F0E8;             /* Subtle deeper stone well */
+  --bg-card: #FFFFFF;             /* Crisp archival paper card */
+  --bg-card-hover: #FDFBF8;       /* Soft elevated paper hover */
+  --bg-card-glass: rgba(255, 255, 255, 0.94);
+  --bg-input: #FFFFFF;
+  --bg-well: #F5F1E9;             /* Inset sunken panel */
 
-  --purple-primary: #7C3AED;
-  --purple-secondary: #A855F7;
-  --blue-primary: #3B82F6;
-  --cyan-primary: #22D3EE;
-  --magenta-primary: #EC4899;
+  /* Bespoke Editorial Brand Accents (NOT generic AI purple/cyan) */
+  --brand-primary: #C24A26;       /* Warm Kyoto Terracotta / Sienna */
+  --brand-primary-hover: #A83B1B; /* Deep Ember */
+  --brand-primary-tint: #FDF1EB;  /* Warm Apricot Bisque */
+  --brand-primary-border: #F3C9BA;
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
+  --brand-secondary: #2E5C4E;     /* Juniper Sage / Celadon */
+  --brand-secondary-hover: #23473C;
+  --brand-secondary-tint: #EEF5F2; /* Soft Mint Linen */
+  --brand-secondary-border: #C8DDD6;
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(124, 58, 237, 0.3);
-  --border-active: rgba(59, 130, 246, 0.5);
+  --brand-tertiary: #B4731E;      /* Warm Ochre Amber */
+  --brand-tertiary-tint: #FDF6EB;
+  --brand-tertiary-border: #F4DEBC;
 
-  --gradient-primary: linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%);
-  --gradient-horizontal: linear-gradient(90deg, #7C3AED 0%, #3B82F6 100%);
-  --gradient-accent: linear-gradient(135deg, #A855F7 0%, #22D3EE 100%);
-  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+  --brand-ink: #1C1917;           /* Deep Carbon Slate */
 
-  --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 1px 1px var(--border-subtle);
-  --shadow-glow: 0 0 25px rgba(124, 58, 237, 0.28);
-  --shadow-glow-blue: 0 0 25px rgba(59, 130, 246, 0.28);
-  --shadow-glow-cyan: 0 0 25px rgba(34, 211, 238, 0.25);
-  --shadow-button: 0 4px 14px 0 rgba(124, 58, 237, 0.39);
+  /* Legacy variable mappings (for complete backwards compatibility) */
+  --purple-primary: #C24A26;      /* Mapped to warm terracotta */
+  --purple-secondary: #D95D39;
+  --blue-primary: #2E5C4E;        /* Mapped to juniper sage */
+  --cyan-primary: #3D7262;
+  --magenta-primary: #B4731E;     /* Mapped to warm amber ochre */
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  /* Ink & Typography */
+  --text-primary: #1C1917;        /* Deep rich carbon ink */
+  --text-secondary: #57534E;      /* Warm charcoal slate */
+  --text-muted: #8C857B;          /* Warm stone dust */
+
+  /* Hairlines & Dividers */
+  --border-subtle: #E8E3D8;       /* Warm sandstone hairline */
+  --border-glow: #E2DDD2;         /* Crisp tactile border */
+  --border-active: #C24A26;       /* Terracotta focus ring */
+
+  /* Tactile Physical Gradients & Shadows */
+  --gradient-primary: linear-gradient(135deg, #C24A26 0%, #D45B34 100%);
+  --gradient-horizontal: linear-gradient(90deg, #1C1917 0%, #C24A26 100%);
+  --gradient-accent: linear-gradient(135deg, #2E5C4E 0%, #3D7262 100%);
+  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(194, 74, 38, 0.08) 0%, transparent 70%);
+
+  /* Physical Paper Shadows (no cheesy neon outer glows) */
+  --shadow-card: 0 1px 3px rgba(27, 25, 23, 0.04), 0 4px 14px -2px rgba(27, 25, 23, 0.04), 0 0 0 1px var(--border-subtle);
+  --shadow-card-hover: 0 3px 8px rgba(27, 25, 23, 0.06), 0 12px 24px -4px rgba(27, 25, 23, 0.06), 0 0 0 1px rgba(194, 74, 38, 0.25);
+  --shadow-glow: 0 2px 10px rgba(194, 74, 38, 0.12);
+  --shadow-glow-blue: 0 2px 10px rgba(46, 92, 78, 0.12);
+  --shadow-glow-cyan: 0 2px 10px rgba(61, 114, 98, 0.12);
+  --shadow-button: 0 2px 6px rgba(194, 74, 38, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-pill: 9999px;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', Menlo, Consolas, monospace;
 }
 
-/* Futuristic background grid */
+/* Subtle Architectural drafting millimeter grid */
 .evalix-grid-bg {
   background-color: var(--bg-darkest);
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 58, 237, 0.18), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(59, 130, 246, 0.12), transparent 70%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-  background-position: top center, bottom right, center center, center center;
+    linear-gradient(to right, rgba(27, 25, 23, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 25, 23, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center center;
 }
 
-/* Glassmorphism helpers */
+/* Glassmorphism helpers - refined to subtle paper acrylic */
 .glass-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
@@ -66,11 +92,12 @@
 
 .glass-panel-glow {
   border-color: var(--border-glow);
-  box-shadow: var(--shadow-card), var(--shadow-glow);
+  box-shadow: var(--shadow-card);
 }
 
 .glass-panel:hover {
-  border-color: rgba(124, 58, 237, 0.35);
+  border-color: rgba(194, 74, 38, 0.3);
+  box-shadow: var(--shadow-card-hover);
 }
 
 /* Gradient text */
@@ -82,7 +109,7 @@
 }
 
 .gradient-text-cyan {
-  background: linear-gradient(90deg, #38BDF8, #22D3EE);
+  background: linear-gradient(90deg, #2E5C4E, #3D7262);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -94,35 +121,39 @@
   font-weight: 600;
   border: none;
   border-radius: var(--radius-md);
-  padding: 12px 24px;
+  padding: 11px 22px;
   box-shadow: var(--shadow-button);
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
   text-decoration: none;
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5), 0 0 15px rgba(59, 130, 246, 0.4);
-    filter: brightness(1.08);
+    background: linear-gradient(135deg, #B13E1B 0%, #C24A26 100%);
+    box-shadow: 0 4px 14px rgba(194, 74, 38, 0.32);
+    filter: none;
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(194, 74, 38, 0.2);
   }
 
   &:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
     cursor: not-allowed;
     box-shadow: none;
   }
 }
 
 .btn-evalix-secondary {
-  background: rgba(255, 255, 255, 0.05);
+  background: #FFFFFF;
   color: var(--text-primary) !important;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
@@ -135,11 +166,13 @@
   gap: 8px;
   cursor: pointer;
   text-decoration: none;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 2px rgba(27, 25, 23, 0.04);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #FFFFFF !important;
+    background: #FAF7F2;
+    border-color: #D6CFC2;
+    color: var(--brand-primary) !important;
   }
 }
 
@@ -148,60 +181,41 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  background: rgba(124, 58, 237, 0.12);
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  color: #C084FC;
+  letter-spacing: 0.03em;
+  background: var(--brand-primary-tint);
+  border: 1px solid var(--brand-primary-border);
+  color: var(--brand-primary);
+  font-family: var(--font-mono);
 }
 
 .evalix-badge-cyan {
-  background: rgba(34, 211, 238, 0.12);
-  border: 1px solid rgba(34, 211, 238, 0.3);
-  color: #38BDF8;
+  background: var(--brand-secondary-tint);
+  border: 1px solid var(--brand-secondary-border);
+  color: var(--brand-secondary);
+  font-family: var(--font-mono);
 }
 
 .evalix-badge-magenta {
-  background: rgba(236, 72, 153, 0.12);
-  border: 1px solid rgba(236, 72, 153, 0.3);
-  color: #F472B6;
+  background: var(--brand-tertiary-tint);
+  border: 1px solid var(--brand-tertiary-border);
+  color: var(--brand-tertiary);
+  font-family: var(--font-mono);
 }
 
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(124, 58, 237, 0.6), 0 0 15px rgba(59, 130, 246, 0.4);
-  }
-}
-
-@keyframes floatSmooth {
+/* Subtle, authentic micro-animations (no neon strobing) */
+@keyframes softLift {
   0%, 100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px);
-  }
-}
-
-@keyframes spinSlow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+    transform: translateY(-4px);
   }
 }
 
 .animate-float {
-  animation: floatSmooth 4s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 3s ease-in-out infinite;
+  animation: softLift 4s ease-in-out infinite;
 }

@@ -10,14 +10,15 @@
     .section-title {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--text-primary);
       margin-bottom: 4px;
-      font-family: 'Plus Jakarta Sans', var(--font-sans);
+      font-family: var(--font-sans);
+      letter-spacing: -0.02em;
     }
 
     .section-subtitle {
       font-size: 0.9rem;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       margin: 0;
     }
   }
@@ -28,64 +29,192 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 
-    .about-domain-card {
-      padding: 1.75rem;
+    .about-domain-card,
+    .domain-overview-card {
+      position: relative;
+      padding: 1.85rem;
       display: flex;
       flex-direction: column;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(28, 25, 23, 0.04), 0 1px 3px rgba(28, 25, 23, 0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      overflow: hidden;
 
-      &.border-purple { border-color: rgba(124, 58, 237, 0.3); }
-      &.border-magenta { border-color: rgba(236, 72, 153, 0.3); }
-      &.border-cyan { border-color: rgba(34, 211, 238, 0.3); }
+      .domain-card-accent-strip {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+      }
 
-      .domain-card-top {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin-bottom: 1rem;
+      &:hover {
+        transform: translateY(-3px);
+      }
+
+      /* Specific Domain Card Styling */
+      &.domain-cognitive,
+      &.border-purple {
+        .domain-card-accent-strip {
+          background: #C24A26;
+        }
+
+        &:hover {
+          border-color: rgba(194, 74, 38, 0.45);
+          box-shadow: 0 12px 30px rgba(194, 74, 38, 0.09);
+        }
 
         .domain-icon-box {
-          width: 44px;
-          height: 44px;
+          background: rgba(194, 74, 38, 0.08);
+          color: #C24A26;
+          border: 1px solid rgba(194, 74, 38, 0.25);
+        }
+
+        .highlight-apex,
+        .highlight-purple {
+          background: rgba(194, 74, 38, 0.06);
+          border-color: rgba(194, 74, 38, 0.3);
+
+          .step-num {
+            background: #C24A26;
+            color: #FFFFFF;
+            border-color: #C24A26;
+          }
+
+          .step-label {
+            color: #C24A26;
+            font-weight: 700;
+          }
+
+          .apex-pill {
+            background: rgba(194, 74, 38, 0.14);
+            color: #C24A26;
+          }
+        }
+      }
+
+      &.domain-affective,
+      &.border-magenta {
+        .domain-card-accent-strip {
+          background: #2E5C4E;
+        }
+
+        &:hover {
+          border-color: rgba(46, 92, 78, 0.45);
+          box-shadow: 0 12px 30px rgba(46, 92, 78, 0.09);
+        }
+
+        .domain-icon-box {
+          background: rgba(46, 92, 78, 0.08);
+          color: #2E5C4E;
+          border: 1px solid rgba(46, 92, 78, 0.25);
+        }
+
+        .highlight-apex,
+        .highlight-magenta {
+          background: rgba(46, 92, 78, 0.06);
+          border-color: rgba(46, 92, 78, 0.3);
+
+          .step-num {
+            background: #2E5C4E;
+            color: #FFFFFF;
+            border-color: #2E5C4E;
+          }
+
+          .step-label {
+            color: #2E5C4E;
+            font-weight: 700;
+          }
+
+          .apex-pill {
+            background: rgba(46, 92, 78, 0.14);
+            color: #2E5C4E;
+          }
+        }
+      }
+
+      &.domain-psychomotor,
+      &.border-cyan {
+        .domain-card-accent-strip {
+          background: #B4731E;
+        }
+
+        &:hover {
+          border-color: rgba(180, 115, 30, 0.45);
+          box-shadow: 0 12px 30px rgba(180, 115, 30, 0.09);
+        }
+
+        .domain-icon-box {
+          background: rgba(180, 115, 30, 0.08);
+          color: #B4731E;
+          border: 1px solid rgba(180, 115, 30, 0.25);
+        }
+
+        .highlight-apex,
+        .highlight-cyan {
+          background: rgba(180, 115, 30, 0.06);
+          border-color: rgba(180, 115, 30, 0.3);
+
+          .step-num {
+            background: #B4731E;
+            color: #FFFFFF;
+            border-color: #B4731E;
+          }
+
+          .step-label {
+            color: #B4731E;
+            font-weight: 700;
+          }
+
+          .apex-pill {
+            background: rgba(180, 115, 30, 0.14);
+            color: #B4731E;
+          }
+        }
+      }
+
+      /* Domain Header */
+      .domain-card-top,
+      .domain-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 1.15rem;
+
+        .domain-icon-box {
+          width: 46px;
+          height: 46px;
           border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 1.25rem;
+          font-size: 1.35rem;
+          flex-shrink: 0;
+          transition: transform 0.2s ease;
+        }
 
-          &.purple {
-            background: rgba(124, 58, 237, 0.2);
-            color: #C084FC;
-            border: 1px solid rgba(124, 58, 237, 0.4);
-            box-shadow: 0 0 12px rgba(124, 58, 237, 0.3);
-          }
-
-          &.magenta {
-            background: rgba(236, 72, 153, 0.2);
-            color: #F472B6;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
-          }
-
-          &.cyan {
-            background: rgba(34, 211, 238, 0.2);
-            color: #38BDF8;
-            border: 1px solid rgba(34, 211, 238, 0.4);
-            box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
-          }
+        .domain-header-meta {
+          min-width: 0;
         }
 
         .domain-author {
           font-size: 0.72rem;
-          color: var(--text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
+          color: var(--text-secondary);
+          font-family: var(--font-mono);
+          letter-spacing: 0.01em;
+          display: block;
+          margin-bottom: 3px;
         }
 
         .domain-name {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #FFFFFF;
-          margin: 2px 0 0;
+          font-size: 1.35rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0;
+          letter-spacing: -0.02em;
+          line-height: 1.2;
         }
       }
 
@@ -97,50 +226,96 @@
         flex: 1;
       }
 
+      /* Levels Ladder */
       .levels-ladder {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        background: rgba(15, 23, 42, 0.5);
+        background: #FAF8F5;
         border: 1px solid var(--border-subtle);
-        border-radius: 12px;
-        padding: 12px;
+        border-radius: 14px;
+        padding: 12px 14px 14px 14px;
+
+        .ladder-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border-subtle);
+
+          .ladder-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+          }
+
+          .ladder-count {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+          }
+        }
+
+        .ladder-steps-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
 
         .ladder-step {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 0.82rem;
-          color: var(--text-secondary);
-          padding: 4px 8px;
-          border-radius: 6px;
+          padding: 7px 10px;
+          background: #FFFFFF;
+          border: 1px solid rgba(232, 227, 216, 0.8);
+          border-radius: 8px;
+          transition: all 0.2s ease;
+          color: var(--text-primary);
+
+          &:hover {
+            transform: translateX(3px);
+            box-shadow: 0 2px 6px rgba(28, 25, 23, 0.04);
+            border-color: #D3CDC0;
+          }
 
           .step-num {
-            font-size: 0.7rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
             font-weight: 700;
-            color: var(--text-muted);
-            width: 14px;
+            background: #FAF8F5;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            transition: all 0.2s ease;
           }
 
-          &.highlight-purple {
-            background: rgba(124, 58, 237, 0.25);
-            color: #FFFFFF;
+          .step-label {
+            font-size: 0.84rem;
             font-weight: 600;
-            border: 1px solid rgba(124, 58, 237, 0.4);
+            color: var(--text-primary);
+            flex: 1;
           }
 
-          &.highlight-magenta {
-            background: rgba(236, 72, 153, 0.25);
-            color: #FFFFFF;
-            font-weight: 600;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-          }
-
-          &.highlight-cyan {
-            background: rgba(34, 211, 238, 0.25);
-            color: #FFFFFF;
-            font-weight: 600;
-            border: 1px solid rgba(34, 211, 238, 0.4);
+          .apex-pill {
+            font-size: 0.62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
           }
         }
       }
@@ -156,12 +331,16 @@
     .pipeline-step-card {
       padding: 1.5rem;
       position: relative;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      box-shadow: var(--shadow-card);
       transition: all 0.25s ease;
 
       &:hover {
-        transform: translateY(-3px);
-        border-color: rgba(124, 58, 237, 0.4);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(124, 58, 237, 0.2);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-card-hover);
+        border-color: #D6CFC2;
       }
 
       .step-badge {
@@ -170,31 +349,32 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        background: rgba(124, 58, 237, 0.15);
-        border: 1px solid rgba(124, 58, 237, 0.3);
-        color: #C084FC;
+        background: rgba(194, 74, 38, 0.08);
+        border: 1px solid rgba(194, 74, 38, 0.22);
+        color: var(--brand-primary);
         padding: 2px 8px;
         border-radius: 6px;
         margin-bottom: 0.75rem;
+        font-family: var(--font-mono);
       }
 
       .step-icon-wrap {
         font-size: 1.5rem;
-        color: #38BDF8;
+        color: var(--brand-primary);
         margin-bottom: 0.75rem;
       }
 
       .step-title {
         font-size: 1.05rem;
         font-weight: 700;
-        color: #FFFFFF;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
       }
 
       .step-text {
         font-size: 0.82rem;
         line-height: 1.5;
-        color: var(--text-muted);
+        color: var(--text-secondary);
         margin: 0;
       }
     }
@@ -202,13 +382,15 @@
 
   /* CTA Card */
   .about-cta-card {
-    background: radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.15) 0%, rgba(10, 15, 31, 0.8) 100%);
-    border: 1px solid var(--border-glow);
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
 
     .cta-heading {
       font-size: 1.6rem;
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--text-primary);
     }
 
     .cta-sub {
