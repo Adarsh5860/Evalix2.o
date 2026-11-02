@@ -1,5 +1,515 @@
 [
   {
+    "id": "EVX-2026-8EDA-BB7C",
+    "recipientName": "adarsh",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793611995250.xlsx",
+    "issuedAt": "2026-11-02T09:33:26.092Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 86,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Mini Project Report"
+    },
+    "createdAt": "2026-11-02T09:33:26.093Z"
+  },
+  {
+    "id": "EVX-2026-C1EA-BF3D",
+    "recipientName": "adarsh",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793543041601.xlsx",
+    "issuedAt": "2026-11-01T14:24:09.188Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 89,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T14:24:09.188Z"
+  },
+  {
+    "id": "EVX-2026-75BE-F66A",
+    "recipientName": "Mr. Adarsh Tanaji Patil",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793541567036.xlsx",
+    "issuedAt": "2026-11-01T14:00:34.577Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 89,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T14:00:34.577Z"
+  },
+  {
+    "id": "EVX-2026-4069-CD6F",
+    "recipientName": "adarsh",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793541567036.xlsx",
+    "issuedAt": "2026-11-01T13:59:58.673Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 89,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:59:58.674Z"
+  },
+  {
+    "id": "EVX-2026-B70A-7773",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-11-01T13:58:20.703Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:58:20.703Z"
+  },
+  {
+    "id": "EVX-2026-2A36-6E88",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-11-01T13:50:48.354Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:50:48.354Z"
+  },
+  {
+    "id": "EVX-2026-46EC-59C5",
+    "recipientName": "adarsh",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793540441071.xlsx",
+    "issuedAt": "2026-11-01T13:41:28.248Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 89,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:41:28.248Z"
+  },
+  {
+    "id": "EVX-2026-0594-8552",
+    "recipientName": "adarsh",
+    "documentTitle": "Evalix2_Mini_Project_Report_Edited_compressed.pdf",
+    "evaluationReference": "evalix2_mini_project_report_edited_compressed_pdf_analysis_1793540441071.xlsx",
+    "issuedAt": "2026-11-01T13:41:09.620Z",
+    "metrics": {
+      "totalVerbs": 1134,
+      "cognitive": {
+        "count": 599,
+        "percentage": 53
+      },
+      "affective": {
+        "count": 317,
+        "percentage": 28
+      },
+      "psychomotor": {
+        "count": 218,
+        "percentage": 19
+      }
+    },
+    "qualityScore": {
+      "overallScore": 89,
+      "grade": "Excellent",
+      "gradeBand": "A",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:41:09.621Z"
+  },
+  {
+    "id": "EVX-2026-B8D4-7E13",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-11-01T13:33:53.219Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:33:53.220Z"
+  },
+  {
+    "id": "EVX-2026-E630-F787",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-11-01T13:33:29.492Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T13:33:29.492Z"
+  },
+  {
+    "id": "EVX-2026-A529-B746",
+    "recipientName": "Tejas Sandeep Buddhewar",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-11-01T12:14:00.277Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-11-01T12:14:00.277Z"
+  },
+  {
+    "id": "EVX-2026-7E15-019F",
+    "recipientName": "Adarsh Patil",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-10-26T13:24:38.715Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-26T13:24:38.716Z"
+  },
+  {
+    "id": "EVX-2026-7BF7-002B",
+    "recipientName": "Adarsh Patil",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-10-26T13:24:11.429Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-26T13:24:11.430Z"
+  },
+  {
+    "id": "EVX-2026-0BCC-354C",
+    "recipientName": "Adarsh Patil",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-10-26T13:22:46.939Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-26T13:22:46.940Z"
+  },
+  {
+    "id": "EVX-2026-DFF6-B625",
+    "recipientName": "Adarsh Patil",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-10-25T10:17:44.501Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-25T10:17:44.502Z"
+  },
+  {
+    "id": "EVX-2026-D450-5FCE",
+    "recipientName": "vaibhav",
+    "documentTitle": "Internship Report 2026-2.pdf",
+    "evaluationReference": "internship_report_2026_2_pdf_analysis_1792829713254.xlsx",
+    "issuedAt": "2026-10-24T08:16:32.420Z",
+    "metrics": {
+      "totalVerbs": 108,
+      "cognitive": {
+        "count": 65,
+        "percentage": 60
+      },
+      "affective": {
+        "count": 26,
+        "percentage": 24
+      },
+      "psychomotor": {
+        "count": 17,
+        "percentage": 16
+      }
+    },
+    "qualityScore": {
+      "overallScore": 60,
+      "grade": "Needs Improvement",
+      "gradeBand": "C",
+      "gradeColor": "#F59E0B",
+      "documentType": "Technical Report"
+    },
+    "createdAt": "2026-10-24T08:16:32.421Z"
+  },
+  {
+    "id": "EVX-2026-C7FA-FCA6",
+    "recipientName": "ad",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
+    "issuedAt": "2026-10-22T14:10:37.733Z",
+    "metrics": {
+      "totalVerbs": 164,
+      "cognitive": {
+        "count": 104,
+        "percentage": 63
+      },
+      "affective": {
+        "count": 36,
+        "percentage": 22
+      },
+      "psychomotor": {
+        "count": 24,
+        "percentage": 15
+      }
+    },
+    "qualityScore": {
+      "overallScore": 85,
+      "grade": "Proficient",
+      "gradeBand": "B",
+      "gradeColor": "#10B981",
+      "documentType": "Project Report"
+    },
+    "createdAt": "2026-10-22T14:10:37.734Z"
+  },
+  {
     "id": "EVX-2026-4C85-8105",
     "recipientName": "XYZ",
     "documentTitle": "some-unappreciated-benefits-of-artificial-intelligence-ai--an-opinion-2889.pdf",
@@ -32,8 +542,8 @@
   {
     "id": "EVX-2026-D241-4C05",
     "recipientName": "Dr. Angela M. Parker",
-    "documentTitle": "Sample_Research_Paper_Exp7.pdf",
-    "evaluationReference": "Sample_Research_Paper_Analysis.xlsx",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
     "issuedAt": "2026-10-11T12:22:23.671Z",
     "metrics": {
       "totalVerbs": 164,
@@ -62,8 +572,8 @@
   {
     "id": "EVX-2026-6EFB-4CD6",
     "recipientName": "Tejas Sandeep Buddhewar",
-    "documentTitle": "Sample_Research_Paper_Exp7.pdf",
-    "evaluationReference": "Sample_Research_Paper_Analysis.xlsx",
+    "documentTitle": "Sample_Report.pdf",
+    "evaluationReference": "Sample_Report_Analysis.xlsx",
     "issuedAt": "2026-10-11T12:20:23.562Z",
     "metrics": {
       "totalVerbs": 164,

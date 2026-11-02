@@ -2,6 +2,7 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
 const fs = require('fs');
+const QRCode = require('qrcode'); // Added QR code library
 
 /**
  * Format date nicely (e.g. "October 11, 2026")
@@ -39,7 +40,7 @@ const sanitizeText = (str, maxLen = 120) => {
  * Generate Certificate PDF using PDFKit
  * Returns a Promise that resolves with a Buffer
  */
-const generateCertificatePdfBuffer = (certData) => {
+const generateCertificatePdfBuffer = async (certData) => {
     return new Promise((resolve, reject) => {
         try {
             const doc = new PDFDocument({
@@ -345,7 +346,16 @@ const generateCertificatePdfBuffer = (certData) => {
                );
 
             // End document
-            doc.end();
+            // Generate QR code for certificate verification and embed it in the bottom‑right empty area
+            QRCode.toBuffer(certId, { type: 'png', width: 100 })
+                .then(qrBuf => {
+                    // Position: 20pt margin from right edge, 20pt above bottom of page
+                    const qrX = PAGE_W - 120; // adjust as needed
+                    const qrY = PAGE_H - 120; // near bottom
+                    doc.image(qrBuf, qrX, qrY, { width: 80 });
+                    doc.end();
+                })
+                .catch(err => reject(err));
         } catch (err) {
             reject(err);
         }
