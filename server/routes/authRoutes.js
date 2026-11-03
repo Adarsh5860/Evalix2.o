@@ -44,7 +44,7 @@ router.get('/captcha', (req, res) => {
 // ============================================================================
 const handleSignup = async (req, res) => {
     try {
-        const { email, password, name, role, captchaId, captchaInput } = req.body;
+        const { email, password, name, role, systemRole, adminSecret, captchaId, captchaInput } = req.body;
 
         // 1. Validate CAPTCHA
         if (!captchaId || !captchaInput) {
@@ -99,6 +99,7 @@ const handleSignup = async (req, res) => {
             password,
             name,
             role,
+            systemRole,
             adminSecret
         });
 
@@ -114,7 +115,7 @@ const handleSignup = async (req, res) => {
             email: newUser.email,
             message: 'Account created! Please verify your email with the 6-digit code sent to your inbox.',
             user: newUser,
-            devCode: emailResult.previewCode || null
+            ...(process.env.NODE_ENV !== 'production' && { devCode: emailResult.previewCode || null })
         });
     } catch (err) {
         console.error('Signup error:', err.message);
