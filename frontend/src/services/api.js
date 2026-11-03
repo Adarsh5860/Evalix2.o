@@ -272,4 +272,50 @@ export const fetchCertificatesHistoryApi = async () => {
     }
 };
 
+/**
+ * Admin API calls (Admin/Superadmin only)
+ */
+export const fetchAdminUsersApi = async () => {
+    const response = await api.get('/admin/users');
+    return response.data;
+};
+
+export const updateUserRoleApi = async (userId, systemRole) => {
+    const response = await api.patch(`/admin/users/${userId}/role`, { systemRole });
+    return response.data;
+};
+
+export const deleteUserApi = async (userId) => {
+    const response = await api.delete(`/admin/users/${userId}`);
+    return response.data;
+};
+
+export const promoteWithSecretApi = async (secretKey) => {
+    const response = await api.post('/admin/promote-with-secret', { secretKey });
+    return response.data;
+};
+
+/**
+ * Feedback API calls
+ */
+export const submitFeedbackApi = async (feedbackData) => {
+    const response = await api.post('/feedback', feedbackData);
+    return response.data;
+};
+
+export const fetchAllFeedbackApi = async () => {
+    const response = await api.get('/feedback');
+    return response.data;
+};
+
+export const updateFeedbackStatusApi = async (feedbackId, status) => {
+    const response = await api.patch(`/feedback/${feedbackId}/status`, { status });
+    return response.data;
+};
+
+export const deleteFeedbackApi = async (feedbackId) => {
+    const response = await api.delete(`/feedback/${feedbackId}`);
+    return response.data;
+};
+
 export default api;

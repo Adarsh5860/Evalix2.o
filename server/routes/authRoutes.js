@@ -115,7 +115,6 @@ const handleSignup = async (req, res) => {
             email: newUser.email,
             message: 'Account created! Please verify your email with the 6-digit code sent to your inbox.',
             user: newUser,
-            ...(process.env.NODE_ENV !== 'production' && { devCode: emailResult.previewCode || null })
         });
     } catch (err) {
         console.error('Signup error:', err.message);
@@ -210,7 +209,6 @@ router.post('/resend-verification', async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'A new 6-digit verification code has been dispatched to your email.',
-            devCode: emailResult.previewCode || null
         });
     } catch (err) {
         console.error('Resend verification error:', err.message);
@@ -276,7 +274,6 @@ router.post('/login', async (req, res) => {
                 requiresEmailVerification: true,
                 email: user.email,
                 message: 'Your email address is not yet verified. A fresh 6-digit verification code has been sent.',
-                devCode: emailResult.previewCode || null
             });
         }
 
