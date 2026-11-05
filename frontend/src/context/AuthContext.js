@@ -1,5 +1,6 @@
 // frontend/src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { logoutUserApi } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -48,15 +49,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const currentToken = token || localStorage.getItem(TOKEN_STORAGE_KEY);
       if (currentToken) {
-        // Notify backend of logout
-        fetch('http://localhost:5001/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${currentToken}`
-          }
-        }).catch(() => {});
+        await logoutUserApi(currentToken);
       }
+    } catch (err) {
+      console.error('Error notifying API about logout:', err);
     } finally {
       setUser(null);
       setToken(null);

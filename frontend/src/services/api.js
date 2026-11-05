@@ -63,6 +63,15 @@ export const fetchCurrentUser = async () => {
     return response.data;
 };
 
+export const logoutUserApi = async (token) => {
+    const response = await api.post('/auth/logout', {}, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+};
+
 export const analyzePaper = async (formData) => {
     try {
         const response = await api.post('/papers/analyze', formData, {

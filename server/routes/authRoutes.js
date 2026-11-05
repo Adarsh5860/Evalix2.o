@@ -44,7 +44,7 @@ router.get('/captcha', (req, res) => {
 // ============================================================================
 const handleSignup = async (req, res) => {
     try {
-        const { email, password, name, role, captchaId, captchaInput } = req.body;
+        const { email, password, name, role, systemRole, adminSecret, captchaId, captchaInput } = req.body;
 
         // 1. Validate CAPTCHA
         if (!captchaId || !captchaInput) {
@@ -98,7 +98,9 @@ const handleSignup = async (req, res) => {
             email,
             password,
             name,
-            role
+            role,
+            systemRole,
+            adminSecret
         });
 
         const emailResult = await emailService.sendVerificationEmail(
@@ -113,7 +115,6 @@ const handleSignup = async (req, res) => {
             email: newUser.email,
             message: 'Account created! Please verify your email with the 6-digit code sent to your inbox.',
             user: newUser,
-            devCode: emailResult.previewCode || null
         });
     } catch (err) {
         console.error('Signup error:', err.message);
@@ -208,7 +209,6 @@ router.post('/resend-verification', async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'A new 6-digit verification code has been dispatched to your email.',
-            devCode: emailResult.previewCode || null
         });
     } catch (err) {
         console.error('Resend verification error:', err.message);
@@ -274,7 +274,6 @@ router.post('/login', async (req, res) => {
                 requiresEmailVerification: true,
                 email: user.email,
                 message: 'Your email address is not yet verified. A fresh 6-digit verification code has been sent.',
-                devCode: emailResult.previewCode || null
             });
         }
 

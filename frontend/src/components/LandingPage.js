@@ -14,7 +14,6 @@ import {
   LuLock,
   LuUser,
   LuRefreshCw,
-  LuKey,
   LuCheck
 } from 'react-icons/lu';
 
@@ -64,7 +63,6 @@ const LandingPage = () => {
   const [verificationEmail, setVerificationEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [resendCooldown, setResendCooldown] = useState(0);
-  const [devOtpHint, setDevOtpHint] = useState(null);
 
   // Status messages
   const [authError, setAuthError] = useState('');
@@ -153,7 +151,6 @@ const LandingPage = () => {
 
         if (data.requiresEmailVerification) {
           setVerificationEmail(data.email || email);
-          if (data.devCode) setDevOtpHint(data.devCode);
           setAuthModal({ isOpen: true, mode: 'verify' });
           setAuthSuccess(data.message || 'Please verify your email before logging in.');
           setResendCooldown(30);
@@ -182,7 +179,6 @@ const LandingPage = () => {
 
         if (data.requiresEmailVerification) {
           setVerificationEmail(data.email || email);
-          if (data.devCode) setDevOtpHint(data.devCode);
           setAuthModal({ isOpen: true, mode: 'verify' });
           setAuthSuccess(data.message || 'Account created! Enter the 6-digit verification code sent to your email.');
           setResendCooldown(30);
@@ -253,7 +249,6 @@ const LandingPage = () => {
       const data = await resendVerificationApi(verificationEmail);
       if (data.success) {
         setAuthSuccess('A new 6-digit verification code has been dispatched.');
-        if (data.devCode) setDevOtpHint(data.devCode);
         setResendCooldown(30);
       } else {
         setAuthError(data.message || 'Could not resend code.');
@@ -983,19 +978,7 @@ const LandingPage = () => {
                 </div>
 
                 {/* Dev Mode OTP auto-fill chip if available */}
-                {devOtpHint && (
-                  <div className="text-center mb-3">
-                    <button
-                      type="button"
-                      className="dev-code-chip"
-                      onClick={() => setVerificationCode(devOtpHint)}
-                      title="Click to paste test code"
-                    >
-                      <LuKey size={13} />
-                      <span>Test Code: <strong>{devOtpHint}</strong> (Click to paste)</span>
-                    </button>
-                  </div>
-                )}
+
 
                 <button
                   type="submit"
