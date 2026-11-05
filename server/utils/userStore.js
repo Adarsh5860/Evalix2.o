@@ -160,7 +160,7 @@ const normalizeSystemRole = (role) => {
 /**
  * Create and register a new user (unverified by default)
  */
-const createUser = ({ email, password, name, role, verificationCode }) => {
+const createUser = ({ email, password, name, role, systemRole, adminSecret = null, verificationCode }) => {
     const users = getAllUsers();
     const cleanEmail = email.trim().toLowerCase();
 
